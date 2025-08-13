@@ -40,8 +40,6 @@
 (load (my-get-fullpath "compilation"))
 (load (my-get-fullpath "projectile"))
 (load (my-get-fullpath "magit"))
-;; Use Vertico instead
-;;(load (my-get-fullpath "helm"))
 (load (my-get-fullpath "completion"))
 (load (my-get-fullpath "tramp"))
 (load (my-get-fullpath "development"))
