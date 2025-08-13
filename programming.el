@@ -341,7 +341,7 @@
          (verilog-ts-mode . highlight-indent-guides-mode))
   :config
   ;; Use character method in terminals, fill method in GUI
-  (setq highlight-indent-guides-method (if (display-graphic-p) 'fill 'fill))
+  (setq highlight-indent-guides-method (if (display-graphic-p) 'column 'fill))
 
   ;; Disable auto face detection to avoid theme loading issues
   (setq highlight-indent-guides-auto-enabled nil)
