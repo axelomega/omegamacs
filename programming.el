@@ -84,31 +84,43 @@
 (use-package eglot
   :ensure t
   :config
-  (setq eglot-connect-timeout 120
-        eglot-format-on-save nil)
+  (setq eglot-connect-timeout 60  ; Reduced timeout
+        eglot-format-on-save nil
+        eglot-sync-connect nil    ; Use async connection
+        eglot-events-buffer-size 0) ; Disable event logging for performance
 
-  ;; Configure Pyright to disable formatting
-  (setq-default eglot-workspace-configuration
-                '((python (analysis (autoImportCompletions t)
-                                   (typeCheckingMode "basic"))
-                          (formatting (provider "none")))))
+  ;; Configure Pyright (simplified configuration)
+  ;; Note: Workspace configuration can be added later via .vscode/settings.json if needed
 
-  ;; Python server configuration with fallbacks
+  ;; Python server configuration using symlink
   (add-to-list 'eglot-server-programs
-	       `(python-mode . ("pyright-langserver" "--stdio")))
+               `(python-mode . ("pyright-langserver" "--stdio")))
   (add-to-list 'eglot-server-programs
-	       `(python-ts-mode . ("pyright-langserver" "--stdio")))
+               `(python-ts-mode . ("pyright-langserver" "--stdio")))
 
-  ;; Only auto-start eglot if language server is available
+  ;; Enhanced auto-start function with better error handling
   (defun my-python-eglot-ensure ()
-    "Start eglot for Python only if language server is available."
-    (when (or (executable-find "pyright-langserver")
-              (executable-find "pylsp")
-              (executable-find "python-lsp-server"))
-      (eglot-ensure)))
+    "Start eglot for Python with error handling."
+    (when (and (executable-find "pyright-langserver")
+               (not (eglot-current-server)))
+      (condition-case err
+          (eglot-ensure)
+        (error 
+         (message "Eglot failed to start: %s" (error-message-string err))))))
+
+  ;; Manual eglot commands for debugging
+  (defun my-eglot-restart ()
+    "Restart eglot server for current buffer."
+    (interactive)
+    (when (eglot-current-server)
+      (eglot-shutdown (eglot-current-server)))
+    (eglot-ensure))
 
   :hook ((python-mode . my-python-eglot-ensure)
-         (python-ts-mode . my-python-eglot-ensure)))
+         (python-ts-mode . my-python-eglot-ensure))
+  :bind (:map python-mode-map
+         ("C-c l r" . my-eglot-restart)
+         ("C-c l s" . eglot)))
 
 ;;(use-package python-black
 ;;  :ensure t)
