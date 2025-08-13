@@ -238,12 +238,20 @@
   :ensure t
   :commands lsp-ui-mode)
 
-(use-package helm-lsp
-  :ensure t
-  :commands helm-lsp-workspace-symbol)
+;; Helm packages removed - using consult-lsp and consult-xref instead
+;; (use-package helm-lsp
+;;   :ensure t
+;;   :commands helm-lsp-workspace-symbol)
+;;
+;; (use-package helm-xref
+;;   :ensure t)
 
-(use-package helm-xref
-  :ensure t)
+;; Use consult-lsp for LSP integration with Vertico
+(use-package consult-lsp
+  :ensure t
+  :after (lsp-mode consult)
+  :bind (:map lsp-mode-map
+         ([remap xref-find-apropos] . consult-lsp-symbols)))
 
 (use-package dap-mode
     :ensure t)
