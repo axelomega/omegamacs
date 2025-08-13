@@ -25,7 +25,7 @@
   ;; Suppress "Unnecessary call to 'package-initialize'" warning
   ;; This warning occurs because package-quickstart automatically calls package-initialize
   ;; but Emacs still warns about redundant calls during startup
-  (setq warning-suppress-types '((package reinitialization))))
+  (setq warning-suppress-types '((package)))))
 
 ;; Auto update packages - only when environment variable is set
 (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")
