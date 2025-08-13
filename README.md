@@ -54,6 +54,16 @@ This configuration is designed for modern Emacs builds with advanced features li
 
 **That's it!** The configuration works automatically when placed in `~/omegamacs` (the default location).
 
+### Package Updates
+
+By default, packages use cached lists for faster startup. To check for and install package updates:
+
+```bash
+EMACS_PACKAGE_UPDATE_ENABLE=1 emacs
+```
+
+This enables automatic package refreshing and weekly update checks. For normal usage, omit the environment variable to prevent unexpected updates.
+
 ### Alternative: Custom Location
 
 If you prefer a different location, edit `~/.emacs.d/local_settings.el`:
