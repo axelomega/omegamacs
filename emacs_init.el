@@ -1,0 +1,58 @@
+(defvar my--gc-cons-threshold gc-cons-threshold)
+(defvar my--gc-cons-percentage gc-cons-percentage)
+(defvar my--file-name-handler-alist file-name-handler-alist)
+
+;; Maximize memory during startup for better performance
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6
+      file-name-handler-alist nil)
+
+;; Enable native compilation if available
+(when (featurep 'native-compile)
+  (setq native-comp-speed 2)  ; 0=no optimization, 1=light, 2=max optimization
+  (setq native-comp-async-report-warnings-errors nil)  ; Reduce noise
+  (setq native-comp-jit-compilation t))  ; Enable JIT compilation
+
+;; Restore normal values after startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold my--gc-cons-threshold
+                  gc-cons-percentage my--gc-cons-percentage
+                  file-name-handler-alist my--file-name-handler-alist)
+            ;; Optional: run gc after startup
+            (garbage-collect)))
+
+(defun my-get-fullpath (file-relative-path)
+  "Return the full path of FILE-RELATIVE-PATH, relative to the configuration directory."
+  (let ((config-dir (or (and (boundp 'my-emacs-config-dir) my-emacs-config-dir)
+                        (file-name-directory (or load-file-name buffer-file-name)))))
+    (expand-file-name file-relative-path config-dir)))
+
+(load (my-get-fullpath "packages"))
+(load (my-get-fullpath "settings"))
+(load (my-get-fullpath "flycheck"))
+(load (my-get-fullpath "company"))
+(load (my-get-fullpath "ido"))
+(load (my-get-fullpath "frame_buffer_handling"))
+(load (my-get-fullpath "programming"))
+(load (my-get-fullpath "compilation"))
+(load (my-get-fullpath "projectile"))
+(load (my-get-fullpath "magit"))
+;; Use Vertico instead
+;;(load (my-get-fullpath "helm"))
+(load (my-get-fullpath "completion"))
+(load (my-get-fullpath "development"))
+(load (my-get-fullpath "latex"))
+(setq fill-column 200)
+
+;; Separate custom file for cleaner configuration
+(setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+;; Convenient reload function
+(defun my-reload-config ()
+  "Reload the entire Emacs configuration."
+  (interactive)
+  (load-file (my-get-fullpath "emacs_init.el"))
+  (message "Configuration reloaded!"))
