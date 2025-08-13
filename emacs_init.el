@@ -30,26 +30,38 @@
                         (file-name-directory (or load-file-name buffer-file-name)))))
     (expand-file-name file-relative-path config-dir)))
 
-(load (my-get-fullpath "packages"))
-(load (my-get-fullpath "settings"))
-(load (my-get-fullpath "flycheck"))
-(load (my-get-fullpath "company"))
-(load (my-get-fullpath "ido"))
-(load (my-get-fullpath "frame_buffer_handling"))
-(load (my-get-fullpath "programming"))
-(load (my-get-fullpath "compilation"))
-(load (my-get-fullpath "projectile"))
-(load (my-get-fullpath "magit"))
-(load (my-get-fullpath "completion"))
-(load (my-get-fullpath "tramp"))
-(load (my-get-fullpath "development"))
-(load (my-get-fullpath "latex"))
+;; Check for minimal config argument
+(defvar my-minimal-config (member "--minimal" command-line-args)
+  "When non-nil, load only essential configuration.")
+
+;; Remove the argument so it doesn't cause issues
+(setq command-line-args (delete "--minimal" command-line-args))
+
+(if my-minimal-config
+    (load (my-get-fullpath "minimal"))
+  (progn
+    ;; Full configuration
+    (load (my-get-fullpath "packages"))
+    (load (my-get-fullpath "settings"))
+    (load (my-get-fullpath "flycheck"))
+    (load (my-get-fullpath "company"))
+    (load (my-get-fullpath "ido"))
+    (load (my-get-fullpath "frame_buffer_handling"))
+    (load (my-get-fullpath "programming"))
+    (load (my-get-fullpath "compilation"))
+    (load (my-get-fullpath "projectile"))
+    (load (my-get-fullpath "magit"))
+    (load (my-get-fullpath "completion"))
+    (load (my-get-fullpath "tramp"))
+    (load (my-get-fullpath "development"))
+    (load (my-get-fullpath "latex"))))
+
 (setq fill-column 200)
 
 ;; Separate custom file for cleaner configuration
-(setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
-(when (file-exists-p custom-file)
-  (load custom-file))
+    (setq custom-file (expand-file-name "custom.el" (file-name-directory load-file-name)))
+    (when (file-exists-p custom-file)
+      (load custom-file))
 
 ;; Convenient reload function
 (defun my-reload-config ()
