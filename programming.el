@@ -89,9 +89,6 @@
         eglot-sync-connect nil    ; Use async connection
         eglot-events-buffer-size 0) ; Disable event logging for performance
 
-  ;; Configure Pyright (simplified configuration)
-  ;; Note: Workspace configuration can be added later via .vscode/settings.json if needed
-
   ;; Python server configuration using symlink
   (add-to-list 'eglot-server-programs
                `(python-mode . ("pyright-langserver" "--stdio")))
