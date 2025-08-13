@@ -358,27 +358,27 @@
   (setq highlight-indent-guides-auto-enabled nil)
 
   ;; Highlight current indentation level
-  (setq highlight-indent-guides-responsive 'stack)
+  (setq highlight-indent-guides-responsive 'top)
 
   ;; Performance optimization
-  (setq highlight-indent-guides-delay 0.1)
+  (setq highlight-indent-guides-delay 0.05)
 
   ;; Set manual colors that work with most themes
   (setq highlight-indent-guides-character ?|)
 
   ;; Configure faces after theme is loaded
   (with-eval-after-load 'highlight-indent-guides
-    (set-face-foreground 'highlight-indent-guides-odd-face "gray30")
-    (set-face-foreground 'highlight-indent-guides-even-face "gray25")
-    (set-face-foreground 'highlight-indent-guides-character-face "gray35")
+    (set-face-foreground 'highlight-indent-guides-odd-face "black")
+    (set-face-foreground 'highlight-indent-guides-even-face "black")
+    (set-face-foreground 'highlight-indent-guides-character-face "black")
     ;; Subtle but visible colors for fill mode
-    (set-face-background 'highlight-indent-guides-odd-face "gray10")
-    (set-face-background 'highlight-indent-guides-even-face "black")
+    (set-face-background 'highlight-indent-guides-odd-face "gray40")
+    (set-face-background 'highlight-indent-guides-even-face "gray30")
     ;; Current indentation level highlighting
-    (set-face-background 'highlight-indent-guides-top-odd-face "gray30")
-    (set-face-background 'highlight-indent-guides-top-even-face "gray50")
-    (set-face-background 'highlight-indent-guides-stack-odd-face "gray70")
-    (set-face-background 'highlight-indent-guides-stack-even-face "gray90")))
+    (set-face-background 'highlight-indent-guides-top-odd-face "black")
+    (set-face-background 'highlight-indent-guides-top-even-face "black")
+    (set-face-background 'highlight-indent-guides-stack-odd-face "black")
+    (set-face-background 'highlight-indent-guides-stack-even-face "black")))
 
 ;; XML mode performance optimizations
 (use-package nxml-mode
