@@ -204,8 +204,68 @@
     "Open TRAMP connection to HOST."
     (find-file host))
 
-  ;; Add TRAMP source to consult-buffer
-  (add-to-list 'consult-buffer-sources 'consult--source-tramp-host))
+  ;; Reorder consult-buffer sources to prioritize local buffers
+  ;; Remove the TRAMP source from the default list first
+  (setq consult-buffer-sources
+        (delq 'consult--source-tramp-host consult-buffer-sources))
+
+  ;; Re-add sources in the desired order:
+  ;; 1. Current buffers (hidden and visible)
+  ;; 2. Recent files
+  ;; 3. Bookmarks and other sources
+  ;; 4. TRAMP hosts at the end
+  (setq consult-buffer-sources
+        '(consult--source-hidden-buffer
+          consult--source-buffer
+          consult--source-recent-file
+          consult--source-file-register
+          consult--source-bookmark
+          consult--source-project-buffer-hidden
+          consult--source-project-recent-file
+          consult--source-tramp-host))
+
+  ;; Custom function to show buffers without TRAMP hosts
+  (defun my-consult-buffer-no-tramp ()
+    "Show consult-buffer without TRAMP host candidates."
+    (interactive)
+    (let ((consult-buffer-sources
+           (remove 'consult--source-tramp-host consult-buffer-sources)))
+      (consult-buffer)))
+
+  ;; Alternative: Separate the TRAMP buffer list for even cleaner separation
+  (defvar consult--source-tramp-buffer
+    `(:name     "TRAMP Buffers"
+      :narrow   ?T
+      :category buffer
+      :face     consult-buffer
+      :history  buffer-name-history
+      :state    ,#'consult--buffer-state
+      :items
+      ,(lambda ()
+         (consult--buffer-query :predicate
+                                (lambda (buf)
+                                  (with-current-buffer buf
+                                    (and buffer-file-name
+                                         (file-remote-p buffer-file-name)))))))
+    "TRAMP buffer candidate source for `consult-buffer'.")
+
+  ;; Function to toggle TRAMP sources in buffer list
+  (defvar my-tramp-sources-enabled t
+    "Whether TRAMP sources are shown in consult-buffer.")
+
+  (defun my-toggle-tramp-in-buffer-list ()
+    "Toggle display of TRAMP sources in consult-buffer."
+    (interactive)
+    (setq my-tramp-sources-enabled (not my-tramp-sources-enabled))
+    (if my-tramp-sources-enabled
+        (progn
+          (add-to-list 'consult-buffer-sources 'consult--source-tramp-host t)
+          (add-to-list 'consult-buffer-sources 'consult--source-tramp-buffer t)
+          (message "TRAMP sources enabled in buffer list"))
+      (setq consult-buffer-sources
+            (delq 'consult--source-tramp-host
+                  (delq 'consult--source-tramp-buffer consult-buffer-sources)))
+      (message "TRAMP sources disabled in buffer list"))))
 
 ;; Enhanced TRAMP commands with Vertico completion
 (defun my-tramp-cleanup-all ()
@@ -288,6 +348,8 @@
 (global-set-key (kbd "C-c t s") #'my-tramp-sudo-find-file)
 (global-set-key (kbd "C-c t h") #'(lambda () (interactive)
                                     (consult-buffer '(consult--source-tramp-host))))
+(global-set-key (kbd "C-c t b") #'my-consult-buffer-no-tramp)
+(global-set-key (kbd "C-c t t") #'my-toggle-tramp-in-buffer-list)
 
 ;; Debugging helpers
 (defun my-tramp-toggle-debug ()
