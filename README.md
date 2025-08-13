@@ -12,11 +12,20 @@ This configuration is optimized for running as an Emacs server, prioritizing com
 
 ### For Simple Text Editing (EDITOR variable)
 
-If you need Emacs for quick terminal tasks (git commits, etc.) while running this config as a server, set:
+If you need Emacs for quick terminal tasks (git commits, etc.), this configuration provides a minimal mode that loads only essential features for fast startup:
+
 ```bash
-export EDITOR="emacs -nw -q"
+export EDITOR="emacs -nw --minimal"
 ```
-This uses minimal Emacs (`-q` skips config, `-nw` for terminal mode) for fast startup.
+
+This loads a lightweight configuration with:
+- **Basic settings** from your main config
+- **Windmove** for easy window navigation
+- **Spell checking** with ispell/aspell
+- **Essential editing features** (electric-pair-mode, show-paren-mode, auto-revert)
+- **Line numbers** in programming modes
+
+The `--minimal` flag loads only the `minimal.el` configuration file, giving you a fast-starting Emacs with useful features instead of the bare-bones `-q` option.
 
 ### Modern Emacs Build Required
 
