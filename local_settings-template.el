@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; Omegamacs local settings
 ;;; Copy this file to ~/.emacs.d/local_settings.el
 

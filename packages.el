@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package package
   :config
   ;; Add all major package archives

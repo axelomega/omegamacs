@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; C/C++ settings
 (add-hook 'c-mode-common-hook 'flyspell-prog-mode)
 

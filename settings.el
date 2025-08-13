@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (setq visible-bell t)
 (setq tab-width 4)
 

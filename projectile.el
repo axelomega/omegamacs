@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; Projectile mode
 (use-package projectile
   :ensure t

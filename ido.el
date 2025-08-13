@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; ido makes competing buffers and finding files easier
 ;; http://www.emacswiki.org/cgi-bin/wiki/InteractivelyDoThings
 (use-package ido

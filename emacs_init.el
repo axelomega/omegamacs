@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (defvar my--gc-cons-threshold gc-cons-threshold)
 (defvar my--gc-cons-percentage gc-cons-percentage)
 (defvar my--file-name-handler-alist file-name-handler-alist)

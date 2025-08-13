@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;;Unique buffer names
 (use-package uniquify
   :config

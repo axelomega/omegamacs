@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; Helm retired in favor of Vertico completion framework
 ;; (use-package helm
 ;;   :ensure t

@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; Modern development environment enhancements
 
 ;; Enhanced project management (built-in since Emacs 28)

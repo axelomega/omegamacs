@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; Modern completion framework with vertico, marginalia, and consult
 
 ;; Vertico - vertical completion UI

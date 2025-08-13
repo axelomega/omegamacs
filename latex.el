@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; LaTeX configuration with AUCTeX and lsp-mode
 
 ;; AUCTeX - The premier LaTeX mode for Emacs

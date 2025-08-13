@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; Omegamacs initialization file
 ;;; Copy this file to ~/.emacs.d/init.el
 ;;; This file loads the main configuration from a configurable directory

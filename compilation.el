@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; Compilation
 (use-package compile
   :bind (("C-q" . 'compile))
