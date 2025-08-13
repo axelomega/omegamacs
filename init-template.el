@@ -9,5 +9,5 @@
 
 ;; Load main configuration from the configured directory
 (let ((config-dir (or (and (boundp 'my-emacs-config-dir) my-emacs-config-dir)
-                      "~/dotemacs")))  ; Default fallback
+                      "~/omegamacs")))  ; Default fallback
   (load-file (expand-file-name "emacs_init.el" config-dir)))

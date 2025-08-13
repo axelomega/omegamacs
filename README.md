@@ -40,8 +40,8 @@ This configuration is designed for modern Emacs builds with advanced features li
 
 1. **Clone this repository** to your preferred location:
    ```bash
-   git clone https://github.com/axelomega/dotemacs.git ~/dotemacs
-   cd ~/dotemacs
+   git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
+   cd ~/omegamacs
    ```
 
 2. **Copy template files** to your Emacs directory:
@@ -52,13 +52,13 @@ This configuration is designed for modern Emacs builds with advanced features li
 
 3. **Start Emacs** - the configuration will automatically install required packages on first run.
 
-**That's it!** The configuration works automatically when placed in `~/dotemacs` (the default location).
+**That's it!** The configuration works automatically when placed in `~/omegamacs` (the default location).
 
 ### Alternative: Custom Location
 
 If you prefer a different location, edit `~/.emacs.d/local_settings.el`:
 ```elisp
-;; Only needed if you didn't clone to ~/dotemacs
+;; Only needed if you didn't clone to ~/omegamacs
 (setq my-emacs-config-dir "~/my-custom-emacs-config")
 ```
 
@@ -66,14 +66,14 @@ If you prefer a different location, edit `~/.emacs.d/local_settings.el`:
 
 Edit `~/.emacs.d/local_settings.el` to customize settings for your environment:
 
-- **Configuration directory**: Set `my-emacs-config-dir` only if you didn't use `~/dotemacs`
+- **Configuration directory**: Set `my-emacs-config-dir` only if you didn't use `~/omegamacs`
 - **JIRA integration**: Configure `my-settings-jira-*` variables if using JIRA
 - **Projectile**: Set `my-settings-projectile-generic-command` for custom file filtering
 - **Development tools**: Configure paths to language servers and other tools if necessary
 
 Example `~/.emacs.d/local_settings.el`:
 ```elisp
-;; Configuration directory (only needed if not using ~/dotemacs)
+;; Configuration directory (only needed if not using ~/omegamacs)
 ;; (setq my-emacs-config-dir "~/my-custom-location")
 
 ;; Optional: JIRA integration
@@ -112,7 +112,7 @@ Example `~/.emacs.d/local_settings.el`:
 
 Omegamacs uses a clean separation between configuration files (the git repository) and user data (in `~/.emacs.d/`). This allows you to:
 
-- **Keep the git repo anywhere** (e.g., `~/dotemacs`, `~/projects/my-emacs`, etc.)
+- **Keep the git repo anywhere** (e.g., `~/omegamacs`, `~/projects/my-emacs`, etc.)
 - **Version control your config** without mixing in user data
 - **Easily update** by pulling from git
 - **Backup user data separately** from configuration
@@ -128,7 +128,7 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 │   └── ido.last              # IDO file history
 └── elpa/                     # Installed packages (managed automatically)
 
-~/dotemacs/                    # Configuration files (default location)
+~/omegamacs/                   # Configuration files (default location)
 ├── emacs_init.el             # Main configuration loader
 ├── packages.el               # Package management
 ├── settings.el               # General Emacs settings

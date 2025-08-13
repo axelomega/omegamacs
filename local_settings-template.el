@@ -2,7 +2,7 @@
 ;;; Copy this file to ~/.emacs.d/local_settings.el
 
 ;;; Emacs configuration root directory
-;; (setq my-emacs-config-dir "~/dotemacs")
+;; (setq my-emacs-config-dir "~/omegamacs")
 
 ;;; helm-jira settings
 ;; (setq my-settings-jira-url      "url to JIRA project")
