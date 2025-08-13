@@ -5,13 +5,14 @@
 ;;   :config
 ;;   (setq helm-move-to-line-cycle-in-source nil))
 
-(use-package helm-spotify-plus
-  :ensure t
-  :bind (("C-c s s" . helm-spotify-plus)  ;; s for SEARCH
-         ("C-c s f" . helm-spotify-plus-next)
-         ("C-c s b" . helm-spotify-plus-previous)
-         ("C-c s p" . helm-spotify-plus-play)
-         ("C-c s g" . helm-spotify-plus-pause))) ;; g cause you know.. C-g stop things :)
+;; helm-spotify-plus disabled since helm is not available
+;; (use-package helm-spotify-plus
+;;   :ensure t
+;;   :bind (("C-c s s" . helm-spotify-plus)  ;; s for SEARCH
+;;          ("C-c s f" . helm-spotify-plus-next)
+;;          ("C-c s b" . helm-spotify-plus-previous)
+;;          ("C-c s p" . helm-spotify-plus-play)
+;;          ("C-c s g" . helm-spotify-plus-pause))) ;; g cause you know.. C-g stop things :)
 
 ;; helm-swoop is unavailable, using consult-line instead (from completion.el)
 ;; (use-package helm-swoop
