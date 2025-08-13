@@ -254,7 +254,8 @@
          ([remap xref-find-apropos] . consult-lsp-symbols)))
 
 (use-package dap-mode
-    :ensure t)
+    :ensure t
+    :after lsp-mode)
 
 ;; Neededed to make eglot happy
 (use-package flycheck-clang-tidy
