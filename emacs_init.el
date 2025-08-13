@@ -41,6 +41,7 @@
 ;; Use Vertico instead
 ;;(load (my-get-fullpath "helm"))
 (load (my-get-fullpath "completion"))
+(load (my-get-fullpath "tramp"))
 (load (my-get-fullpath "development"))
 (load (my-get-fullpath "latex"))
 (setq fill-column 200)

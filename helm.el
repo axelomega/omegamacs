@@ -29,8 +29,8 @@
 ;; Use consult-line as replacement for helm-swoop
 (global-set-key (kbd "M-i") 'consult-line)
 
-(setq tramp-default-method "ssh")
-;;(define-key global-map (kbd "C-c s") 'helm-tramp)
+;; TRAMP configuration moved to dedicated tramp.el file
+;;(define-key global-map (kbd "C-c s") 'helm-tramp)  ; obsolete, using consult integration
 
 ;;(use-package helm-jira
 ;;  :ensure t
