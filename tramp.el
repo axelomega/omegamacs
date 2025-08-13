@@ -84,7 +84,7 @@
 
 ;; Core TRAMP settings
 (use-package tramp
-  :defer t
+  :ensure t  ; Get latest version from MELPA if available, fallback to built-in
   :config
   ;; Performance optimizations
   (setq tramp-default-method "ssh"          ; SSH as default (more secure than scp)
