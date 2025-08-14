@@ -349,6 +349,11 @@
 (use-package bison-mode
   :ensure t)
 
+;; Lark grammar files support
+(use-package lark-mode
+  :ensure t
+  :mode "\\.lark\\'")
+
 ;; Enable eglot breadcrumbs for managed buffers
 (add-hook 'eglot-managed-mode-hook 'eglot-inlay-hints-mode)
 
