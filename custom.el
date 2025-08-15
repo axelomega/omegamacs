@@ -7,7 +7,6 @@
  ;; If there is more than one, they won't work right.
  '(company-minimum-prefix-length 2)
  '(fill-column 200)
- '(inhibit-startup-echo-area-message "per")
  '(inhibit-startup-screen t)
  '(initial-buffer-choice nil)
  '(minimap-highlight-line nil)
