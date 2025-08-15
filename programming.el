@@ -8,7 +8,10 @@
   :ensure t  ; Built-in
   :config
   (which-function-mode 1)
-  (setq which-func-display 'header))
+  (setq which-func-display 'header)
+  ;; Fix which-func colors for dark themes
+  (set-face-foreground 'which-func "white")
+  (set-face-background 'which-func "gray20"))
 
 ;;Verilog mode stuff
 ;;(add-hook 'verilog-mode-hook
@@ -102,7 +105,7 @@
                (not (eglot-current-server)))
       (condition-case err
           (eglot-ensure)
-        (error 
+        (error
          (message "Eglot failed to start: %s" (error-message-string err))))))
 
   ;; Manual eglot commands for debugging
@@ -249,6 +252,19 @@
   :ensure t
   :commands lsp-ui-mode)
 
+(use-package lsp-treemacs
+  :ensure t
+  :after (lsp-mode treemacs)
+  :config
+  (defun my-lsp-treemacs-symbols-auto ()
+    "Auto-open treemacs symbols for C/C++ files when LSP starts."
+    (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
+               (lsp-workspaces))
+      (run-with-timer 1 nil #'lsp-treemacs-symbols)))
+
+  :hook (lsp-mode . my-lsp-treemacs-symbols-auto)
+  :commands lsp-treemacs-symbols)
+
 ;; Helm packages removed - using consult-lsp and consult-xref instead
 ;; (use-package helm-lsp
 ;;   :ensure t
@@ -357,6 +373,30 @@
 ;; Enable eglot breadcrumbs for managed buffers
 (add-hook 'eglot-managed-mode-hook 'eglot-inlay-hints-mode)
 
+;; Fix eglot breadcrumb colors for dark themes
+(with-eval-after-load 'eglot
+  (set-face-foreground 'header-line "white")
+  (set-face-background 'header-line "gray20"))
+
+;; imenu-list for Python symbol tree with eglot
+(use-package imenu-list
+  :ensure t
+  :config
+  ;; Enable auto-update
+  (setq imenu-list-auto-resize t
+        imenu-list-focus-after-activation t
+        imenu-list-update-hook '(imenu-list-update-safe))
+
+  ;; Auto-update when buffer changes
+  (add-hook 'after-save-hook
+            (lambda ()
+              (when (and (bound-and-true-p imenu-list-minor-mode)
+                         (or (derived-mode-p 'python-mode)
+                             (derived-mode-p 'python-ts-mode)))
+                (imenu-list-update-safe))))
+
+  :commands (imenu-list-smart-toggle imenu-list-minor-mode))
+
 ;; Indentation visualization with highlight-indent-guides
 (use-package highlight-indent-guides
   :ensure t
@@ -366,7 +406,7 @@
          (verilog-ts-mode . highlight-indent-guides-mode))
   :config
   ;; Use character method in terminals, fill method in GUI
-  (setq highlight-indent-guides-method (if (display-graphic-p) 'column 'fill))
+  (setq highlight-indent-guides-method (if (display-graphic-p) 'column 'column))
 
   ;; Disable auto face detection to avoid theme loading issues
   (setq highlight-indent-guides-auto-enabled nil)
