@@ -13,26 +13,6 @@
   (set-face-foreground 'which-func "white")
   (set-face-background 'which-func "gray20"))
 
-;;Verilog mode stuff
-;;(add-hook 'verilog-mode-hook
-;;	  (lambda()
-;;	    (setq verilog-indent-level              4
-;;		  verilog-indent-level-module       4
-;;		  verilog-indent-level-declaration  4
-;;		  verilog-indent-level-behavioral   4
-;;		  verilog-indent-level-directive    4
-;;		  verilog-indent-begin-after-if     nil
-;;		  verilog-indent-lists              nil
-;;		  verilog-indent-declaration-macros nil
-;;		  verilog-case-indent               4
-;;		  verilog-cexp-indent               4
-;;		  verilog-auto-newline              nil
-;;		  verilog-minimum-comment-distance  12
-;;		  verilog-align-ifelse              t
-;;		  verilog-auto-endcomments          nil)))
-;;
-;;(add-hook 'verilog-mode-hook 'flyspell-prog-mode)
-
 ;; Tree sitter
 ;; These are some source for grammars
 (setq treesit-language-source-alist
@@ -77,11 +57,14 @@
   (add-to-list 'lsp-disabled-clients 'lsp-ruff)
   (add-to-list 'lsp-disabled-clients 'ruff)
   (add-to-list 'lsp-disabled-clients 'bison-mode)
-  :commands lsp)
 
-;;(use-package lsp-jedi
-;;  :ensure t
-;;  :after lsp-mode)
+  ;; Add Semgrep notification handler
+  (with-eval-after-load 'lsp-mode
+    (lsp-register-custom-settings
+     '(("semgrep/rulesRefreshed" (lambda (workspace params) nil))))
+    (add-to-list 'lsp-server-install-dir "semgrep"))
+
+  :commands lsp)
 
 ;; Eglot for Python
 (use-package eglot
@@ -122,60 +105,10 @@
          ("C-c l r" . my-eglot-restart)
          ("C-c l s" . eglot)))
 
-;;(use-package python-black
-;;  :ensure t)
-
-;;(use-package python-isort
-;;  :ensure t)
-
-;;(use-package ruff-format
-;;  :ensure t)
-
-;;(use-package flymake-ruff
-;;  :ensure t)
-
-;;(use-package pet
-;;  :ensure t
-;;  ;:ensure-system-package (dasel sqlite3)
-;;  :config
-;;  (add-hook 'python-mode-hook
-;;            (lambda ()
-;;              (setq-local python-shell-interpreter (pet-executable-find "python")
-;;                          python-shell-virtualenv-root (pet-virtualenv-root))
-;;
-;;              ;; (pet-eglot-setup)
-;;              ;; (eglot-ensure)
-;;
-;;              ;;(pet-flycheck-setup)
-;;              ;;(flycheck-mode)
-;;
-;;              (setq-local lsp-jedi-executable-command
-;;                          (pet-executable-find "jedi-language-server"))
-;;
-;;              (setq-local lsp-pyright-python-executable-cmd python-shell-interpreter
-;;                          lsp-pyright-venv-path python-shell-virtualenv-root)
-;;
-;;              (lsp)
-;;
-;;              (setq-local dap-python-executable python-shell-interpreter)
-;;
-;;              (setq-local python-pytest-executable (pet-executable-find "pytest"))
-;;
-;;              ;;(when-let* ((ruff-executable (pet-executable-find "ruff")))
-;;              ;;  (setq-local ruff-format-command ruff-executable)
-;;              ;;  (ruff-format-on-save-mode))
-;;
-;;              ;;(when-let* ((black-executable (pet-executable-find "black")))
-;;              ;;  (setq-local python-black-command black-executable)
-;;              ;;  (python-black-on-save-mode))
-;;
-;;              (when-let* ((isort-executable (pet-executable-find "isort")))
-;;                (setq-local python-isort-command isort-executable)
-;;                (python-isort-on-save-mode)))))
-
 ;; Shared Verilog configuration with performance optimizations
 (defun my-setup-verilog-indent ()
   "Configure Verilog indentation settings."
+  (message "VERILOG MODE SETUP")
   (setq verilog-indent-level              4
         verilog-indent-level-module       4
         verilog-indent-level-declaration  4
@@ -187,6 +120,8 @@
         verilog-case-indent               4
         verilog-cexp-indent               4
         verilog-auto-newline              nil
+        verilog-auto-lineup               nil
+        verilog-auto-indent-on-newline    t
         verilog-minimum-comment-distance  12
         verilog-align-ifelse              t
         verilog-auto-endcomments          nil
@@ -207,8 +142,8 @@
 ;; https://github.com/gmlarumbe/verilog-ext
 (use-package verilog-ext
   :ensure t
-  :hook ((verilog-ts-mode . verilog-ext-mode))
-  :hook ((verilog-mode . verilog-ext-mode))
+  :hook ((verilog-ts-mode . verilog-ext-mode)
+         (verilog-mode . verilog-ext-mode))
   :init
   ;; Comment out/remove the ones you do not need
   (setq verilog-ext-feature-list
@@ -216,18 +151,18 @@
           xref
           capf
           hierarchy
-          eglot
+          ;eglot
           ;lsp  ; Use eglot for Verilog instead of lsp-mode
           ;Look into setting this up https://github.com/manateelazycat/lsp-bridge
           ;lsp-bridge
           ;Look into setting this up https://github.com/zbelial/lspce
           ;lspce
-          flycheck
+          ;flycheck
           ;beautify
           navigation
-          template
+          ;template
           ;formatter
-          compilation
+          ;compilation
           imenu
           which-func
           hideshow
@@ -240,8 +175,7 @@
   ("C-c C-o" . verilog-comment-region)
   ("C-c C-y" . verilog-uncomment-region)
   :config
-  (verilog-ext-mode-setup)
-  (verilog-ext-eglot-set-server 've-svlangserver))  ;`eglot' config only
+  (verilog-ext-mode-setup))
 
 (use-package which-key
   :ensure t
@@ -264,14 +198,6 @@
 
   :hook (lsp-mode . my-lsp-treemacs-symbols-auto)
   :commands lsp-treemacs-symbols)
-
-;; Helm packages removed - using consult-lsp and consult-xref instead
-;; (use-package helm-lsp
-;;   :ensure t
-;;   :commands helm-lsp-workspace-symbol)
-;;
-;; (use-package helm-xref
-;;   :ensure t)
 
 ;; Use consult-lsp for LSP integration with Vertico
 (use-package consult-lsp
@@ -298,25 +224,6 @@
 ;; Commented out - conflicts with startup optimization in emacs_init.el
 ;;(setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-;;Python mode things
-;;(use-package envrc
-;;  :ensure t
-;;  :when (executable-find "direnv")
-;;  :hook (after-init . envrc-global-mode))
-;;
-;;(use-package lsp-pyright
-;;  :ensure t
-;;  :after lsp
-;;  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
-;;  :hook (python-mode . (lambda ()
-;;                          (require 'lsp-pyright)
-;;                          (lsp))))  ; or lsp-deferred
-
-;; C++ things
-;;(add-hook 'c++-mode-hook #'eglot-ensure)
-;;(add-to-list 'eglot-server-programs
-;;	     `(c++-mode "clangd-16"))
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
