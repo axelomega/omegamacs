@@ -96,6 +96,9 @@ Example `~/.emacs.d/local_settings.el`:
 ;; Configuration directory (only needed if not using ~/omegamacs)
 ;; (setq my-emacs-config-dir "~/my-custom-location")
 
+;; Optional: GitHub Copilot configuration
+;; (setq my-copilot-config 'setup)    ; or 'full, or 'none
+
 ;; Optional: JIRA integration
 ;; (setq my-settings-jira-url "https://your-company.atlassian.net"
 ;;       my-settings-jira-username "your-username"
@@ -297,3 +300,44 @@ emacs -Q --batch --eval "(print system-configuration-features)"
 **Note:** The configuration will work with standard Emacs builds, but some features (like tree-sitter modes, native compilation performance, and image display) may not be available without these build options.
 
 **Building from source:** For instructions on building Emacs with custom features, see the [official build documentation](https://www.gnu.org/software/emacs/manual/html_node/efaq/Installing-Emacs.html).
+
+## GitHub Copilot Setup (Optional)
+
+Omegamacs includes optional GitHub Copilot integration for AI-powered coding assistance using [copilot.el](https://github.com/copilot-emacs/copilot.el).
+
+### Prerequisites
+
+1. **GitHub Copilot subscription**: You need an active GitHub Copilot subscription
+2. **Node.js**: Required by the Copilot Emacs package (version 18+ recommended)
+
+### Quick Setup
+
+1. **Enable Copilot** in your `~/.emacs.d/local_settings.el`:
+   ```elisp
+   ;; Start with minimal setup to install the server and to authenticate
+   (setq my-copilot-config 'setup)
+   ```
+
+2. **Start Emacs** and install the Copilot server:
+   ```
+   M-x copilot-install-server
+   ```
+
+3. **Authenticate with GitHub**:
+   ```
+   M-x copilot-login
+   ```
+   This opens a browser for GitHub authentication and provides a device code.
+
+### Configuration Options
+
+Set `my-copilot-config` in `~/.emacs.d/local_settings.el`:
+
+- **`'none`** (default): No Copilot support
+- **`'setup`**: Minimal configuration for initial server installation and authentication
+- **`'full`**: Complete configuration with advanced features
+  - Enhanced keybindings (`C-c c` prefix for Copilot commands)
+  - Smart TAB behavior (completion + indentation)
+  - Mode line indicator
+  - Language-specific optimizations
+  - Better integration with LSP and completion systems
