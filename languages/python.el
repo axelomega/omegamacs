@@ -48,18 +48,6 @@
   (set-face-foreground 'header-line "white")
   (set-face-background 'header-line "gray20"))
 
-;; imenu-list for Python symbol tree with eglot
-(use-package imenu-list
-  :ensure t
-  :config
-  ;; Enable auto-update
-  (setq imenu-list-auto-resize t
-        imenu-list-focus-after-activation t
-        imenu-list-update-hook '(imenu-list-update-safe))
-
-  :commands (imenu-list-smart-toggle imenu-list-minor-mode)
-  :bind ("C-c i" . imenu-list-smart-toggle))
-
 ;; Lark grammar files support
 (use-package lark-mode
   :ensure t

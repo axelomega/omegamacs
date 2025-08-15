@@ -161,3 +161,13 @@
               (setq-local font-lock-maximum-decoration 1)  ; Reduce syntax highlighting
               (setq-local jit-lock-defer-time 0.05)        ; Faster font lock
               (setq-local auto-save-default nil))))
+
+(use-package imenu-list
+  :ensure t
+  :config
+  (setq imenu-list-auto-resize t
+        imenu-list-focus-after-activation t
+        imenu-list-update-hook '(imenu-list-update-safe))
+
+  :commands (imenu-list-smart-toggle imenu-list-minor-mode)
+  :bind ("C-c i" . imenu-list-smart-toggle))
