@@ -57,6 +57,7 @@
     (load (my-get-fullpath "magit"))
     (load (my-get-fullpath "completion"))
     (load (my-get-fullpath "tramp"))
+    ;(load (my-get-fullpath "copilot")) not working fully yet
     (load (my-get-fullpath "development"))))
 
 (setq fill-column 200)
