@@ -57,8 +57,13 @@
     (load (my-get-fullpath "magit"))
     (load (my-get-fullpath "completion"))
     (load (my-get-fullpath "tramp"))
-    (load (my-get-fullpath "copilot"))
-    (load (my-get-fullpath "development"))))
+    (load (my-get-fullpath "copilot/copilit-setup"))
+    (load (my-get-fullpath "development"))
+    ;; Copilot setting if wanted, use copilot/copilot-setup to get started, see comments in that file for setup.
+    ;; Once setup, change to the full configuration in copilot/copilot
+    ;; (load (my-get-fullpath "copilot/copilot-setup"))
+    ;; (load (my-get-fullpath "copilot/copilot"))
+    ))
 
 (setq fill-column 200)
 
