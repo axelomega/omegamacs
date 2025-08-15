@@ -387,15 +387,8 @@
         imenu-list-focus-after-activation t
         imenu-list-update-hook '(imenu-list-update-safe))
 
-  ;; Auto-update when buffer changes
-  (add-hook 'after-save-hook
-            (lambda ()
-              (when (and (bound-and-true-p imenu-list-minor-mode)
-                         (or (derived-mode-p 'python-mode)
-                             (derived-mode-p 'python-ts-mode)))
-                (imenu-list-update-safe))))
-
-  :commands (imenu-list-smart-toggle imenu-list-minor-mode))
+  :commands (imenu-list-smart-toggle imenu-list-minor-mode)
+  :bind ("C-c i" . imenu-list-smart-toggle))
 
 ;; Indentation visualization with highlight-indent-guides
 (use-package highlight-indent-guides
