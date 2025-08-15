@@ -40,10 +40,6 @@
 
   ;; Disable in certain modes/contexts
   (add-to-list 'copilot-disable-predicates
-               (lambda () (when (bound-and-variable-p company-mode) company-mode)))
-  (add-to-list 'copilot-disable-predicates
-               (lambda () (when (bound-and-variable-p corfu-mode) corfu-mode)))
-  (add-to-list 'copilot-disable-predicates
                (lambda () (derived-mode-p 'shell-mode)))
   (add-to-list 'copilot-disable-predicates
                (lambda () (derived-mode-p 'eshell-mode)))
@@ -69,7 +65,7 @@
     (interactive)
     (if (copilot--overlay-visible)
         (copilot-accept-completion)
-      (if (bound-and-function-p 'company-manual-begin)
+      (if (fboundp 'company-manual-begin)
           (company-manual-begin)
         (completion-at-point))))
 
@@ -116,15 +112,15 @@
   (advice-add 'copilot-accept-completion :around
               (lambda (orig-fun &rest args)
                 "Clear other completion overlays when accepting Copilot."
-                (when (bound-and-function-p 'company-abort)
+                (when (fboundp 'company-abort)
                   (company-abort))
                 (apply orig-fun args)))
 
   ;; Better integration with LSP
-  (when (bound-and-variable-p 'lsp-completion-at-point-functions)
+  (when (boundp 'lsp-completion-at-point-functions)
     (setq copilot-disable-predicates
           (append copilot-disable-predicates
-                  '((lambda () (and (bound-and-variable-p 'lsp-mode) lsp-mode
+                  '((lambda () (and (boundp 'lsp-mode) lsp-mode
                                    (not (eq (point) (line-end-position)))))))))
 
   ;; Customize faces for better visibility
@@ -132,10 +128,10 @@
    '(copilot-overlay-face ((t (:foreground "#6272A4" :italic t)))))
 
   ;; Auto-completion settings
-  (setq copilot-enable-predicates
-        '((lambda () (and (not (minibufferp))
-                         (not (in-comment-p))
-                         (> (length (string-trim (thing-at-point 'line t))) 10)))))
+;;  (setq copilot-enable-predicates
+;;        '((lambda () (and (not (minibufferp))
+;;                         (not (in-comment-p))
+;;                         (> (length (string-trim (thing-at-point 'line t))) 10)))))
 
   ;; Diagnostic function for troubleshooting
   (defun my-copilot-status ()
