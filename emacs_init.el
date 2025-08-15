@@ -48,13 +48,16 @@
     (load (my-get-fullpath "ido"))
     (load (my-get-fullpath "frame_buffer_handling"))
     (load (my-get-fullpath "programming"))
+    (load (my-get-fullpath "languages/cpp"))
+    (load (my-get-fullpath "languages/python"))
+    (load (my-get-fullpath "languages/verilog"))
+    (load (my-get-fullpath "languages/latex"))
     (load (my-get-fullpath "compilation"))
     (load (my-get-fullpath "projectile"))
     (load (my-get-fullpath "magit"))
     (load (my-get-fullpath "completion"))
     (load (my-get-fullpath "tramp"))
-    (load (my-get-fullpath "development"))
-    (load (my-get-fullpath "latex"))))
+    (load (my-get-fullpath "development"))))
 
 (setq fill-column 200)
 
