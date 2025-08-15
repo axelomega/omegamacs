@@ -119,12 +119,22 @@ Example `~/.emacs.d/local_settings.el`:
 - `compilation.el` - Build and error navigation
 - `magit.el` - Git integration
 - `projectile.el` - Project management
-- `latex.el` - LaTeX support
 - `company.el` - Code completion
 - `flycheck.el` - Syntax checking
 - `frame_buffer_handling.el` - Window and buffer management
 - `ido.el` - IDO configuration (legacy)
+- `tramp.el` - Remote file access configuration
+- `minimal.el` - Lightweight configuration for `--minimal` mode
+- `version-check.el` - Package version checking utilities
 - `custom.el` - Emacs custom settings
+- `copilot/` - GitHub Copilot integration
+  - `copilot-setup.el` - Minimal Copilot setup
+  - `copilot.el` - Complete Copilot configuration
+- `languages/` - Language-specific configurations
+  - `cpp.el` - C/C++ settings
+  - `python.el` - Python development setup
+  - `verilog.el` - Verilog/SystemVerilog configuration
+  - `latex.el` - LaTeX support
 
 ## Template Files
 
@@ -161,13 +171,24 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 ├── compilation.el            # Build and error navigation
 ├── magit.el                  # Git integration
 ├── projectile.el             # Project management
-├── latex.el                  # LaTeX support
 ├── company.el                # Code completion
 ├── flycheck.el               # Syntax checking
 ├── frame_buffer_handling.el  # Window and buffer management
+├── ido.el                    # IDO configuration (legacy)
+├── tramp.el                  # Remote file access configuration
+├── minimal.el                # Lightweight configuration for --minimal mode
+├── version-check.el          # Package version checking utilities
 ├── custom.el                 # Emacs custom settings
 ├── init-template.el          # Template for ~/.emacs.d/init.el
-└── local_settings-template.el # Template for local settings
+├── local_settings-template.el # Template for local settings
+├── copilot/                  # GitHub Copilot integration
+│   ├── copilot-setup.el      # Minimal Copilot setup
+│   └── copilot.el            # Complete Copilot configuration
+└── languages/                # Language-specific configurations
+    ├── cpp.el                # C/C++ settings
+    ├── python.el             # Python development setup
+    ├── verilog.el            # Verilog/SystemVerilog configuration
+    └── latex.el              # LaTeX support
 ```
 
 **Key Benefits:**
