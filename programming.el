@@ -19,9 +19,8 @@
   (add-to-list 'lsp-disabled-clients 'ruff)
   (add-to-list 'lsp-disabled-clients 'bison-mode)
 
-  ;; Add Semgrep notification handler  
-  (lsp-register-custom-settings
-   '(("semgrep/rulesRefreshed" (lambda (workspace params) nil))))
+  ;; Suppress semgrep notification warnings
+  (setq lsp-warn-no-matched-clients nil)
 
   :commands lsp)
 
