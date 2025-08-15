@@ -58,10 +58,13 @@
     (load (my-get-fullpath "completion"))
     (load (my-get-fullpath "tramp"))
     (load (my-get-fullpath "development"))
-    ;; Copilot setting if wanted, use copilot/copilot-setup to get started, see comments in that file for setup.
-    ;; Once setup, change to the full configuration in copilot/copilot
-    ;; (load (my-get-fullpath "copilot/copilot-setup"))
-    (load (my-get-fullpath "copilot/copilot"))
+    ;; Load Copilot configuration based on user preference
+    (when (boundp 'my-copilot-config)
+      (cond
+       ((eq my-copilot-config 'setup)
+        (load (my-get-fullpath "copilot/copilot-setup")))
+       ((eq my-copilot-config 'full)
+        (load (my-get-fullpath "copilot/copilot")))))
     ))
 
 (setq fill-column 200)

@@ -35,6 +35,7 @@ This configuration is designed for modern Emacs builds with advanced features li
 
 - **Modern completion** with Vertico, Marginalia, and Consult
 - **LSP support** for C/C++, Python, and Verilog
+- **AI-powered coding assistance** with GitHub Copilot (optional)
 - **Git integration** with Magit
 - **Project management** with Projectile
 - **Syntax checking** with Flycheck
