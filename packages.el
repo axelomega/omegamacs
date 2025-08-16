@@ -20,6 +20,7 @@
   (setq package-enable-at-startup nil
         package-quickstart t))
 
+
 ;; Auto update packages - only when environment variable is set
 (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")
   (use-package auto-package-update
