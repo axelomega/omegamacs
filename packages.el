@@ -20,10 +20,6 @@
   (setq package-enable-at-startup nil
         package-quickstart t))
 
-;; Enable package-vc for Emacs 30+ VC package support
-(when (>= emacs-major-version 30)
-  (require 'package-vc nil t))
-
 ;; Auto update packages - only when environment variable is set
 (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")
   (use-package auto-package-update
