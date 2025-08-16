@@ -16,10 +16,6 @@
     (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")
       (package-refresh-contents)))
 
-  ;; Install use-package if not present
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-
   ;; Performance optimizations
   (setq package-enable-at-startup nil
         package-quickstart t))

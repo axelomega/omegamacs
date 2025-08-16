@@ -57,7 +57,15 @@
     (load (my-get-fullpath "magit"))
     (load (my-get-fullpath "completion"))
     (load (my-get-fullpath "tramp"))
-    (load (my-get-fullpath "development"))))
+    (load (my-get-fullpath "development"))
+    ;; Load Copilot configuration based on user preference
+    (when (boundp 'my-copilot-config)
+      (cond
+       ((eq my-copilot-config 'setup)
+        (load (my-get-fullpath "copilot/copilot-setup")))
+       ((eq my-copilot-config 'full)
+        (load (my-get-fullpath "copilot/copilot")))))
+    ))
 
 (setq fill-column 200)
 
