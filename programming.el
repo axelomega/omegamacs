@@ -1,5 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
+;; Default indentation settings for all programming modes
+(use-package prog-mode
+  :ensure nil
+  :config
+
+  (setq-default indent-tabs-mode nil
+                tab-width 4
+                standard-indent 4))
+
 (use-package lsp-mode
   :ensure t
   :init
@@ -18,9 +27,16 @@
   (add-to-list 'lsp-disabled-clients 'lsp-ruff)
   (add-to-list 'lsp-disabled-clients 'ruff)
   (add-to-list 'lsp-disabled-clients 'bison-mode)
+  (add-to-list 'lsp-disabled-clients 'semgrep-ls)
 
   ;; Suppress semgrep notification warnings
   (setq lsp-warn-no-matched-clients nil)
+
+  (setq lsp-auto-execute-action nil
+        lsp-before-save-edits nil
+        lsp-completion-enable-additional-text-edit nil
+        lsp-enable-indentation nil
+        lsp-enable-on-type-formatting nil)
 
   :commands lsp)
 
@@ -171,3 +187,10 @@
 
   :commands (imenu-list-smart-toggle imenu-list-minor-mode)
   :bind ("C-c i" . imenu-list-smart-toggle))
+
+(use-package flycheck-pos-tip
+  :ensure t)
+
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode)
