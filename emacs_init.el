@@ -72,7 +72,7 @@
 (setq fill-column 200)
 
 ;; Separate custom file for cleaner configuration
-    (setq custom-file (expand-file-name "init.el" user-emacs-directory))
+    (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 ;; Convenient reload function
 (defun my-reload-config ()
