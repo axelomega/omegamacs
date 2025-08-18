@@ -187,3 +187,10 @@
 
   :commands (imenu-list-smart-toggle imenu-list-minor-mode)
   :bind ("C-c i" . imenu-list-smart-toggle))
+
+(use-package flycheck-pos-tip
+  :ensure t)
+
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode)

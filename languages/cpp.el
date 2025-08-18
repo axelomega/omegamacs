@@ -27,27 +27,15 @@
   ;; Apply the style to C/C++ modes
   (add-hook 'c-mode-hook
             (lambda ()
-              (c-set-style "my-c-style")
-              (setq-local c-electric-flag nil)
-              (setq-local c-auto-newline nil)))
+              (c-set-style "my-c-style")))
   (add-hook 'c++-mode-hook
             (lambda ()
-              (c-set-style "my-c-style")
-              (setq-local c-electric-flag nil)
-              (setq-local c-auto-newline nil))))
+              (c-set-style "my-c-style"))))
 
-(use-package dap-mode
-  :ensure t
-  :after lsp-mode)
-
-;; Needed to make eglot happy
 (use-package flycheck-clang-tidy
   :ensure t)
 
 (use-package flycheck-clang-analyzer
-  :ensure t)
-
-(use-package flycheck-pos-tip
   :ensure t)
 
 (with-eval-after-load 'lsp-mode
