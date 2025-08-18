@@ -54,11 +54,11 @@ This configuration is designed for modern Emacs builds with advanced features li
    cd ~/omegamacs
    ```
 
-2. **Copy template files** to your Emacs directory:
+2. **Copy and customize the init file**:
    ```bash
    cp init-template.el ~/.emacs.d/init.el
-   cp local_settings-template.el ~/.emacs.d/local_settings.el
    ```
+   Then edit `~/.emacs.d/init.el` to uncomment and customize settings as needed.
 
 3. **Start Emacs** - the configuration will automatically install required packages on first run.
 
@@ -76,7 +76,7 @@ This enables automatic package refreshing and weekly update checks. For normal u
 
 ### Alternative: Custom Location
 
-If you prefer a different location, edit `~/.emacs.d/local_settings.el`:
+If you prefer a different location, edit `~/.emacs.d/init.el`:
 ```elisp
 ;; Only needed if you didn't clone to ~/omegamacs
 (setq my-emacs-config-dir "~/my-custom-emacs-config")
@@ -84,14 +84,14 @@ If you prefer a different location, edit `~/.emacs.d/local_settings.el`:
 
 ## Local Customization
 
-Edit `~/.emacs.d/local_settings.el` to customize settings for your environment:
+Edit `~/.emacs.d/init.el` to customize settings for your environment:
 
 - **Configuration directory**: Set `my-emacs-config-dir` only if you didn't use `~/omegamacs`
 - **JIRA integration**: Configure `my-settings-jira-*` variables if using JIRA
 - **Projectile**: Set `my-settings-projectile-generic-command` for custom file filtering
 - **Development tools**: Configure paths to language servers and other tools if necessary
 
-Example `~/.emacs.d/local_settings.el`:
+Example `~/.emacs.d/init.el` customizations:
 ```elisp
 ;; Configuration directory (only needed if not using ~/omegamacs)
 ;; (setq my-emacs-config-dir "~/my-custom-location")
@@ -126,7 +126,6 @@ Example `~/.emacs.d/local_settings.el`:
 - `tramp.el` - Remote file access configuration
 - `minimal.el` - Lightweight configuration for `--minimal` mode
 - `version-check.el` - Package version checking utilities
-- `custom.el` - Emacs custom settings
 - `copilot/` - GitHub Copilot integration
   - `copilot-setup.el` - Minimal Copilot setup
   - `copilot.el` - Complete Copilot configuration
@@ -138,8 +137,7 @@ Example `~/.emacs.d/local_settings.el`:
 
 ## Template Files
 
-- `init-template.el` - Copy to `~/.emacs.d/init.el`
-- `local_settings-template.el` - Copy to `~/.emacs.d/local_settings.el`
+- `init-template.el` - Copy to `~/.emacs.d/init.el` and customize as needed
 
 ## Directory Organization
 
@@ -152,8 +150,7 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 
 ```
 ~/.emacs.d/
-├── init.el                    # Main entry point (copied from init-template.el)
-├── local_settings.el          # Your local configuration (copied from template)
+├── init.el                    # Main entry point with your local settings (copied from init-template.el)
 ├── backups/                   # File backups and auto-saves
 ├── undo-tree/                 # Persistent undo history files
 ├── snippets/                  # YASnippet templates
@@ -178,9 +175,7 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 ├── tramp.el                  # Remote file access configuration
 ├── minimal.el                # Lightweight configuration for --minimal mode
 ├── version-check.el          # Package version checking utilities
-├── custom.el                 # Emacs custom settings
 ├── init-template.el          # Template for ~/.emacs.d/init.el
-├── local_settings-template.el # Template for local settings
 ├── copilot/                  # GitHub Copilot integration
 │   ├── copilot-setup.el      # Minimal Copilot setup
 │   └── copilot.el            # Complete Copilot configuration
@@ -333,7 +328,7 @@ Omegamacs includes optional GitHub Copilot integration for AI-powered coding ass
 
 ### Quick Setup
 
-1. **Enable Copilot** in your `~/.emacs.d/local_settings.el`:
+1. **Enable Copilot** in your `~/.emacs.d/init.el`:
    ```elisp
    ;; Start with minimal setup to install the server and to authenticate
    (setq my-copilot-config 'setup)
@@ -352,7 +347,7 @@ Omegamacs includes optional GitHub Copilot integration for AI-powered coding ass
 
 ### Configuration Options
 
-Set `my-copilot-config` in `~/.emacs.d/local_settings.el`:
+Set `my-copilot-config` in `~/.emacs.d/init.el`:
 
 - **`'none`** (default): No Copilot support
 - **`'setup`**: Minimal configuration for initial server installation and authentication
