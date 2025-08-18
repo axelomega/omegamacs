@@ -16,7 +16,7 @@
               ("C-g" . 'copilot-clear-overlay))
   :config
   ;; Performance and behavior settings
-  (setq copilot-idle-delay 0.5)                    ; Delay before showing suggestions
+  (setq copilot-idle-delay 0.2)                    ; Delay before showing suggestions
   (setq copilot-max-char -1)                       ; No character limit
   (setq copilot-log-max 1000)                      ; Keep more logs for debugging
 
@@ -85,6 +85,9 @@
   (global-set-key (kbd "C-c c l") 'copilot-login)
   (global-set-key (kbd "C-c c s") 'copilot-logout)
 
+  (add-to-list 'copilot-indentation-alist '(prog-mode 2))
+  (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
+
   ;; Enhanced TAB behavior that works with indentation
   (defun my-copilot-tab-or-indent ()
     "Accept Copilot completion or indent line."
@@ -126,12 +129,6 @@
   ;; Customize faces for better visibility
   (custom-set-faces
    '(copilot-overlay-face ((t (:foreground "#6272A4" :italic t)))))
-
-  ;; Auto-completion settings
-;;  (setq copilot-enable-predicates
-;;        '((lambda () (and (not (minibufferp))
-;;                         (not (in-comment-p))
-;;                         (> (length (string-trim (thing-at-point 'line t))) 10)))))
 
   ;; Diagnostic function for troubleshooting
   (defun my-copilot-status ()

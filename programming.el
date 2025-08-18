@@ -1,5 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
+;; Default indentation settings for all programming modes
+(use-package prog-mode
+  :ensure nil
+  :config
+  ;; Set default indentation to 2 spaces
+  (setq-default indent-tabs-mode nil
+                tab-width 4
+                standard-indent 4))
+
 (use-package lsp-mode
   :ensure t
   :init
