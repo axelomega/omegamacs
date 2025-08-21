@@ -76,7 +76,7 @@
   "Return the backup directory path."
   (expand-file-name "backups/" my-user-emacs-directory-local))
 
-(defun my-backup-directory-alist-item (
+(defun my-backup-directory-alist-item ()
   (list (cons "." (my-backup-directory))))
 
 (setq backup-directory-alist (my-backup-directory-alist-item))
