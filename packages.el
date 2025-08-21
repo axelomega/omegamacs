@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-(setq package-user-dir (my-user-emacs-subdirectory-local "elpa"))
+;; (setq package-user-dir (my-user-emacs-subdirectory-local "elpa"))
 
 (use-package package
   :config
