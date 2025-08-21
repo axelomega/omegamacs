@@ -95,6 +95,14 @@
         (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
+(defun my-compile-treesit-grammars ()
+  "Compile all tree-sitter grammars defined in `treesit-language-source-alist'."
+  (interactive)
+  (dolist (lang treesit-language-source-alist)
+    (let ((lang-name (car lang)))
+      (message "Compiling %s..." lang-name)
+      (treesit-install-language-grammar lang-name))))
+
 ;; Eval this to compile them all
 ;;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
@@ -194,3 +202,16 @@
 (use-package dap-mode
   :ensure t
   :after lsp-mode)
+
+;;(use-package realgud
+;;  :ensure t
+;;  :after (lsp-mode dap-mode)
+;;  :config
+;;  ;; Use realgud for debugging
+;;  (setq realgud:display-buffer 'realgud:display-buffer-same-window)
+;;  (setq realgud:window-height 20)
+;;  (setq realgud:window-width 80))
+;;
+;;(use-package realgud-ipdb
+;;  :ensure t
+;;  :after realgud)
