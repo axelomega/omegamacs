@@ -72,27 +72,20 @@
 
 ;; Keep backups in a dedicated folder
 
-(defun my-backup-directory ()
-  "Return the backup directory path."
-  (expand-file-name "backups/" my-user-emacs-directory-local))
-
-(defun my-backup-directory-alist-item ()
-  (list (cons "." (my-backup-directory))))
-
-(setq backup-directory-alist (my-backup-directory-alist-item))
-(setq backup-by-copying t
-      delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t
-      ;; Security improvements
-      backup-by-copying-when-linked t
-      backup-by-copying-when-mismatch t
-      ;; Auto-save improvements
-      auto-save-file-name-transforms
-      `((".*" ,(my-backup-directory) t))
-      auto-save-timeout 20
-      auto-save-interval 200)
+(let ((backup-dir (my-user-emacs-subdirectory-local "backups")))
+  (setq backup-directory-alist (list (cons "." backup-dir))
+        backup-by-copying t
+        delete-old-versions t
+        kept-new-versions 6
+        kept-old-versions 2
+        version-control t
+        ;; Security improvements
+        backup-by-copying-when-linked t
+        backup-by-copying-when-mismatch t
+        ;; Auto-save improvements
+        auto-save-file-name-transforms (list (list ".*" backup-dir t))
+        auto-save-timeout 20
+        auto-save-interval 200))
 
 ;; Create backup directory if it doesn't exist
 (unless (file-directory-p (expand-file-name "~/.emacs.d/backups"))

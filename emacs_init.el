@@ -30,6 +30,13 @@
                         (file-name-directory (or load-file-name buffer-file-name)))))
     (expand-file-name file-relative-path config-dir)))
 
+(defun my-user-emacs-subdirectory-local (subdir)
+  "Given a subdirectory name, return the path the the disk locak user directory, if the path does not exists, create it"
+  (let ((dir (expand-file-name subdir my-user-emacs-directory-local)))
+    (unless (file-exists-p dir)
+      (make-directory dir t))
+    dir))
+
 ;; Check for minimal config argument
 (defvar my-minimal-config (member "--minimal" command-line-args)
   "When non-nil, load only essential configuration.")
