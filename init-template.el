@@ -6,6 +6,11 @@
 ;;; Emacs configuration root directory
 ;; (setq my-emacs-config-dir "~/omegamacs")
 
+;;; Local data directory (set in early-init.el if needed for performance)
+;; Ensure my-user-emacs-directory-local is set to default if not configured
+(unless (boundp 'my-user-emacs-directory-local)
+  (setq my-user-emacs-directory-local user-emacs-directory))
+
 ;;; Personal settings
 ;; Suppress startup echo area message - replace "your-username" with your actual username
 ;; (setq inhibit-startup-echo-area-message "your-username")

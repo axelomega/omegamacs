@@ -71,7 +71,15 @@
        (set-face-background 'smerge-refined-change "dark magenta")))
 
 ;; Keep backups in a dedicated folder
-(setq backup-directory-alist `(("." . ,(expand-file-name "~/.emacs.d/backups"))))
+
+(defun my-backup-directory ()
+  "Return the backup directory path."
+  (expand-file-name "backups/" my-user-emacs-directory-local))
+
+(defun my-backup-directory-alist-item ()
+  (list (cons "." (my-backup-directory))))
+
+(setq backup-directory-alist (my-backup-directory-alist-item))
 (setq backup-by-copying t
       delete-old-versions t
       kept-new-versions 6
@@ -82,7 +90,7 @@
       backup-by-copying-when-mismatch t
       ;; Auto-save improvements
       auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "~/.emacs.d/backups") t))
+      `((".*" ,(my-backup-directory) t))
       auto-save-timeout 20
       auto-save-interval 200)
 
