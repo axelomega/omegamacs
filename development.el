@@ -84,7 +84,7 @@
   (setq undo-tree-visualizer-timestamps t
         undo-tree-visualizer-diff t
         ;; Store undo-tree files in .emacs.d/undo-tree/
-        undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo-tree/")))
+        undo-tree-history-directory-alist (list (cons "." (expand-file-name "undo-tree/" my-user-emacs-directory-local))))
   ;; Create the directory if it doesn't exist
   (unless (file-exists-p "~/.emacs.d/undo-tree/")
     (make-directory "~/.emacs.d/undo-tree/" t)))

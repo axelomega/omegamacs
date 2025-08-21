@@ -25,8 +25,3 @@
               ("C-c C-b" . eval-buffer)
               ("C-c C-r" . eval-region)
               ("C-c C-d" . describe-function-at-point)))
-
-;; Enable paredit for balanced parentheses
-(use-package paredit
-  :ensure t
-  :hook (emacs-lisp-mode . paredit-mode))
