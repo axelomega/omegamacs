@@ -87,9 +87,43 @@ If you prefer a different location, edit `~/.emacs.d/init.el`:
 Edit `~/.emacs.d/init.el` to customize settings for your environment:
 
 - **Configuration directory**: Set `my-emacs-config-dir` only if you didn't use `~/omegamacs`
+- **Local data directory**: Configure `my-user-emacs-directory-local` for better performance (see below)
 - **JIRA integration**: Configure `my-settings-jira-*` variables if using JIRA
 - **Projectile**: Set `my-settings-projectile-generic-command` for custom file filtering
 - **Development tools**: Configure paths to language servers and other tools if necessary
+
+### Performance Optimization for Network-Mounted Home Directories
+
+If your `${HOME}` directory is mounted via NFS or another network filesystem, you may experience slow file operations. Omegamacs supports redirecting data files (backups, undo history, auto-saves, and native compilation cache) to a local disk location for better performance.
+
+**Setup:**
+1. **Copy the early-init template**:
+   ```bash
+   cp early-init-template.el ~/.emacs.d/early-init.el
+   ```
+
+2. **Edit `~/.emacs.d/early-init.el`** to set your local directory:
+   ```elisp
+   ;; Set to a local disk location for better performance
+   (setq my-user-emacs-directory-local "/path/to/local/disk/.emacs.d.local")
+   ```
+
+**What gets redirected to the local directory:**
+- **Backups and auto-saves**: File backups and automatic saves
+- **Undo-tree history**: Persistent undo history files
+- **Native compilation cache**: ELN cache for compiled Emacs Lisp files
+
+**Example configurations:**
+```elisp
+;; For a dedicated local SSD mount
+(setq my-user-emacs-directory-local "/local/ssd/.emacs.d.local")
+
+;; For a local tmp directory (loses data on reboot)
+(setq my-user-emacs-directory-local "/tmp/.emacs.d.local")
+
+;; Default: use standard ~/.emacs.d (no performance benefit)
+(setq my-user-emacs-directory-local user-emacs-directory)
+```
 
 Example `~/.emacs.d/init.el` customizations:
 ```elisp
@@ -138,6 +172,7 @@ Example `~/.emacs.d/init.el` customizations:
 ## Template Files
 
 - `init-template.el` - Copy to `~/.emacs.d/init.el` and customize as needed
+- `early-init-template.el` - Optional: Copy to `~/.emacs.d/early-init.el` to configure local data directory
 
 ## Directory Organization
 
@@ -151,12 +186,14 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 ```
 ~/.emacs.d/
 ├── init.el                    # Main entry point with your local settings (copied from init-template.el)
-├── backups/                   # File backups and auto-saves
-├── undo-tree/                 # Persistent undo history files
+├── early-init.el              # Optional: Configure local data directory (copied from early-init-template.el)
+├── backups/                   # File backups and auto-saves (or redirected to local directory)
+├── undo-tree/                 # Persistent undo history files (or redirected to local directory)
 ├── snippets/                  # YASnippet templates
 ├── cache/                     # IDO and other cache files
 │   └── ido.last              # IDO file history
-└── elpa/                     # Installed packages (managed automatically)
+├── elpa/                     # Installed packages (managed automatically)
+└── eln-cache/                # Native compilation cache (or redirected to local directory)
 
 ~/omegamacs/                   # Configuration files (default location)
 ├── emacs_init.el             # Main configuration loader
