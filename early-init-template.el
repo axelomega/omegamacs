@@ -1,6 +1,7 @@
 ;; This can be good to set to a disk local location if your ${HOME} is mounted via NFS to speed up certain file operations
-;(setq my-user-emacs-directory-local user-emacs-directory)
-(setq my-user-emacs-directory-local "~/.emacs.d.local/")
+;; For example:
+;; (setq my-user-emacs-directory-local "/path/to/local/disk/.emacs.d.local")
+(setq my-user-emacs-directory-local user-emacs-directory)
 
 (when (and (fboundp 'startup-redirect-eln-cache)
            (fboundp 'native-comp-available-p)
