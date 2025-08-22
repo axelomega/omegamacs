@@ -38,6 +38,8 @@
         lsp-enable-indentation nil
         lsp-enable-on-type-formatting nil)
 
+  (setq lsp-idle-delay 0.250)
+
   :commands lsp)
 
 (use-package lsp-ui
@@ -48,6 +50,31 @@
   :ensure t
   :after (lsp-mode treemacs)
   :config
+  ;; Allow C-x 1 to work normally by removing no-delete-other-windows parameter
+  (defun my-delete-other-windows-advice (orig-fun &rest args)
+    "Allow C-x 1 (delete-other-windows) to work normally even when packages set no-delete-other-windows.
+
+Some packages (notably lsp-treemacs) set the 'no-delete-other-windows window parameter
+to prevent their special windows from being deleted by C-x 1. This interferes with
+normal window management, making it impossible for users to use C-x 1 to focus on a single window.
+
+This advice removes the parameter from all windows before calling the original function,
+restoring expected behavior for users.
+
+Alternatives considered:
+- Removing the parameter only from treemacs windows: More complex and less robust if other packages use the parameter
+- Disabling the parameter via package configuration: Not always possible, as some packages set it dynamically
+
+Potential side effects:
+- May interfere with other packages or user configurations that rely on this parameter to protect certain windows
+  Use with caution and consider scoping the advice more narrowly if conflicts arise."
+    ;; Remove no-delete-other-windows parameter from all windows
+    (dolist (window (window-list))
+      (set-window-parameter window 'no-delete-other-windows nil))
+    (apply orig-fun args))
+
+  (advice-add 'delete-other-windows :around #'my-delete-other-windows-advice)
+
   (defun my-lsp-treemacs-symbols-auto ()
     "Auto-open treemacs symbols for C/C++ files when LSP starts."
     (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
@@ -95,18 +122,25 @@
         (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-;; Eval this to compile them all
-;;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+(defun my-compile-treesit-grammars ()
+  "Compile all tree-sitter grammars defined in `treesit-language-source-alist'."
+  (interactive)
+  (dolist (lang treesit-language-source-alist)
+    (let ((lang-name (car lang)))
+      (message "Compiling %s..." lang-name)
+      (treesit-install-language-grammar lang-name))))
 
 (use-package which-key
   :ensure t
   :config
   (which-key-mode))
 
-;; For performance
-;; Commented out - conflicts with startup optimization in emacs_init.el
-;;(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
+;; LSP performance optimizations
+;; Increase GC threshold to 100MB to reduce garbage collection frequency during LSP operations.
+(defconst my/gc-cons-threshold 100000000
+  "Garbage collection threshold set to 100MB for improved LSP performance.")
+(setq gc-cons-threshold my/gc-cons-threshold)
+(setq read-process-output-max (* 1024 1024 4)) ;; 4 MB
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
@@ -194,3 +228,16 @@
 (use-package dap-mode
   :ensure t
   :after lsp-mode)
+
+(use-package realgud
+  :ensure t
+  :after (lsp-mode dap-mode)
+  :config
+  ;; Use realgud for debugging
+  (setq realgud:display-buffer 'realgud:display-buffer-same-window)
+  (setq realgud:window-height 20)
+  (setq realgud:window-width 80))
+
+(use-package realgud-ipdb
+  :ensure t
+  :after realgud)
