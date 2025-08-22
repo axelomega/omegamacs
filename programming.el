@@ -49,12 +49,12 @@
 (use-package lsp-treemacs
   :ensure t
   :after (lsp-mode treemacs)
-  ;;:config
-  ;;(defun my-lsp-treemacs-symbols-auto ()
-  ;;  "Auto-open treemacs symbols for C/C++ files when LSP starts."
-  ;;  (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
-  ;;             (lsp-workspaces))
-  ;;    (run-with-timer 1 nil #'lsp-treemacs-symbols)))
+  :config
+  (defun my-lsp-treemacs-symbols-auto ()
+    "Auto-open treemacs symbols for C/C++ files when LSP starts."
+    (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
+               (lsp-workspaces))
+      (run-with-timer 1 nil #'lsp-treemacs-symbols)))
 
   :hook (lsp-mode . my-lsp-treemacs-symbols-auto)
   :commands lsp-treemacs-symbols)
@@ -97,14 +97,6 @@
         (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-(defun my-compile-treesit-grammars ()
-  "Compile all tree-sitter grammars defined in `treesit-language-source-alist'."
-  (interactive)
-  (dolist (lang treesit-language-source-alist)
-    (let ((lang-name (car lang)))
-      (message "Compiling %s..." lang-name)
-      (treesit-install-language-grammar lang-name))))
-
 ;; Eval this to compile them all
 ;;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
@@ -114,8 +106,8 @@
   (which-key-mode))
 
 ;; LSP performance optimizations
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024 4)) ;; 4 Mb
+;;(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 4 Mb
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
@@ -203,16 +195,3 @@
 (use-package dap-mode
   :ensure t
   :after lsp-mode)
-
-;;(use-package realgud
-;;  :ensure t
-;;  :after (lsp-mode dap-mode)
-;;  :config
-;;  ;; Use realgud for debugging
-;;  (setq realgud:display-buffer 'realgud:display-buffer-same-window)
-;;  (setq realgud:window-height 20)
-;;  (setq realgud:window-width 80))
-;;
-;;(use-package realgud-ipdb
-;;  :ensure t
-;;  :after realgud)
