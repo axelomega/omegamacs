@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
+;; This works the first time but does not work on subsequent runs
+;; TODO: Investigate why
 ;; (setq package-user-dir (my-user-emacs-subdirectory-local "elpa"))
 
 (use-package package

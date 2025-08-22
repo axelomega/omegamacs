@@ -87,10 +87,6 @@
         auto-save-timeout 20
         auto-save-interval 200))
 
-;; Create backup directory if it doesn't exist
-(unless (file-directory-p (expand-file-name "~/.emacs.d/backups"))
-  (make-directory (expand-file-name "~/.emacs.d/backups") t))
-
 ;; Brows things in emacs
 (setq browse-url-browser-function 'eww-browse-url)
 
