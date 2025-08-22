@@ -49,6 +49,17 @@
 (use-package lsp-treemacs
   :ensure t
   :after (lsp-mode treemacs)
+  :config
+  ;; Allow C-x 1 to work normally by removing no-delete-other-windows parameter
+  (defun my-delete-other-windows-advice (orig-fun &rest args)
+    "Remove no-delete-other-windows parameter from all windows, then delete other windows normally."
+    ;; Remove no-delete-other-windows parameter from all windows
+    (dolist (window (window-list))
+      (set-window-parameter window 'no-delete-other-windows nil))
+    (apply orig-fun args))
+
+  (advice-add 'delete-other-windows :around #'my-delete-other-windows-advice)
+
   ;;TODO: Investigate if this causes issues with C-x 1
   ;;:config
   ;;(defun my-lsp-treemacs-symbols-auto ()
