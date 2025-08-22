@@ -31,7 +31,7 @@
     (expand-file-name file-relative-path config-dir)))
 
 (defun my-user-emacs-subdirectory-local (subdir)
-  "Given a subdirectory name, return the path the the disk locak user directory, if the path does not exists, create it"
+  "Given a subdirectory name, return the path to the disk local user directory; if the path does not exist, create it."
   (let ((dir (expand-file-name subdir my-user-emacs-directory-local)))
     (unless (file-exists-p dir)
       (make-directory dir t))
