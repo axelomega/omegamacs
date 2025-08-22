@@ -153,7 +153,10 @@ Potential side effects:
   (which-key-mode))
 
 ;; LSP performance optimizations
-(setq gc-cons-threshold 100000000)
+;; Increase GC threshold to 100MB to reduce garbage collection frequency during LSP operations.
+(defconst my/gc-cons-threshold 100000000
+  "Garbage collection threshold set to 100MB for improved LSP performance.")
+(setq gc-cons-threshold my/gc-cons-threshold)
 (setq read-process-output-max (* 1024 1024 4)) ;; 4 MB
 
 ;; Yasnippet for code snippets
