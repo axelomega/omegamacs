@@ -38,6 +38,8 @@
         lsp-enable-indentation nil
         lsp-enable-on-type-formatting nil)
 
+  (setq lsp-idle-delay 0.250)
+
   :commands lsp)
 
 (use-package lsp-ui
@@ -47,12 +49,12 @@
 (use-package lsp-treemacs
   :ensure t
   :after (lsp-mode treemacs)
-  :config
-  (defun my-lsp-treemacs-symbols-auto ()
-    "Auto-open treemacs symbols for C/C++ files when LSP starts."
-    (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
-               (lsp-workspaces))
-      (run-with-timer 1 nil #'lsp-treemacs-symbols)))
+  ;;:config
+  ;;(defun my-lsp-treemacs-symbols-auto ()
+  ;;  "Auto-open treemacs symbols for C/C++ files when LSP starts."
+  ;;  (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
+  ;;             (lsp-workspaces))
+  ;;    (run-with-timer 1 nil #'lsp-treemacs-symbols)))
 
   :hook (lsp-mode . my-lsp-treemacs-symbols-auto)
   :commands lsp-treemacs-symbols)
@@ -111,10 +113,9 @@
   :config
   (which-key-mode))
 
-;; For performance
-;; Commented out - conflicts with startup optimization in emacs_init.el
-;;(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
+;; LSP performance optimizations
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024 4)) ;; 4 Mb
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
