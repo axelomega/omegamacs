@@ -38,8 +38,6 @@
         lsp-enable-indentation nil
         lsp-enable-on-type-formatting nil)
 
-  (setq lsp-idle-delay 0.250)
-
   :commands lsp)
 
 (use-package lsp-ui
@@ -105,9 +103,10 @@
   :config
   (which-key-mode))
 
-;; LSP performance optimizations
+;; For performance
+;; Commented out - conflicts with startup optimization in emacs_init.el
 ;;(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 4 Mb
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
