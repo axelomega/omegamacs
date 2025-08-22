@@ -60,13 +60,11 @@
 
   (advice-add 'delete-other-windows :around #'my-delete-other-windows-advice)
 
-  ;;TODO: Investigate if this causes issues with C-x 1
-  ;;:config
-  ;;(defun my-lsp-treemacs-symbols-auto ()
-  ;;  "Auto-open treemacs symbols for C/C++ files when LSP starts."
-  ;;  (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
-  ;;             (lsp-workspaces))
-  ;;    (run-with-timer 1 nil #'lsp-treemacs-symbols)))
+  (defun my-lsp-treemacs-symbols-auto ()
+    "Auto-open treemacs symbols for C/C++ files when LSP starts."
+    (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
+               (lsp-workspaces))
+      (run-with-timer 1 nil #'lsp-treemacs-symbols)))
 
   :hook (lsp-mode . my-lsp-treemacs-symbols-auto)
   :commands lsp-treemacs-symbols)
