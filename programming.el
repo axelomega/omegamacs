@@ -52,39 +52,22 @@
   :config
   ;; Allow C-x 1 to work normally by removing no-delete-other-windows parameter
   (defun my-delete-other-windows-advice (orig-fun &rest args)
-  ;; Advice to allow C-x 1 (delete-other-windows) to work normally even when
-  ;; lsp-treemacs or other packages set the 'no-delete-other-windows parameter on windows.
-  ;;
-  ;; Rationale:
-  ;; Some packages (notably lsp-treemacs) set the 'no-delete-other-windows window parameter
-  ;; to prevent their special windows from being deleted by C-x 1. This can interfere with
-  ;; normal window management, making it impossible for users to use C-x 1 to focus on a single window.
-  ;; This advice removes the parameter from all windows before calling the original function,
-  ;; restoring expected behavior for users.
-  ;;
-  ;; Alternatives considered:
-  ;; - Removing the parameter only from treemacs windows: This would require tracking all treemacs windows,
-  ;;   which is more complex and less robust if other packages use the parameter.
-  ;; - Disabling the parameter via package configuration: Not always possible, as some packages set it dynamically.
-  ;;
-  ;; Potential side effects:
-  ;; - This advice removes 'no-delete-other-windows from all windows, which may interfere with other packages
-  ;;   or user configurations that rely on this parameter to protect certain windows from deletion.
-  ;;   Use with caution and consider scoping the advice more narrowly if conflicts arise.
-  (defun my-delete-other-windows-advice (orig-fun &rest args)
-    "Advice for `delete-other-windows` that removes the 'no-delete-other-windows parameter from all windows.
+    "Allow C-x 1 (delete-other-windows) to work normally even when packages set no-delete-other-windows.
 
-This is necessary because some packages (e.g., lsp-treemacs) set this parameter to prevent their windows
-from being deleted, which interferes with normal window management. By removing the parameter from all windows,
-C-x 1 works as expected.
+Some packages (notably lsp-treemacs) set the 'no-delete-other-windows window parameter
+to prevent their special windows from being deleted by C-x 1. This interferes with
+normal window management, making it impossible for users to use C-x 1 to focus on a single window.
+
+This advice removes the parameter from all windows before calling the original function,
+restoring expected behavior for users.
 
 Alternatives considered:
-- Removing the parameter only from treemacs windows (more complex).
-- Disabling the parameter via package configuration (not always possible).
+- Removing the parameter only from treemacs windows: More complex and less robust if other packages use the parameter
+- Disabling the parameter via package configuration: Not always possible, as some packages set it dynamically
 
 Potential side effects:
-- May interfere with other packages or user configurations that rely on this parameter.
-"
+- May interfere with other packages or user configurations that rely on this parameter to protect certain windows
+  Use with caution and consider scoping the advice more narrowly if conflicts arise."
     ;; Remove no-delete-other-windows parameter from all windows
     (dolist (window (window-list))
       (set-window-parameter window 'no-delete-other-windows nil))
