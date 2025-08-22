@@ -122,7 +122,7 @@
 
 ;; LSP performance optimizations
 (setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024 4)) ;; 4 Mb
+(setq read-process-output-max (* 1024 1024 4)) ;; 4 MB
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
