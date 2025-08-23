@@ -90,15 +90,15 @@
   (setq tramp-default-method "ssh"          ; SSH as default (more secure than scp)
         tramp-verbose 1                      ; Minimal verbosity (increase to 6 for debugging)
         tramp-use-ssh-controlmaster-options t ; Use SSH ControlMaster for connection reuse
-        tramp-persistency-file-name (expand-file-name "tramp" my-user-emacs-subdirectory-local) ; Persist connection data
+        tramp-persistency-file-name (my-user-emacs-subdirectory-local "cache/tramp") ; Persist connection data
         tramp-completion-reread-directory-timeout nil ; Disable to improve performance
-        tramp-auto-save-directory (expand-file-name "tramp-auto-save/" my-user-emacs-subdirectory-local) ; Separate auto-save dir
+        tramp-auto-save-directory (my-user-emacs-subdirectory-local "tramp-auto-save") ; Separate auto-save dir
         remote-file-name-inhibit-cache nil   ; Enable caching (set to t to disable for fresh data)
         vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp) ; Disable VC for TRAMP
         tramp-chunksize 8192)                ; Optimize chunk size for better performance
 
   ;; Create TRAMP directories if they don't exist
-  (dolist (dir (list (expand-file-name "tramp-auto-save/" my-user-emacs-subdirectory-local)
+  (dolist (dir (list (my-user-emacs-subdirectory-local "tramp-auto-save")
                      (file-name-directory tramp-persistency-file-name)))
     (unless (file-directory-p dir)
       (make-directory dir t)))
@@ -112,9 +112,9 @@
 
   ;; Backup configuration for remote files
   (add-to-list 'backup-directory-alist
-               (cons tramp-file-name-regexp (expand-file-name "tramp-backups/" my-user-emacs-subdirectory-local)))
-  (unless (file-directory-p (expand-file-name "tramp-backups/" my-user-emacs-subdirectory-local))
-    (make-directory (expand-file-name "tramp-backups/" my-user-emacs-subdirectory-local) t))
+               (cons tramp-file-name-regexp (my-user-emacs-subdirectory-local "tramp-backups")))
+  ;; Directory creation is handled by my-user-emacs-subdirectory-local function
+  (my-user-emacs-subdirectory-local "tramp-backups")
 
   ;; Performance: Disable version control for remote files
   (defun my--tramp-disable-vc (orig-fun &rest args)
