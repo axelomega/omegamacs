@@ -76,7 +76,7 @@
 (setq compilation-hidden-output '("^ninja: Entering[^\n]+\n"))
 
 ;; Symlink resolution for compilation error navigation
-(defun my-resolve-symlink-in-compilation-error (data)
+(defun my--resolve-symlink-in-compilation-error (data)
   "Resolve symlinks in compilation error file paths.
 This function is used as advice for `compilation-find-file' to ensure
 that when jumping to compilation errors, symlinked file paths are
@@ -89,7 +89,7 @@ resolved to their real paths."
             (setcar data real-path))))))
   data)
 
-(defun my-compilation-find-file-resolve-symlinks (orig-fun marker filename directory &rest formats)
+(defun my--compilation-find-file-resolve-symlinks (orig-fun marker filename directory &rest formats)
   "Advice for `compilation-find-file' to resolve symlinks to real paths.
 This ensures that when jumping to compilation errors, Emacs opens the
 actual file rather than the symlink, providing consistent file handling."
@@ -103,10 +103,10 @@ actual file rather than the symlink, providing consistent file handling."
     result))
 
 ;; Apply the advice to resolve symlinks during compilation error navigation
-(advice-add 'compilation-find-file :around #'my-compilation-find-file-resolve-symlinks)
+(advice-add 'compilation-find-file :around #'my--compilation-find-file-resolve-symlinks)
 
 ;; Alternative approach: resolve symlinks in next-error navigation
-(defun my-next-error-resolve-symlinks ()
+(defun my--next-error-resolve-symlinks ()
   "Hook to resolve symlinks when navigating to compilation errors.
 This ensures consistent file handling when using next-error/previous-error."
   (when (and (buffer-file-name)
@@ -117,10 +117,10 @@ This ensures consistent file handling when using next-error/previous-error."
         (find-file real-path)))))
 
 ;; Add hook for next-error navigation
-(add-hook 'next-error-hook #'my-next-error-resolve-symlinks)
+(add-hook 'next-error-hook #'my--next-error-resolve-symlinks)
 
 ;; Configuration to handle symlinks globally in find-file operations
-(defun my-find-file-resolve-symlinks (filename &optional wildcards)
+(defun my--find-file-resolve-symlinks (filename &optional wildcards)
   "Resolve symlinks when opening files through find-file operations.
 This provides consistent symlink resolution across all file opening operations."
   (when (and filename (stringp filename) (file-exists-p filename))
@@ -131,13 +131,13 @@ This provides consistent symlink resolution across all file opening operations."
   "Navigate to next compilation error and resolve any symlinks."
   (interactive)
   (next-error)
-  (my-next-error-resolve-symlinks))
+  (my--next-error-resolve-symlinks))
 
 (defun my-goto-previous-error-resolve-symlinks ()
   "Navigate to previous compilation error and resolve any symlinks."
   (interactive)
   (previous-error)
-  (my-next-error-resolve-symlinks))
+  (my--next-error-resolve-symlinks))
 
 ;; Optional keybindings for enhanced error navigation
 ;; (global-set-key (kbd "M-g n") #'my-goto-next-error-resolve-symlinks)
