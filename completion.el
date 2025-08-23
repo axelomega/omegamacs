@@ -40,10 +40,11 @@
   :config
   (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf")
         recentf-max-saved-items 200
-        recentf-max-menu-items 50
-                         "^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
-                         ".*\\.mak$" "/tmp/" "/var/" "COMMIT_EDITMSG"
-                         "\\.gz$" "\\.elc$" "~$")))
+        recentf-max-menu-items 50))
+;; TODO this setting is somehow wrong
+;;                       "^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
+;;                       ".*\\.mak$" "/tmp/" "/var/" "COMMIT_EDITMSG"
+;;                       "\\.gz$" "\\.elc$" "~$")))
 
 ;; Orderless - flexible completion matching (replaces ido-enable-flex-matching)
 (use-package orderless
