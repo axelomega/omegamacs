@@ -31,6 +31,44 @@ The `--minimal` flag loads only the `minimal.el` configuration file, giving you 
 
 This configuration is designed for modern Emacs builds with advanced features like native compilation and tree-sitter support. See [Recommended Emacs Build Features](#recommended-emacs-build-features) for detailed build requirements and feature list.
 
+## Philosophy: Code as Config
+
+Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual Emacs Lisp code. This fundamental approach sets us apart from other configurations:
+
+### Why Choose Omegamacs Over Established Alternatives?
+
+**🔍 Transparency & Control**
+- **No abstractions or DSLs** - you write real Emacs Lisp, not framework-specific syntax
+- **No magic** - every behavior is explicit and traceable in readable code
+- **Direct access** to Emacs' full capabilities without artificial limitations
+
+**⚡ Modern Without Bloat**
+- **Current-generation packages** (Vertico/Consult vs older Helm/Ivy)
+- **Performance-optimized** from day one with proper startup tuning
+- **Professional development ready** with comprehensive LSP and tool integration
+
+**🎯 The Goldilocks Principle**
+- **More capable** than basic configs like Prelude
+- **Less overwhelming** than Doom Emacs or Spacemacs
+- **Just right** for developers who want power with simplicity
+
+**🚀 Future-Proof Architecture**
+- **Pure Emacs Lisp** means compatibility with any Emacs version
+- **No framework dependencies** to break or become obsolete
+- **Direct upgrade path** as Emacs evolves
+
+**🧠 Learn Real Emacs**
+- Users become better at Emacs Lisp and understand their editor deeply
+- No need to learn meta-configuration systems or framework-specific abstractions
+- Template system teaches good Emacs practices while remaining transparent
+
+**Versus the Competition:**
+- **Doom Emacs**: Heavy abstraction layers and custom DSLs hide the actual Emacs underneath
+- **Spacemacs**: Layers upon layers of abstraction make basic customization difficult
+- **Prelude**: Good but dated package choices and less comprehensive language support
+
+**Our tagline:** *"Real Emacs for real developers - no training wheels, no abstractions, just powerful, readable code you can own and control."*
+
 ## Features
 
 - **Modern completion** with Vertico, Marginalia, and Consult
@@ -333,10 +371,10 @@ This configuration is developed and tested on **GNU Emacs 31.0.50** (development
 
 **Full feature list:**
 ```
-CAIRO DBUS FREETYPE GIF GLIB GMP GNUTLS GPM GSETTINGS HARFBUZZ 
-IMAGEMAGICK JPEG LCMS2 LIBOTF LIBSELINUX LIBSYSTEMD LIBXML2 M17N_FLT 
-MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER PNG RSVG SECCOMP SOUND 
-THREADS TIFF TOOLKIT_SCROLL_BARS TREE_SITTER X11 XDBE XIM XINPUT2 
+CAIRO DBUS FREETYPE GIF GLIB GMP GNUTLS GPM GSETTINGS HARFBUZZ
+IMAGEMAGICK JPEG LCMS2 LIBOTF LIBSELINUX LIBSYSTEMD LIBXML2 M17N_FLT
+MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER PNG RSVG SECCOMP SOUND
+THREADS TIFF TOOLKIT_SCROLL_BARS TREE_SITTER X11 XDBE XIM XINPUT2
 XPM LUCID ZLIB
 ```
 
