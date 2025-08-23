@@ -40,15 +40,10 @@
   :config
   (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf")
         recentf-max-saved-items 200
-        recentf-max-menu-items 50))
-;; FIXME: The recentf-exclude patterns below are not currently being set or applied.
-;; To properly exclude unwanted files from the recentf list, set recentf-exclude to a list of regexps.
-;; For example:
-;; (setq recentf-exclude
-;;       '("^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
-;;         ".*\\.mak$" "/tmp/" "/var/" "COMMIT_EDITMSG"
-;;         "\\.gz$" "\\.elc$" "~$"))
-;; Review and adjust these patterns as needed to ensure they match files you want to exclude.
+        recentf-max-menu-items 50
+        recentf-exclude '("^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
+                          ".*\\.mak$" "/tmp/" "/var/" "COMMIT_EDITMSG"
+                          "\\.gz$" "\\.elc$" "~$")))
 
 ;; Orderless - flexible completion matching (replaces ido-enable-flex-matching)
 (use-package orderless
