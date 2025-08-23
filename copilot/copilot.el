@@ -101,7 +101,7 @@
   (define-key prog-mode-map (kbd "TAB") 'my-copilot-tab-or-indent)
 
   ;; Mode line indicator
-  (defun my-copilot-mode-line ()
+  (defun my--copilot-mode-line ()
     "Return mode line string for Copilot status."
     (when copilot-mode
       (if (copilot--overlay-visible)
@@ -109,7 +109,7 @@
         " Co")))
 
   ;; Add to mode line
-  (add-to-list 'mode-line-misc-info '(:eval (my-copilot-mode-line)))
+  (add-to-list 'mode-line-misc-info '(:eval (my--copilot-mode-line)))
 
   ;; Advice to improve interaction with other completion systems
   (advice-add 'copilot-accept-completion :around
