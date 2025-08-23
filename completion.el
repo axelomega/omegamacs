@@ -1,8 +1,9 @@
 ;;; -*- lexical-binding: t -*-
 
-;; Modern completion framework with vertico, marginalia, and consult
+;; Modern completion with vertico and friends
+;; Replaces the old ido-mode configuration with modern alternatives
 
-;; Vertico - vertical completion UI
+;; Vertico - vertical completion UI (replaces ido-mode)
 (use-package vertico
   :ensure t
   :init (vertico-mode)
@@ -11,105 +12,105 @@
         vertico-resize t
         vertico-count 20))
 
-;; Marginalia - rich annotations in the minibuffer
+;; Vertico directory extension for better file navigation
+(use-package vertico-directory
+  :ensure nil
+  :after vertico
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+;; Savehist - persist minibuffer history (replaces ido-save-directory-list-file)
+(use-package savehist
+  :ensure nil
+  :init
+  (savehist-mode)
+  :config
+  (setq savehist-file (my-user-emacs-subdirectory-local "cache/savehist")
+        savehist-additional-variables '(search-ring regexp-search-ring)
+        savehist-autosave-interval 60))
+
+;; Recentf - track recent files (enhances file completion)
+(use-package recentf
+  :ensure nil
+  :init
+  (recentf-mode)
+  :config
+  (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf")
+        recentf-max-saved-items 200
+        recentf-max-menu-items 50
+                         "^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
+                         ".*\\.mak$" "/tmp/" "/var/" "COMMIT_EDITMSG"
+                         "\\.gz$" "\\.elc$" "~$")))
+
+;; Orderless - flexible completion matching (replaces ido-enable-flex-matching)
+(use-package orderless
+  :ensure t
+  :config
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion))
+                                      (command (styles orderless))
+                                      (buffer (styles orderless))
+                                      (symbol (styles orderless)))))
+
+;; Marginalia - rich annotations for completions
 (use-package marginalia
   :ensure t
   :init (marginalia-mode)
   :config
   (setq marginalia-align 'right))
 
-;; Consult - consulting completing-read
+;; Consult - enhanced completion commands
 (use-package consult
   :ensure t
-  :bind (;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)
-         ("C-x b" . consult-buffer)
+  :bind (;; Replace common ido bindings
+         ("C-x b" . consult-buffer)                ; replaces ido-switch-buffer
+         ("C-x C-b" . consult-buffer)              ; alternative buffer switching
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
          ("C-x r b" . consult-bookmark)
          ("C-x p b" . consult-project-buffer)
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)
-         ;; M-g bindings (goto-map)
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)
-         ("M-g g" . consult-goto-line)
-         ("M-g M-g" . consult-goto-line)
-         ("M-g o" . consult-outline)
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings (search-map)
-         ("M-s d" . consult-find)
-         ("M-s D" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
+         ;; Enhanced file finding (complements find-file)
+         ("M-s f" . consult-find)
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)
-         ("M-s e" . consult-isearch-history)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ;; Minibuffer history
-         :map minibuffer-local-map
-         ("M-s" . consult-history)
-         ("M-r" . consult-history))
+         ("M-y" . consult-yank-pop)
+         ;; History and navigation
+         ("C-c h" . consult-history)
+         ("M-g g" . consult-goto-line)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; Error navigation
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake))
   :config
-  ;; Optionally configure the register formatting
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
-
-  ;; Optionally tweak the register preview window
-  (advice-add #'register-preview :override #'consult-register-window)
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  ;; Configure other variables and modes in the :config section
+  ;; Configure preview
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-file-register
    consult--source-recent-file consult--source-project-recent-file
-   :preview-key '(:debounce 0.4 any)))
+   :preview-key '(:debounce 0.4 any))
 
-;; Orderless - completion style for better matching
-(use-package orderless
-  :ensure t
-  :config
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+  ;; Use consult for xref (similar to ido-everywhere behavior)
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
 
-;; Embark - act on targets
+;; Embark - act on completion targets
 (use-package embark
   :ensure t
-  :bind
-  (("C-." . embark-act)
-   ("C-;" . embark-dwim)
-   ("C-h B" . embark-bindings))
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)
+         ("C-h B" . embark-bindings))
   :init
-  ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
-  ;; Hide the mode line of the Embark live/completions buffers
+  ;; Hide mode line in embark buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
@@ -118,5 +119,51 @@
 ;; Embark-consult integration
 (use-package embark-consult
   :ensure t
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
+;; Enhanced minibuffer behavior
+(setq enable-recursive-minibuffers t
+      read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t
+      completion-ignore-case t
+      ;; Don't confirm for new files/buffers (like ido setting)
+      confirm-nonexistent-file-or-buffer nil
+      ;; Use completing-read for various operations
+      use-file-dialog nil)
+
+;; Improve default completion behavior
+(setq completion-cycle-threshold 3
+      tab-always-indent 'complete
+      completions-detailed t)
+
+;; Better minibuffer completion display
+(setq resize-mini-windows t
+      max-mini-window-height 0.33)
+
+;; Corfu - in-buffer completion popup (complements company-mode)
+(use-package corfu
+  :ensure t
+  :init
+  (global-corfu-mode)
+  :config
+  (setq corfu-cycle t
+        corfu-auto t
+        corfu-auto-delay 0.2
+        corfu-auto-prefix 2
+        corfu-quit-no-match 'separator)
+
+  ;; Make corfu work better with orderless
+  (setq corfu-separator ?\s))
+
+;; Cape - completion at point extensions
+(use-package cape
+  :ensure t
+  :init
+  ;; Add useful completion functions to completion-at-point-functions
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  :config
+  ;; Silence the pcomplete capf, no errors or messages!
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify))
