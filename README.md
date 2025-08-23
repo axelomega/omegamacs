@@ -56,7 +56,7 @@ This configuration is designed for modern Emacs builds with advanced features li
 
 2. **Copy and customize the init file**:
    ```bash
-   cp init-template.el ~/.emacs.d/init.el
+   cp templates/init.el ~/.emacs.d/init.el
    ```
    Then edit `~/.emacs.d/init.el` to uncomment and customize settings as needed.
 
@@ -99,7 +99,7 @@ If your `${HOME}` directory is mounted via NFS or another network filesystem, yo
 **Setup:**
 1. **Copy the early-init template**:
    ```bash
-   cp early-init-template.el ~/.emacs.d/early-init.el
+   cp templates/early-init.el ~/.emacs.d/early-init.el
    ```
 
 2. **Edit `~/.emacs.d/early-init.el`** to set your local directory:
@@ -171,8 +171,8 @@ Example `~/.emacs.d/init.el` customizations:
 
 ## Template Files
 
-- `init-template.el` - Copy to `~/.emacs.d/init.el` and customize as needed
-- `early-init-template.el` - Optional: Copy to `~/.emacs.d/early-init.el` to configure local data directory
+- `templates/init.el` - Copy to `~/.emacs.d/init.el` and customize as needed
+- `templates/early-init.el` - Optional: Copy to `~/.emacs.d/early-init.el` to configure local data directory
 
 ## Directory Organization
 
@@ -212,7 +212,9 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 ├── tramp.el                  # Remote file access configuration
 ├── minimal.el                # Lightweight configuration for --minimal mode
 ├── version-check.el          # Package version checking utilities
-├── init-template.el          # Template for ~/.emacs.d/init.el
+├── templates/                # Template files
+│   ├── init.el               # Template for ~/.emacs.d/init.el
+│   └── early-init.el         # Template for ~/.emacs.d/early-init.el
 ├── copilot/                  # GitHub Copilot integration
 │   ├── copilot-setup.el      # Minimal Copilot setup
 │   └── copilot.el            # Complete Copilot configuration
