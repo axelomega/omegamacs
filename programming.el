@@ -150,7 +150,7 @@ Potential side effects:
          (text-mode . yas-minor-mode))
   :config
   ;; Default snippets collection
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"
+  (setq yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory)
                            yas-installed-snippets-dir))
   ;; Don't show snippets in completion by default (reduces noise)
   (setq yas-triggers-in-field nil))

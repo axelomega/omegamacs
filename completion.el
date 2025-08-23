@@ -28,7 +28,7 @@
   :init
   (savehist-mode)
   :config
-  (setq savehist-file "~/.emacs.d/cache/savehist"
+  (setq savehist-file (expand-file-name "cache/savehist" my-user-emacs-subdirectory-local)
         savehist-additional-variables '(search-ring regexp-search-ring)
         savehist-autosave-interval 60))
 
@@ -38,7 +38,7 @@
   :init
   (recentf-mode)
   :config
-  (setq recentf-save-file "~/.emacs.d/cache/recentf"
+  (setq recentf-save-file (expand-file-name "cache/recentf" my-user-emacs-subdirectory-local)
         recentf-max-saved-items 200
         recentf-max-menu-items 50
         ;; Exclude some files from recentf (similar to ido-ignore-buffers)
