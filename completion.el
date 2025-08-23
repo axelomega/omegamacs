@@ -38,7 +38,7 @@
   :init
   (recentf-mode)
   :config
-  (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf"))
+  (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf")
         recentf-max-saved-items 200
         recentf-max-menu-items 50
         ;; Exclude some files from recentf (similar to ido-ignore-buffers)
