@@ -41,9 +41,7 @@
   (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf")
         recentf-max-saved-items 200
         recentf-max-menu-items 50
-        ;; Exclude some files from recentf (similar to ido-ignore-buffers)
-        recentf-exclude '("\\` " "^\*Mess" "^\*Back" ".*Completion"
-                         "^\*trace" "^\*GTAGS" "^session\.*" "^\*"
+                         "^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
                          ".*\\.mak$" "/tmp/" "/var/" "COMMIT_EDITMSG"
                          "\\.gz$" "\\.elc$" "~$")))
 
