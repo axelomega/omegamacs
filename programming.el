@@ -51,7 +51,7 @@
   :after (lsp-mode treemacs)
   :config
   ;; Allow C-x 1 to work normally by removing no-delete-other-windows parameter
-  (defun my-delete-other-windows-advice (orig-fun &rest args)
+  (defun my--delete-other-windows-advice (orig-fun &rest args)
     "Allow C-x 1 (delete-other-windows) to work normally even when packages set no-delete-other-windows.
 
 Some packages (notably lsp-treemacs) set the 'no-delete-other-windows window parameter
@@ -73,15 +73,15 @@ Potential side effects:
       (set-window-parameter window 'no-delete-other-windows nil))
     (apply orig-fun args))
 
-  (advice-add 'delete-other-windows :around #'my-delete-other-windows-advice)
+  (advice-add 'delete-other-windows :around #'my--delete-other-windows-advice)
 
-  (defun my-lsp-treemacs-symbols-auto ()
+  (defun my--lsp-treemacs-symbols-auto ()
     "Auto-open treemacs symbols for C/C++ files when LSP starts."
     (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
                (lsp-workspaces))
       (run-with-timer 1 nil #'lsp-treemacs-symbols)))
 
-  :hook (lsp-mode . my-lsp-treemacs-symbols-auto)
+  :hook (lsp-mode . my--lsp-treemacs-symbols-auto)
   :commands lsp-treemacs-symbols)
 
 ;; Use consult-lsp for LSP integration with Vertico
@@ -196,21 +196,6 @@ Potential side effects:
     (set-face-background 'highlight-indent-guides-top-even-face "black")
     (set-face-background 'highlight-indent-guides-stack-odd-face "black")
     (set-face-background 'highlight-indent-guides-stack-even-face "black")))
-
-;; XML mode performance optimizations
-(use-package nxml-mode
-  :ensure nil  ; Built-in
-  :mode ("\\.xml\\'" "\\.xsd\\'" "\\.xsl\\'" "\\.xslt\\'" "\\.svg\\'")
-  :config
-  (setq nxml-slash-auto-complete-flag t
-        nxml-auto-insert-xml-declaration-flag nil
-        nxml-outline-child-indent 2)
-  ;; Performance improvements for large XML files
-  (add-hook 'nxml-mode-hook
-            (lambda ()
-              (setq-local font-lock-maximum-decoration 1)  ; Reduce syntax highlighting
-              (setq-local jit-lock-defer-time 0.05)        ; Faster font lock
-              (setq-local auto-save-default nil))))
 
 (use-package imenu-list
   :ensure t

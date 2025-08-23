@@ -17,20 +17,20 @@
 ;(add-to-list 'default-frame-alist '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*"))
 
 ;; Color settings
-(defun set-my-colors ()
+(defun my--set-colors ()
   (set-background-color "gray20")
   (set-cursor-color "cyan")
   (set-foreground-color "gray80"))
 
-(defun set-my-frame-colors (frame)
+(defun my--set-frame-colors (frame)
   (select-frame frame)
   (set-background-color "gray20")
   (set-cursor-color "cyan")
   (set-foreground-color "gray80"))
 
 (if (daemonp)
-	(add-hook 'after-make-frame-functions #'set-my-frame-colors)
-  (set-my-colors))
+	(add-hook 'after-make-frame-functions #'my--set-frame-colors)
+  (my--set-colors))
 
 ;;Use space not tabs
 (setq-default indent-tabs-mode nil)

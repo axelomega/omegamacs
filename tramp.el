@@ -117,12 +117,12 @@
     (make-directory (expand-file-name "~/.emacs.d/tramp-backups/") t))
 
   ;; Performance: Disable version control for remote files
-  (defun my-tramp-disable-vc (orig-fun &rest args)
+  (defun my--tramp-disable-vc (orig-fun &rest args)
     "Disable version control for TRAMP files to improve performance."
     (if (file-remote-p default-directory)
         nil
       (apply orig-fun args)))
-  (advice-add 'vc-backend :around #'my-tramp-disable-vc)
+  (advice-add 'vc-backend :around #'my--tramp-disable-vc)
 
   ;; Security: Prompt for passwords instead of storing them
   (setq password-cache-expiry 300           ; Cache passwords for 5 minutes
@@ -170,11 +170,11 @@
       :category tramp-host
       :face     consult-file
       :history  file-name-history
-      :items    ,#'my-tramp-host-candidates
-      :action   ,#'my-tramp-open-host)
+      :items    ,#'my--tramp-host-candidates
+      :action   ,#'my--tramp-open-host)
     "TRAMP host candidate source for `consult-buffer'.")
 
-  (defun my-tramp-host-candidates ()
+  (defun my--tramp-host-candidates ()
     "Return list of TRAMP host candidates from SSH config and known hosts."
     (let ((hosts '())
           (ssh-config (expand-file-name "~/.ssh/config"))
@@ -200,7 +200,7 @@
                 (push (format "/ssh:%s:" host) hosts))))))
       (delete-dups hosts)))
 
-  (defun my-tramp-open-host (host)
+  (defun my--tramp-open-host (host)
     "Open TRAMP connection to HOST."
     (find-file host))
 
@@ -315,31 +315,31 @@
 ;; Projectile integration for TRAMP
 (with-eval-after-load 'projectile
   ;; Optimize projectile for TRAMP
-  (defun my-projectile-project-root-tramp (orig-fn &rest args)
+  (defun my--projectile-project-root-tramp (orig-fn &rest args)
     "Optimize project root detection for TRAMP files."
     (if (file-remote-p default-directory)
         (let ((projectile-git-command "git ls-files -zco --exclude-standard")
               (projectile-generic-command "find . -type f -print0"))
           (apply orig-fn args))
       (apply orig-fn args)))
-  (advice-add 'projectile-project-root :around #'my-projectile-project-root-tramp))
+  (advice-add 'projectile-project-root :around #'my--projectile-project-root-tramp))
 
 ;; Magit integration for TRAMP
 (with-eval-after-load 'magit
   ;; Improve magit performance over TRAMP
-  (defun my-magit-process-environment (env)
+  (defun my--magit-process-environment (env)
     "Add TRAMP-friendly environment settings to magit."
     (cons "GIT_PAGER=cat" env))
-  (advice-add 'magit-process-environment :filter-return #'my-magit-process-environment)
+  (advice-add 'magit-process-environment :filter-return #'my--magit-process-environment)
 
   ;; Disable certain magit features for remote repos
-  (defun my-magit-disable-for-tramp ()
+  (defun my--magit-disable-for-tramp ()
     "Disable certain magit features when in TRAMP buffer."
     (when (file-remote-p default-directory)
       (setq-local magit-refresh-verbose t)
       (setq-local magit-git-executable "git")
       (setq-local auto-revert-mode nil)))
-  (add-hook 'magit-mode-hook #'my-magit-disable-for-tramp))
+  (add-hook 'magit-mode-hook #'my--magit-disable-for-tramp))
 
 ;; Key bindings
 (global-set-key (kbd "C-c t c") #'my-tramp-cleanup-current)

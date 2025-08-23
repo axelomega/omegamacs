@@ -63,7 +63,7 @@
                  "^INFO:.*\\[\\([/_\\.[:alnum:]]*\\):\\([[:digit:]]*\\)$"
                  1 2 nil 0)))
 
-(defun colorize-compilation-buffer ()
+(defun my--colorize-compilation-buffer ()
   (read-only-mode)
   (ansi-color-apply-on-region (point-min) (point-max))
   (read-only-mode))
@@ -71,7 +71,7 @@
 (use-package ansi-color
   :ensure t
   :config
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+  (add-hook 'compilation-filter-hook 'my--colorize-compilation-buffer))
 
 (setq compilation-hidden-output '("^ninja: Entering[^\n]+\n"))
 
@@ -125,12 +125,6 @@ This ensures consistent file handling when using next-error/previous-error."
 This provides consistent symlink resolution across all file opening operations."
   (when (and filename (stringp filename) (file-exists-p filename))
     (file-truename filename)))
-
-;; Optional: Global symlink resolution (uncomment if you want all file operations to resolve symlinks)
-;; (advice-add 'find-file :filter-args 
-;;             (lambda (args) 
-;;               (list (my--find-file-resolve-symlinks (car args)) 
-;;                     (cadr args))))
 
 ;; Enhanced compilation error navigation with symlink awareness
 (defun my-goto-next-error-resolve-symlinks ()

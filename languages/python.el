@@ -17,7 +17,7 @@
                `(python-ts-mode . ("pyright-langserver" "--stdio")))
 
   ;; Enhanced auto-start function with better error handling
-  (defun my-python-eglot-ensure ()
+  (defun my--python-eglot-ensure ()
     "Start eglot for Python with error handling."
     (when (and (executable-find "pyright-langserver")
                (not (eglot-current-server)))
@@ -34,8 +34,8 @@
       (eglot-shutdown (eglot-current-server)))
     (eglot-ensure))
 
-  :hook ((python-mode . my-python-eglot-ensure)
-         (python-ts-mode . my-python-eglot-ensure))
+  :hook ((python-mode . my--python-eglot-ensure)
+         (python-ts-mode . my--python-eglot-ensure))
   :bind (:map python-mode-map
          ("C-c l r" . my-eglot-restart)
          ("C-c l s" . eglot)))
