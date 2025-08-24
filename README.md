@@ -84,12 +84,145 @@ Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual
 - **Undo tree** with persistent history
 - **Indentation guides** for better code visualization
 - **Hydra menus** for quick access to common operations
+- **GTD-based org-mode** with comprehensive task and project management
 
 ## Hydra Menus
 
 Omegamacs includes Hydra menus for quick access to common operations. Hydras provide transient keymaps that stay active until you explicitly exit or choose a command that exits.
 
 To see all available hydras and their keybindings, run `M-x my-list-hydras`.
+
+## Org-Mode: GTD Task Management System (EXPERIMENTAL)
+This is experimental at this point, as I have not verified it extensively in real-world use yet. Feedback and contributions are welcome!
+
+Omegamacs includes a comprehensive Getting Things Done (GTD) implementation using org-mode with advanced agenda views powered by org-super-agenda.
+
+### Quick Start with Org-Mode
+
+**Main Access Point:**
+- `C-c o` - Opens the org-mode Hydra menu with all org commands
+
+**Essential Commands:**
+- `C-c o c` - Quick capture (add items to inbox)
+- `C-c o a` - Main GTD dashboard agenda view
+- `C-c o r` - Refile items from inbox to appropriate locations
+
+### GTD Workflow Structure
+
+The system is organized around these core files:
+- **inbox.org** - Capture all new tasks and ideas here
+- **projects.org** - Multi-step outcomes and project planning
+- **next.org** - Single next actions ready to be done
+- **someday.org** - Items for future consideration
+- **journal.org** - Meeting notes and daily reflections
+
+### Capture Templates
+
+Access via `C-c o` then the appropriate letter:
+
+- **`t`** - **Todo → Inbox**: Quick task capture with creation timestamp
+- **`n`** - **Next Action**: Direct entry to next actions with context tags
+- **`p`** - **Project**: New project with initial next action
+- **`s`** - **Someday**: Future items tagged as someday
+- **`j`** - **Journal**: Daily journal entries with timestamps
+- **`m`** - **Meeting**: Meeting notes with automatic time tracking
+
+### Agenda Views
+
+The system provides specialized agenda views optimized for GTD workflow:
+
+#### **GTD Dashboard** (`C-c o a` → `g`)
+Your main daily view showing:
+- 📅 **Today's Schedule**: Calendar items and appointments
+- 🔥 **Important**: High-priority tasks (Priority A)
+- ⚠️ **Overdue**: Past-due items requiring attention
+- 📅 **Due Today**: Items due today
+- ⏰ **Due Soon**: Upcoming deadlines (next 7 days)
+- ➡️ **Next Actions**: Tasks ready to be done
+- 📋 **Projects**: Active projects requiring attention
+- ⏳ **Waiting**: Items waiting for others
+- 📥 **Inbox**: Uncategorized items needing processing
+
+#### **Context-Based Next Actions** (`C-c o a` → `n`)
+Focuses on actionable items grouped by context:
+- 🏠 **@home** tasks
+- 💼 **@work** tasks
+- 💻 **@computer** tasks
+- 📞 **@phone** tasks
+- 🚗 **@errand** tasks
+
+#### **Project Review** (`C-c o a` → `p`)
+Dedicated project management view:
+- 🔥 **High Priority Projects**
+- 📋 **Active Projects**
+- ⚠️ **Stalled Projects** (no recent activity)
+- 🎯 **Project Next Actions**
+
+#### **Weekly Review** (`C-c o a` → `w`)
+Comprehensive weekly planning view:
+- 📅 **This Week's Agenda**
+- ✅ **Completed This Week**
+- 📋 **Active Projects Status**
+- ⏳ **Waiting Items to Follow Up**
+
+### Task States and Workflow
+
+**TODO Keywords:**
+- **TODO** - Initial state for all captured items
+- **NEXT** - Single actions ready to be done
+- **PROJECT** - Multi-step outcomes with sub-tasks
+- **WAIT** - Waiting for someone else (requires note)
+- **DONE** - Completed tasks (timestamped)
+- **CANCELLED** - Abandoned tasks (requires note)
+
+**Priority Levels:**
+- **[#A]** - High priority (red in agenda)
+- **[#B]** - Normal priority (orange in agenda)
+- **[#C]** - Low priority (green in agenda)
+
+### Context Tags
+
+Use `C-c C-q` in any org file to add context tags:
+- **@home** - Tasks requiring your home environment
+- **@work** - Work-related tasks
+- **@computer** - Tasks requiring a computer
+- **@phone** - Phone calls to make
+- **@errand** - Tasks to do while out
+- **someday** - Future consideration items
+
+### GTD Processing Workflow
+
+1. **Capture** (`C-c o c`): Add everything to inbox.org
+2. **Process** (`C-c o a` → `g`): Review inbox items in dashboard
+3. **Organize** (`C-c o r`): Refile items to appropriate locations
+4. **Review** (`C-c o a` → `w`): Weekly review of all commitments
+5. **Do** (`C-c o a` → `n`): Work from context-based next actions
+
+### Advanced Features
+
+**Smart Scheduling:**
+- `C-c o d` - Add deadline to current task
+- Agenda views automatically group by urgency
+
+**Project Management:**
+- Automatic detection of stalled projects
+- Project templates with built-in next actions
+- Hierarchical project organization
+
+**Time Tracking:**
+- Meeting capture template includes automatic clocking
+- Time tracking for any task with `C-c C-x C-i/C-o`
+
+**File Organization:**
+All org files are automatically created in `~/omegamacs/org/` directory and are immediately available in agenda views.
+
+### Tips for Effective Use
+
+1. **Daily**: Use GTD Dashboard (`C-c o a g`) to plan your day
+2. **Weekly**: Use Weekly Review (`C-c o a w`) for broader planning
+3. **Context Switching**: Use Next Actions by Context (`C-c o a n`) when changing environments
+4. **Projects**: Use Project Review (`C-c o a p`) for periodic project health checks
+5. **Inbox Zero**: Regularly process and refile inbox items to keep system current
 
 ## Quick Start
 
