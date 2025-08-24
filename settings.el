@@ -112,3 +112,13 @@
 ;; Disable risky local variables
 (setq enable-local-variables :safe
       enable-local-eval nil)
+
+(use-package tab-bar
+  :config
+  (setq tab-bar-new-tab-choice "*scratch*"
+        tab-bar-close-button-show nil
+        tab-bar-show 1)
+  :bind (("C-x t t" . tab-bar-new-tab)
+         ("C-x t k" . tab-bar-close-tab)
+         ("C-x t <right>" . tab-bar-switch-to-next-tab)
+         ("C-x t <left>" . tab-bar-switch-to-prev-tab)))
