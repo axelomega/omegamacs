@@ -30,10 +30,10 @@
   "
  Movement^^        ^Split^         ^Resize^
 ----------------------------------------------------------------
- _h_ ←             _v_ vertical    _H_ ←
- _j_ ↓              _x_ horizontal  _J_ ↓
- _k_ ↑              _s_ swap        _K_ ↑
- _l_ →             _d_ delete      _L_ →
+ _h_ ←             _v_ vertical    _H_ shrink horizontal
+ _j_ ↓              _x_ horizontal  _L_ enlarge horizontal
+ _k_ ↑              _s_ swap        _J_ shrink vertical
+ _l_ →             _d_ delete      _K_ enlarge vertical
  ^ ^                ^ ^             _=_ balance
  ^ ^                ^ ^             ^q^ quit
 "
@@ -49,9 +49,9 @@
     ("d" delete-window)
     ;; Resize (with larger steps for better UX)
     ("H" (shrink-window-horizontally 3))
+    ("L" (enlarge-window-horizontally 3))
     ("J" (shrink-window 3))
     ("K" (enlarge-window 3))
-    ("L" (enlarge-window-horizontally 3))
     ("=" balance-windows)
     ;; Exit
     ("q" nil :exit t))
