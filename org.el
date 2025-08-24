@@ -1,0 +1,111 @@
+;;; -*- lexical-binding: t -*-
+
+(use-package org
+  :ensure t
+  :pin gnu
+  :init
+  (setq my--org-dir (my-user-emacs-subdirectory-local "org")
+        my--org-file-inbox (expand-file-name "inbox.org" my-org-dir)
+        my--org-file-projects (expand-file-name "projects.org" my-org-dir)
+        my--org-file-next (expand-file-name "next.org" my-org-dir)
+        my--org-file-someday (expand-file-name "someday.org" my-org-dir)
+        my--org-file-journal (expand-file-name "journal.org" my-org-dir))
+
+  ;; Where your GTD files live
+  (setq org-directory my--org-dir
+        org-agenda-files (list my--org-file-inbox
+                               my--org-file-projects
+                               my--org-file-next
+                               my--org-file-someday
+                               my--org-file-journal))
+
+  :config
+  ;; --- Core GTD knobs ---
+  (setq org-log-done 'time
+        org-log-into-drawer t
+        org-startup-indented t
+        org-hide-emphasis-markers t
+        org-use-fast-todo-selection t
+        org-tags-column 0)
+
+  ;; TODO workflow
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")))
+  (setq org-todo-keyword-faces
+        '(("NEXT" . (:weight bold))
+          ("WAIT" . (:slant italic :inherit warning))))
+  ;; Context tags (press C-c C-q)
+  (setq org-tag-alist
+        '((:startgroup) ("@home" . ?h) ("@work" . ?w) ("@computer" . ?c) ("@phone" . ?p) ("@errand" . ?e) (:endgroup)
+          ("someday" . ?s)))
+
+  ;; Refile: move items from inbox to project/next/someday
+   (setq org-refile-targets
+      `((,(expand-file-name "projects.org" my-org-dir) :maxlevel . 3)
+        (,(expand-file-name "next.org" my-org-dir)     :maxlevel . 2)
+        (,(expand-file-name "someday.org" my-org-dir)  :maxlevel . 2)))
+
+  (setq org-outline-path-complete-in-steps nil
+        org-refile-use-outline-path 'file) ;; completion like: projects.org/Projects/…
+
+  ;; Capture (C-c c)
+  (setq org-default-notes-file my--org-file-inbox)
+  (setq org-capture-templates
+        `(
+          ;; Quick inbox task
+          ("t" "Todo → Inbox" entry
+           (file+headline my--org-file-inbox "Inbox")
+           "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n%a\n" :empty-lines 1)
+
+          ;; Next action to Next file
+          ("n" "Next action" entry
+           (file my--org-file-next)
+           "* NEXT %? %^g\n%a\n" :empty-lines 1)
+
+          ;; New project skeleton
+          ("p" "Project" entry
+           (file+headline my--org-file-projects "Projects")
+           "* PROJECT %^{Project name}\n** NEXT %?\n" :empty-lines 1)
+
+          ;; Someday/Maybe
+          ("s" "Someday" entry
+           (file my--org-file-someday)
+           "* TODO %? :someday:\n" :empty-lines 1)
+
+          ;; Journal
+          ("j" "Journal" entry
+           (file+datetree my--org-file-journal)
+           "* %U %?\n%i\n" :empty-lines 1)
+
+          ;; Meeting note + clocking
+          ("m" "Meeting (clocked)" entry
+           (file+datetree my--org-file-journal)
+           "* %^{Title}\n:PROPERTIES:\n:Participants: %^{Who}\n:END:\n%U\n%?\n"
+           :clock-in t :clock-resume t :empty-lines 1)
+          ))
+
+  ;; Agenda custom views (C-c a a or C-c a g)
+  (require 'org-habit)
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 50)
+
+  (setq org-agenda-custom-commands
+        '(("g" "GTD"
+           ((agenda "" ((org-agenda-span 7)))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next actions")
+                   (org-agenda-sorting-strategy '(priority-down todo-state-down))))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting for")))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Inbox (unsorted)")
+                   (org-agenda-files '(my--org-file-inbox)))))
+           nil)))
+
+  ;; Handy keys
+  (global-set-key (kbd "C-c a") #'org-agenda)
+  (global-set-key (kbd "C-c c") #'org-capture)
+
+  ;; Optional: export PDF via LaTeX (install TeX separately)
+  ;; (setq org-latex-compiler "xelatex")
+)
