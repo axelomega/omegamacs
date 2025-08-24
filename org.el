@@ -5,7 +5,8 @@
   :pin gnu
   :bind ("C-c o" . hydra-org/body)
   :init
-  (setq my--org-dir (my-user-emacs-subdirectory-local "org")
+  ;; Org files should be accessible from $HOME in general
+  (setq my--org-dir (my-user-emacs-subdirectory "org")
         my--org-file-inbox (expand-file-name "inbox.org" my--org-dir)
         my--org-file-projects (expand-file-name "projects.org" my--org-dir)
         my--org-file-next (expand-file-name "next.org" my--org-dir)
@@ -19,6 +20,12 @@
                                my--org-file-next
                                my--org-file-someday
                                my--org-file-journal))
+
+  ;; [Claude] ensure that all org files exist
+  (dolist (file org-agenda-files)
+    (unless (file-exists-p file)
+      (with-temp-buffer
+        (write-file file))))
 
   :config
   ;; --- Core GTD knobs ---

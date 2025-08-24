@@ -37,6 +37,13 @@
       (make-directory dir t))
     dir))
 
+(defun my-user-emacs-subdirectory (subdir)
+  "Given a subdirectory name, return the path to the directorey directory; if the path does not exist, create it."
+  (let ((dir (expand-file-name subdir user-emacs-directory)))
+    (unless (file-exists-p dir)
+      (make-directory dir t))
+    dir))
+
 ;; Check for minimal config argument
 (defvar my-minimal-config (member "--minimal" command-line-args)
   "When non-nil, load only essential configuration.")
