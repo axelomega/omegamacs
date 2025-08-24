@@ -115,6 +115,32 @@
   ;; (setq org-latex-compiler "xelatex")
 )
 
+(use-package org-super-agenda
+  :ensure t
+  :after org
+  :config
+  (org-super-agenda-mode)
+  (setq org-super-agenda-groups
+        '((:name "Today"
+                 :time-grid t
+                 :date today)
+          (:name "Important"
+                 :priority "A")
+          (:name "Overdue"
+                 :deadline past)
+          (:name "Due today"
+                 :deadline today)
+          (:name "Due soon"
+                 :deadline future)
+          (:name "Next actions"
+                 :todo "NEXT")
+          (:name "Projects"
+                 :todo "PROJECT")
+          (:name "Waiting"
+                 :todo "WAIT")
+          (:name "Inbox"
+                 :todo "TODO"))))
+
 (defhydra hydra-org (:color blue :hint nil)
   "
 ^Capture^           ^Navigate^          ^View^
