@@ -92,7 +92,8 @@ Omegamacs includes Hydra menus for quick access to common operations. Hydras pro
 
 To see all available hydras and their keybindings, run `M-x my-list-hydras`.
 
-## Org-Mode: GTD Task Management System
+## Org-Mode: GTD Task Management System (EXPERIMENTAL)
+This is experimental at this point, as I have not verified it extensively in real-world use yet. Feedback and contributions are welcome!
 
 Omegamacs includes a comprehensive Getting Things Done (GTD) implementation using org-mode with advanced agenda views powered by org-super-agenda.
 
@@ -145,7 +146,7 @@ Your main daily view showing:
 #### **Context-Based Next Actions** (`C-c o a` → `n`)
 Focuses on actionable items grouped by context:
 - 🏠 **@home** tasks
-- 💼 **@work** tasks  
+- 💼 **@work** tasks
 - 💻 **@computer** tasks
 - 📞 **@phone** tasks
 - 🚗 **@errand** tasks
