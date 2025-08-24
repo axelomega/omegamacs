@@ -217,12 +217,18 @@ Potential side effects:
 (use-package realgud
   :ensure t
   :after (lsp-mode dap-mode)
+  :defer t
   :config
   ;; Use realgud for debugging
-  (setq realgud:display-buffer 'realgud:display-buffer-same-window)
-  (setq realgud:window-height 20)
-  (setq realgud:window-width 80))
+  (setq realgud-safe-mode t
+        realgud:display-buffer 'realgud:display-buffer-same-window
+        realgud:window-height 20
+        realgud:window-width 80))
 
 (use-package realgud-ipdb
+  :ensure t
+  :after realgud)
+
+(use-package realgud-lldb
   :ensure t
   :after realgud)
