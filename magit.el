@@ -19,13 +19,15 @@
 
 (defhydra hydra-git (:color teal :hint nil)
   "
- Git: _s_ status   _l_ log   _d_ diff   _c_ commit   _p_ push   _b_ blame   _q_ quit
+ Git: _s_ status   _l_ log   _d_ diff   _c_ commit   _p_ push   _f_ fetch   _u_ pull   _b_ blame   _q_ quit
 "
   ("s" magit-status)
   ("l" magit-log-current)
   ("d" magit-diff-buffer-file)
   ("c" magit-commit-create)
   ("p" magit-push-current)
+  ("f" magit-fetch-current)
+  ("u" magit-pull-current)
   ("b" magit-blame)
   ("q" nil :exit t))
 

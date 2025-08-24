@@ -134,7 +134,7 @@
          ("C-x t <right>" . tab-bar-switch-to-next-tab)
          ("C-x t <left>" . tab-bar-switch-to-prev-tab)))
 
-;; Hydras will be installed in the .el files that relates to the function of the hydra
+;; Hydras will be installed in the .el files that relate to the function of the hydra
 (use-package hydra
   :ensure t
   :config
@@ -178,23 +178,3 @@ Shows the hydra name, any bound keys, and the docstring (first line)."
                                  ""))))))
       (pop-to-buffer buf)
       (special-mode)))))
-
-;;  (defun my-list-hydras ()
-;;    "List all defined hydras (functions ending with /body) in a *Hydras* buffer."
-;;    (interactive)
-;;    (let ((buf (get-buffer-create "*Hydras*")))
-;;      (with-current-buffer buf
-;;        (erase-buffer)
-;;        (insert (format "%-30s %s\n" "Hydra" "Docstring"))
-;;        (insert (make-string 70 ?-))
-;;        (insert "\n")
-;;        (mapatoms
-;;         (lambda (sym)
-;;           (when (and (fboundp sym)
-;;                      (string-match-p "hydra-.*?/body" (symbol-name sym)))
-;;             (insert (format "%-30s %s\n"
-;;                             (symbol-name sym)
-;;                             (or (ignore-errors (documentation sym))
-;;                                 "")))))))
-;;      (pop-to-buffer buf)
-;;      (special-mode))))

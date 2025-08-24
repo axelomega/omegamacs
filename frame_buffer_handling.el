@@ -45,7 +45,7 @@
     ;; Split
     ("v" split-window-right)
     ("x" split-window-below)
-    ("s" ace-swap-window)
+    ("s" window-swap-states)
     ("d" delete-window)
     ;; Resize
     ("H" shrink-window-horizontally)
