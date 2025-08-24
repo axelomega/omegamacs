@@ -145,36 +145,39 @@ Shows the hydra name, any bound keys, and the docstring (first line)."
     (let ((buf (get-buffer-create "*Hydras*")))
       (with-current-buffer buf
         (erase-buffer)
-        (insert (make-string 80 ?-) "\n")
-        (insert (format "%-30s %-15s %s\n" "Hydra" "Key(s)" "Docstring"))
-        (insert (make-string 80 ?-) "\n")
+        (insert (propertize (make-string 80 ?-) 'face 'font-lock-comment-face) "\n")
+        (insert (propertize (format "%-30s %-15s %s\n" "Hydra" "Key(s)" "Docstring") 'face 'font-lock-keyword-face))
+        (insert (propertize (make-string 80 ?-) 'face 'font-lock-comment-face) "\n")
         (mapatoms
          (lambda (sym)
            (when (and (fboundp sym)
                       (string-match-p "hydra-.*?/body" (symbol-name sym)))
-             (let* ((name (symbol-name sym))
+             (let* ((name (propertize (symbol-name sym) 'face 'font-lock-function-name-face))
                     ;; collect all keybindings for this hydra
-                    (keys (mapconcat #'key-description
-                                     (where-is-internal sym)
-                                     ", "))
-                    (doc (or (ignore-errors
-                               (when-let* ((d (documentation sym)))
-                                 (car (split-string d "\n"))))
-                             "")))
-               (insert (format "%-30s %-15s %s\n"
+                    (keys (propertize (mapconcat #'key-description
+                                                 (where-is-internal sym)
+                                                 ", ")
+                                      'face 'font-lock-string-face))
+                    (doc (propertize (or (ignore-errors
+                                           (when-let* ((d (documentation sym)))
+                                             (car (split-string d "\n"))))
+                                         "")
+                                     'face 'font-lock-doc-face)))
+               (insert (format "%-40s %-20s %s\n"
                                name (or keys "") doc))))))
         (insert "\n")
-        (insert (make-string 80 ?-) "\n")
-        (insert (format "%-30s %s\n" "Hydra" "Docstring"))
-        (insert (make-string 80 ?-))
+        (insert (propertize (make-string 80 ?-) 'face 'font-lock-comment-face) "\n")
+        (insert (propertize (format "%-40s %s\n" "Hydra" "Docstring") 'face 'font-lock-keyword-face))
+        (insert (propertize (make-string 80 ?-) 'face 'font-lock-comment-face))
         (insert "\n")
         (mapatoms
          (lambda (sym)
            (when (and (fboundp sym)
                       (string-match-p "hydra-.*?/body" (symbol-name sym)))
-             (insert (format "%-30s %s\n"
-                             (symbol-name sym)
-                             (or (ignore-errors (documentation sym))
-                                 ""))))))
+             (let ((name (propertize (symbol-name sym) 'face 'font-lock-function-name-face))
+                   (doc (propertize (or (ignore-errors (documentation sym))
+                                        "")
+                                    'face 'font-lock-doc-face)))
+               (insert (format "%-40s %s\n" name doc)))))))
       (pop-to-buffer buf)
-      (special-mode)))))
+      (special-mode))))

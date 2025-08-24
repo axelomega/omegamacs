@@ -27,7 +27,7 @@
 (setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
 
 (defhydra hydra-window (:color amaranth :hint nil)
-    "
+  "
  Movement^^        ^Split^         ^Resize^
 ----------------------------------------------------------------
  _h_ ←             _v_ vertical    _H_ ←
@@ -47,11 +47,11 @@
     ("x" split-window-below)
     ("s" window-swap-states)
     ("d" delete-window)
-    ;; Resize
-    ("H" shrink-window-horizontally)
-    ("J" shrink-window)
-    ("K" enlarge-window)
-    ("L" enlarge-window-horizontally)
+    ;; Resize (with larger steps for better UX)
+    ("H" (shrink-window-horizontally 3))
+    ("J" (shrink-window 3))
+    ("K" (enlarge-window 3))
+    ("L" (enlarge-window-horizontally 3))
     ("=" balance-windows)
     ;; Exit
     ("q" nil :exit t))
