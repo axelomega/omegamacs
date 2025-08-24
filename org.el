@@ -176,7 +176,7 @@
                                    :order 10)
                             (:discard (:anything t)))))))
            nil)
-          
+
           ("n" "Next Actions by Context"
            ((todo "NEXT" ((org-agenda-overriding-header "Next Actions by Context")
                           (org-super-agenda-groups
@@ -187,7 +187,7 @@
                              (:name "🚗 @Errands" :tag "@errand")
                              (:name "Other" :anything t))))))
            nil)
-          
+
           ("p" "Projects Review"
            ((todo "PROJECT" ((org-agenda-overriding-header "Project Status")
                              (org-super-agenda-groups
@@ -270,8 +270,8 @@
 _c_: capture        _r_: refile         _a_: default         _l_: store link
 _j_: journal        _g_: goto           _G_: GTD dash        _i_: insert link
 _t_: todo           _s_: search         _n_: next actions    _o_: open at point
-_p_: project        _d_: deadline       _P_: projects        _S_: schedule
-_m_: meeting        _T_: set tags       _w_: weekly review   _D_: set deadline
+_p_: project        _d_: set deadline   _P_: projects        _S_: schedule
+_m_: meeting        _T_: set tags       _w_: weekly review
 "
   ("c" org-capture)
   ("j" (org-capture nil "j"))
@@ -288,7 +288,6 @@ _m_: meeting        _T_: set tags       _w_: weekly review   _D_: set deadline
   ("s" org-search-view)
   ("d" org-deadline)
   ("S" org-schedule)
-  ("D" org-deadline)
   ("T" org-set-tags-command)
   ("l" org-store-link)
   ("i" org-insert-link)
