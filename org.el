@@ -200,11 +200,13 @@
                                 (:name "🔄 Projects Needing Next Action"
                                        :pred (lambda (item)
                                                (let ((marker (get-text-property 0 'org-marker item)))
-                                                 (when marker
+                                                 (when (and marker (marker-buffer marker))
                                                    (with-current-buffer (marker-buffer marker)
                                                      (save-excursion
                                                        (goto-char marker)
-                                                       (not (org-goto-first-child))))))))
+                                                       (condition-case nil
+                                                           (not (org-goto-first-child))
+                                                         (error nil))))))))
                                 (:auto-category t))))))
            nil)
 
