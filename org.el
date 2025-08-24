@@ -3,13 +3,15 @@
 (use-package org
   :ensure t
   :pin gnu
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
   :init
   (setq my--org-dir (my-user-emacs-subdirectory-local "org")
-        my--org-file-inbox (expand-file-name "inbox.org" my-org-dir)
-        my--org-file-projects (expand-file-name "projects.org" my-org-dir)
-        my--org-file-next (expand-file-name "next.org" my-org-dir)
-        my--org-file-someday (expand-file-name "someday.org" my-org-dir)
-        my--org-file-journal (expand-file-name "journal.org" my-org-dir))
+        my--org-file-inbox (expand-file-name "inbox.org" my--org-dir)
+        my--org-file-projects (expand-file-name "projects.org" my--org-dir)
+        my--org-file-next (expand-file-name "next.org" my--org-dir)
+        my--org-file-someday (expand-file-name "someday.org" my--org-dir)
+        my--org-file-journal (expand-file-name "journal.org" my--org-dir))
 
   ;; Where your GTD files live
   (setq org-directory my--org-dir
@@ -30,7 +32,7 @@
 
   ;; TODO workflow
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")))
+        '((sequence "TODO(t)" "NEXT(n)" "PROJECT(j)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELLED(c@)")))
   (setq org-todo-keyword-faces
         '(("NEXT" . (:weight bold))
           ("WAIT" . (:slant italic :inherit warning))))
@@ -40,10 +42,10 @@
           ("someday" . ?s)))
 
   ;; Refile: move items from inbox to project/next/someday
-   (setq org-refile-targets
-      `((,(expand-file-name "projects.org" my-org-dir) :maxlevel . 3)
-        (,(expand-file-name "next.org" my-org-dir)     :maxlevel . 2)
-        (,(expand-file-name "someday.org" my-org-dir)  :maxlevel . 2)))
+  (setq org-refile-targets
+     `((,my--org-file-projects :maxlevel . 3)
+       (,my--org-file-next     :maxlevel . 2)
+       (,my--org-file-someday  :maxlevel . 2)))
 
   (setq org-outline-path-complete-in-steps nil
         org-refile-use-outline-path 'file) ;; completion like: projects.org/Projects/…
@@ -99,12 +101,9 @@
                   ((org-agenda-overriding-header "Waiting for")))
             (todo "TODO"
                   ((org-agenda-overriding-header "Inbox (unsorted)")
-                   (org-agenda-files '(my--org-file-inbox)))))
+                   (org-agenda-files (list my--org-file-inbox)))))
            nil)))
 
-  ;; Handy keys
-  (global-set-key (kbd "C-c a") #'org-agenda)
-  (global-set-key (kbd "C-c c") #'org-capture)
 
   ;; Optional: export PDF via LaTeX (install TeX separately)
   ;; (setq org-latex-compiler "xelatex")
