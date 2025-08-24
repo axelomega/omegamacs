@@ -83,6 +83,13 @@ Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual
 - **Terminal integration** with VTerm
 - **Undo tree** with persistent history
 - **Indentation guides** for better code visualization
+- **Hydra menus** for quick access to common operations
+
+## Hydra Menus
+
+Omegamacs includes Hydra menus for quick access to common operations. Hydras provide transient keymaps that stay active until you explicitly exit or choose a command that exits.
+
+To see all available hydras and their keybindings, run `M-x my-list-hydras`.
 
 ## Quick Start
 
@@ -196,6 +203,7 @@ Example `~/.emacs.d/init.el` customizations:
 - `frame_buffer_handling.el` - Window and buffer management
 - `ido.el` - IDO configuration (legacy)
 - `tramp.el` - Remote file access configuration
+- `hydra.el` - Hydra menus for quick access to common operations
 - `minimal.el` - Lightweight configuration for `--minimal` mode
 - `version-check.el` - Package version checking utilities
 - `copilot/` - GitHub Copilot integration
@@ -248,6 +256,7 @@ Omegamacs uses a clean separation between configuration files (the git repositor
 ├── frame_buffer_handling.el  # Window and buffer management
 ├── ido.el                    # IDO configuration (legacy)
 ├── tramp.el                  # Remote file access configuration
+├── hydra.el                  # Hydra menus for quick access to common operations
 ├── minimal.el                # Lightweight configuration for --minimal mode
 ├── version-check.el          # Package version checking utilities
 ├── templates/                # Template files
