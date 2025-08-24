@@ -65,6 +65,17 @@
 (global-set-key (kbd "C--")      #'(lambda nil (interactive) (my-text-zoom -1)))
 (global-set-key [C-kp-subtract]  #'(lambda nil (interactive) (my-text-zoom -1)))
 
+(defhydra hydra-zoom (:color pink :hint nil)
+  "
+ Zoom: _+_ in   _-_ out   _0_ reset   _q_ quit
+"
+  ("+" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("0" (text-scale-set 0))
+  ("q" nil :exit t))
+
+(global-set-key (kbd "C-c z") 'hydra-zoom/body)
+
 ;;Smerge
 (add-hook 'smerge-mode-hook
    #'(lambda ()

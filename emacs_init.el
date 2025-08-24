@@ -50,6 +50,7 @@
     ;; Full configuration
     (load (my-get-fullpath "packages"))
     (load (my-get-fullpath "settings"))
+    (load (my-get-fullpath "hydra"))
     (load (my-get-fullpath "flycheck"))
     (load (my-get-fullpath "company"))
     (load (my-get-fullpath "completion"))
