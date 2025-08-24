@@ -3,8 +3,7 @@
 (use-package org
   :ensure t
   :pin gnu
-  :bind (("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
+  :bind ("C-c o" . hydra-org/body)
   :init
   (setq my--org-dir (my-user-emacs-subdirectory-local "org")
         my--org-file-inbox (expand-file-name "inbox.org" my--org-dir)
@@ -108,3 +107,28 @@
   ;; Optional: export PDF via LaTeX (install TeX separately)
   ;; (setq org-latex-compiler "xelatex")
 )
+
+(defhydra hydra-org (:color blue :hint nil)
+  "
+^Capture^           ^Navigate^          ^View^
+^^^^^^^^--------------------------------------------
+_c_: capture        _a_: agenda         _l_: store link
+_j_: journal        _r_: refile         _i_: insert link
+_t_: todo           _g_: goto           _o_: open at point
+_p_: project        _s_: search
+_m_: meeting        _d_: deadline
+"
+  ("c" org-capture)
+  ("j" (org-capture nil "j"))
+  ("t" (org-capture nil "t"))
+  ("p" (org-capture nil "p"))
+  ("m" (org-capture nil "m"))
+  ("a" org-agenda)
+  ("r" org-refile)
+  ("g" org-goto)
+  ("s" org-search-view)
+  ("d" org-deadline)
+  ("l" org-store-link)
+  ("i" org-insert-link)
+  ("o" org-open-at-point)
+  ("q" nil "quit"))
