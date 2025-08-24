@@ -16,3 +16,17 @@
   (setq magit-save-repository-buffers 'dontask) ; Don't ask to save buffers
   (setq magit-display-buffer-function
         #'magit-display-buffer-same-window-except-diff-v1)) ; Faster buffer display
+
+(defhydra hydra-git (:color teal :hint nil)
+  "
+ Git: _s_ status   _l_ log   _d_ diff   _c_ commit   _p_ push   _b_ blame   _q_ quit
+"
+  ("s" magit-status)
+  ("l" magit-log-current)
+  ("d" magit-diff-buffer-file)
+  ("c" magit-commit-create)
+  ("p" magit-push-current)
+  ("b" magit-blame)
+  ("q" nil :exit t))
+
+(global-set-key (kbd "C-c g") 'hydra-git/body)
