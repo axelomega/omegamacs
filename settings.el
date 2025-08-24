@@ -114,7 +114,6 @@
       enable-local-eval nil)
 
 (use-package tab-bar
-  :ensure t
   :config
   (setq tab-bar-new-tab-choice "*scratch*"
         tab-bar-close-button-show nil
