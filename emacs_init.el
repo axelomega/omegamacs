@@ -37,6 +37,17 @@
       (make-directory dir t))
     dir))
 
+(defun my-user-emacs-file-local (file-name &optional subdir)
+  "Given name, return the path to the disk local user directory; if the path does not exist, create it."
+  (let ((dir (if subdir
+                 (my-user-emacs-subdirectory-local subdir)
+               my-user-emacs-directory-local)))
+    (let ((fn (expand-file-name file-name dir)))
+      (unless (file-exists-p fn)
+        (with-temp-buffer
+          (write-file fn)))
+      fn)))
+
 (defun my-user-emacs-subdirectory (subdir)
   "Given a subdirectory name, return the path to the directorey directory; if the path does not exist, create it."
   (let ((dir (expand-file-name subdir user-emacs-directory)))

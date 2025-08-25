@@ -28,7 +28,7 @@
   :init
   (savehist-mode)
   :config
-  (setq savehist-file (my-user-emacs-subdirectory-local "cache/savehist")
+  (setq savehist-file (my-user-emacs-file-local "savehist" "cache")
         savehist-additional-variables '(search-ring regexp-search-ring)
         savehist-autosave-interval 60))
 
@@ -38,7 +38,7 @@
   :init
   (recentf-mode)
   :config
-  (setq recentf-save-file (my-user-emacs-subdirectory-local "cache/recentf")
+  (setq recentf-save-file (my-user-emacs-file-local "recentf" "cache")
         recentf-max-saved-items 200
         recentf-max-menu-items 50
         recentf-exclude '("^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
