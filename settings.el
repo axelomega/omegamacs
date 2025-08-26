@@ -112,7 +112,7 @@
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
 ;; Security settings
-(setq auth-source-save-behavior nil  ; Don't save auth info automatically
+(setq auth-sources '("~/.authinfo")   ; file to store passwords and tokens
       network-security-level 'high   ; High security for network connections
       gnutls-verify-error t          ; Verify TLS certificates
       gnutls-min-prime-bits 3072)    ; Strong TLS

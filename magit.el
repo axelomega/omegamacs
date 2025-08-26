@@ -26,6 +26,7 @@
   (setq magit-display-buffer-function
         #'magit-display-buffer-same-window-except-diff-v1)) ; Faster buffer display
 
+;; For initial setup see https://magit.vc/manual/forge/Initial-Setup.html
 (use-package forge
   :ensure t
   :after magit)
