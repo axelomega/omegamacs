@@ -28,14 +28,6 @@
   :config
   (rg-enable-default-bindings))
 
-;; Git integration enhancements
-(use-package diff-hl
-  :ensure t
-  :hook ((prog-mode . diff-hl-mode)
-         (vc-dir-mode . diff-hl-dir-mode))
-  :config
-  (diff-hl-flydiff-mode))
-
 ;; Better dired with modern features
 (use-package dired-x
   :ensure nil  ; Built-in
