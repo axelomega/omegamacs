@@ -86,6 +86,7 @@
     (load (my-get-fullpath "tramp"))
     (load (my-get-fullpath "development"))
     (load (my-get-fullpath "org"))
+    ;; (load (my-get-fullpath "email"))
     ;; Load Copilot configuration based on user preference
     (when (boundp 'my-copilot-config)
       (cond

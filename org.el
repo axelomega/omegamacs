@@ -11,7 +11,8 @@
         my--org-file-projects (expand-file-name "projects.org" my--org-dir)
         my--org-file-next (expand-file-name "next.org" my--org-dir)
         my--org-file-someday (expand-file-name "someday.org" my--org-dir)
-        my--org-file-journal (expand-file-name "journal.org" my--org-dir))
+        my--org-file-journal (expand-file-name "journal.org" my--org-dir)
+        my--org-file-contacts (expand-file-name "contacts.org" my--org-dir))
 
   ;; Where your GTD files live
   (setq org-directory my--org-dir
@@ -22,7 +23,7 @@
                                my--org-file-journal))
 
   ;; [Claude] ensure that all org files exist
-  (dolist (file org-agenda-files)
+  (dolist (file (append org-agenda-files (list my--org-file-contacts)))
     (unless (file-exists-p file)
       (with-temp-buffer
         (write-file file))))
@@ -295,3 +296,25 @@ _m_: meeting        _T_: set tags       _w_: weekly review
   ("i" org-insert-link)
   ("o" org-open-at-point)
   ("q" nil "quit"))
+
+;; org-contacts for email integration
+(use-package org-contacts
+  :ensure t
+  :after org
+  :config
+  (setq org-contacts-files (list my--org-file-contacts))
+  (add-to-list 'org-capture-templates
+               '("C" "Contact" entry
+                 (file my--org-file-contacts)
+                 "* %(org-contacts-template-name)
+:PROPERTIES:
+:EMAIL: %(org-contacts-template-email)
+:PHONE:
+:ALIAS:
+:NICKNAME:
+:IGNORE:
+:ICON:
+:NOTE:
+:ADDRESS:
+:BIRTHDAY:
+:END:" :empty-lines 1)))
