@@ -2,19 +2,19 @@
 
 Thank you for your interest in contributing to Omegamacs! 
 
-Omegamacs has so far been my personal Emacs configuration that I've developed and refined for my own workflow. However, I believe it has grown into something that could benefit the broader Emacs community, so I'm opening it up for contributions from others. This guide will help you understand how to contribute effectively while maintaining the configuration's core principles and quality.
+Omegamacs has been my personal Emacs configuration that I've developed and refined for my own workflow. However, I believe it has grown into something that could benefit the broader Emacs community, so I'm opening it up for contributions from others. This guide will help you understand how to contribute effectively while maintaining the configuration's core principles and quality that I've established.
 ## Philosophy
 
-Before contributing, please understand Omegamacs' core philosophy:
+Before contributing, please understand the core philosophy I've established for Omegamacs:
 
-- **Code as Config**: We write real Emacs Lisp, not framework-specific abstractions
+- **Code as Config**: I write real Emacs Lisp, not framework-specific abstractions
 - **Transparency**: Every behavior should be explicit and traceable
-- **Modern Packages**: Prefer current-generation packages over legacy alternatives
+- **Modern Packages**: I prefer current-generation packages over legacy alternatives
 - **Clean Separation**: Configuration files stay separate from user data and secrets
 
 ## Types of Contributions
 
-We welcome several types of contributions:
+I welcome several types of contributions:
 
 ### 1. Language Support
 **Most needed!** Add support for new programming languages by creating files in the `languages/` directory.
@@ -23,17 +23,17 @@ We welcome several types of contributions:
 Fix issues in existing configurations or improve error handling. I also appreciate bug reports from users - please file [Issues](https://github.com/axelomega/omegamacs/issues) if you encounter problems, even if you can't fix them yourself.
 
 ### 3. Feature Enhancements
-Improve existing features while maintaining the core philosophy. Check the [Issues](https://github.com/axelomega/omegamacs/issues) section for requested features and enhancement ideas.
+Improve existing features while maintaining the core philosophy I've established. Check the [Issues](https://github.com/axelomega/omegamacs/issues) section for features I've requested and enhancement ideas.
 
 ### 4. Documentation
-Improve README, create usage examples, or start a wiki page if the readme is getting too long.
+Improve the README, create usage examples, or start a wiki page if the README is getting too long.
 
 ### 5. Performance Improvements
 Optimize startup time or runtime performance.
 
 ## Adding Language Support
 
-This is the most common and welcome type of contribution. Here's how:
+This is the most common and welcome type of contribution I'm looking for. Here's how:
 
 ### Structure
 Create a new file: `languages/{language}.el`
