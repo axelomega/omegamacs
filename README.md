@@ -274,7 +274,9 @@ Set `my-copilot-config` in `~/.emacs.d/init.el`:
 
 ## Language Support
 
-**Supported Languages:**
+These are the languages I have needed so far in my development work. I would appreciate contributions to extend language support in Omegamacs for additional programming languages.
+
+**Currently Supported Languages:**
 - **C/C++**: LSP support with clangd
 - **Python**: LSP support with pyright
 - **Verilog/SystemVerilog**: Language-specific configuration
