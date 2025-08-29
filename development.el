@@ -101,7 +101,7 @@
         compilation-always-kill t
         compilation-scroll-output 'first-error))
 
-;; Remove comments to focus on clean code if needed
+;; Hide comments temporarily to focus on code structure
 (use-package nocomments-mode
   :ensure t
   :bind (("<f12>" . nocomments-mode)))
