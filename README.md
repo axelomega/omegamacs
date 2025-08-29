@@ -16,7 +16,7 @@ Whether you use it as-is, adapt parts for your own setup, or simply browse for i
 
 ### Philosophy: Code as Config
 
-Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual Emacs Lisp code. This fundamental approach sets us apart from other configurations:
+Omegamacs follows a **"code as config"** philosophy - I'm not afraid of actual Emacs Lisp code. This fundamental approach sets it apart from other configurations:
 
 **🔍 Transparency & Control**
 - **No abstractions or DSLs** - you write real Emacs Lisp, not framework-specific syntax
