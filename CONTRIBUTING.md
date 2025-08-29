@@ -1,7 +1,8 @@
 # Contributing to Omegamacs
 
-Thank you for your interest in contributing to Omegamacs! This guide will help you understand how to contribute effectively to this Emacs configuration.
+Thank you for your interest in contributing to Omegamacs! 
 
+Omegamacs has so far been my personal Emacs configuration that I've developed and refined for my own workflow. However, I believe it has grown into something that could benefit the broader Emacs community, so I'm opening it up for contributions from others. This guide will help you understand how to contribute effectively while maintaining the configuration's core principles and quality.
 ## Philosophy
 
 Before contributing, please understand Omegamacs' core philosophy:
@@ -19,13 +20,13 @@ We welcome several types of contributions:
 **Most needed!** Add support for new programming languages by creating files in the `languages/` directory.
 
 ### 2. Bug Fixes
-Fix issues in existing configurations or improve error handling.
+Fix issues in existing configurations or improve error handling. I also appreciate bug reports from users - please file [Issues](https://github.com/axelomega/omegamacs/issues) if you encounter problems, even if you can't fix them yourself.
 
 ### 3. Feature Enhancements
-Improve existing features while maintaining the core philosophy.
+Improve existing features while maintaining the core philosophy. Check the [Issues](https://github.com/axelomega/omegamacs/issues) section for requested features and enhancement ideas.
 
 ### 4. Documentation
-Improve README, add code comments, or create usage examples.
+Improve README, create usage examples, or start a wiki page if the readme is getting too long.
 
 ### 5. Performance Improvements
 Optimize startup time or runtime performance.
@@ -98,7 +99,7 @@ If your language uses an LSP server:
          ("C-c k" . command))
   :init
   ;; Code to run before package loads
-  
+
   :config
   ;; Code to run after package loads
   ;; Configuration goes here
