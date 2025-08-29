@@ -142,6 +142,92 @@ EMACS_PACKAGE_UPDATE_ENABLE=1 emacs
 
 **See individual sections below for detailed descriptions of complex features.**
 
+## Emacs Server Mode (Detailed)
+
+### Why Use Server Mode?
+
+- **Fast client connections**: After initial startup, new frames open instantly
+- **Persistent state**: Keep buffers, undo history, and session between frames
+- **Better performance**: Language servers and packages stay loaded
+- **Seamless workflow**: Close and reopen editor windows without losing context
+
+### Configuration
+
+**This configuration is optimized for server mode**, prioritizing comprehensive functionality over rapid startup times. The initial launch can be lengthy due to extensive packages and language server integrations.
+
+**Quick test:** `emacs --fg-daemon` then `emacsclient -c`
+
+### Advanced Server Setup
+
+**Recommendation:** Test manually first with `emacs --fg-daemon` to ensure your configuration loads properly before setting up automated startup.
+
+**Linux with systemd:**
+```bash
+# Create ~/.config/systemd/user/emacs.service
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/emacs --fg-daemon
+ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+
+# Enable and start:
+systemctl --user enable emacs.service
+systemctl --user start emacs.service
+```
+
+**macOS with launchd:**
+```xml
+<!-- ~/Library/LaunchAgents/gnu.emacs.daemon.plist -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>gnu.emacs.daemon</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/emacs</string>
+    <string>--fg-daemon</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>ServiceDescription</key>
+  <string>Emacs Daemon</string>
+</dict>
+</plist>
+
+# Load with:
+launchctl load ~/Library/LaunchAgents/gnu.emacs.daemon.plist
+```
+
+### Alternative: Minimal Mode for Quick Edits
+
+For terminal tasks (git commits, etc.) where you need a fast-starting editor, use minimal mode:
+
+```bash
+export EDITOR="emacs -nw --minimal"
+```
+
+This loads a lightweight configuration with essential features:
+- Basic settings from main config
+- Windmove for window navigation
+- Spell checking with ispell/aspell
+- Essential editing features (electric-pair, show-paren, auto-revert)
+- Line numbers in programming modes
+
+**Useful Resources:**
+- [Emacs Manual: Using Emacs as a Server](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html)
+- [EmacsWiki: Emacs Client](https://www.emacswiki.org/emacs/EmacsClient)
+- [Mastering Emacs: Working with Emacs Server](https://www.masteringemacs.org/article/working-with-emacs-server-and-emacsclient)
+
 ## GTD Task Management System
 
 ### Overview
@@ -291,103 +377,35 @@ Optional AI-powered coding assistance using [copilot.el](https://github.com/copi
 
 **Prerequisites:** GitHub Copilot subscription and Node.js 18+
 
-**Setup:**
-1. Enable in `~/.emacs.d/init.el`: `(setq my-copilot-config 'setup)`
-2. Install server: `M-x copilot-install-server`
-3. Authenticate: `M-x copilot-login`
+### Configuration Options
 
-**Configuration Options:**
-- `'none` (default): No Copilot support
-- `'setup`: Minimal configuration for installation/authentication
-- `'full`: Complete configuration with enhanced keybindings and integration
+Set `my-copilot-config` in `~/.emacs.d/init.el`:
 
-**See [GitHub Copilot Setup](#github-copilot-setup-optional---detailed) for complete configuration details.**
+- **`'none`** (default): No Copilot support
+- **`'setup`**: Minimal configuration for server installation and authentication
+- **`'full`**: Complete configuration with advanced features:
+  - Enhanced keybindings (`C-c c` prefix)
+  - Smart TAB behavior (completion + indentation)
+  - Mode line indicator
+  - Language-specific optimizations
+  - Better integration with LSP and completion systems
 
-## Emacs Server Mode (Detailed)
+### Setup Process
 
-### Why Use Server Mode?
+1. **Enable Copilot**:
+   ```elisp
+   ;; In ~/.emacs.d/init.el
+   (setq my-copilot-config 'setup)
+   ```
 
-- **Fast client connections**: After initial startup, new frames open instantly
-- **Persistent state**: Keep buffers, undo history, and session between frames
-- **Better performance**: Language servers and packages stay loaded
-- **Seamless workflow**: Close and reopen editor windows without losing context
+2. **Install server**: `M-x copilot-install-server`
+3. **Authenticate**: `M-x copilot-login` (opens browser)
+4. **Upgrade to full config**
+   ```elisp
+   (setq my-copilot-config 'full)
+   ```
 
-### Configuration
-
-**This configuration is optimized for server mode**, prioritizing comprehensive functionality over rapid startup times. The initial launch can be lengthy due to extensive packages and language server integrations.
-
-**Quick test:** `emacs --fg-daemon` then `emacsclient -c`
-
-### Advanced Server Setup
-
-**Recommendation:** Test manually first with `emacs --fg-daemon` to ensure your configuration loads properly before setting up automated startup.
-
-**Linux with systemd:**
-```bash
-# Create ~/.config/systemd/user/emacs.service
-[Unit]
-Description=Emacs text editor
-Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
-
-[Service]
-Type=notify
-ExecStart=/usr/bin/emacs --fg-daemon
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
-Environment=SSH_AUTH_SOCK=%t/keyring/ssh
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-
-# Enable and start:
-systemctl --user enable emacs.service
-systemctl --user start emacs.service
-```
-
-**macOS with launchd:**
-```xml
-<!-- ~/Library/LaunchAgents/gnu.emacs.daemon.plist -->
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>gnu.emacs.daemon</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>/usr/local/bin/emacs</string>
-    <string>--fg-daemon</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>ServiceDescription</key>
-  <string>Emacs Daemon</string>
-</dict>
-</plist>
-
-# Load with:
-launchctl load ~/Library/LaunchAgents/gnu.emacs.daemon.plist
-```
-
-### Alternative: Minimal Mode for Quick Edits
-
-For terminal tasks (git commits, etc.) where you need a fast-starting editor, use minimal mode:
-
-```bash
-export EDITOR="emacs -nw --minimal"
-```
-
-This loads a lightweight configuration with essential features:
-- Basic settings from main config
-- Windmove for window navigation
-- Spell checking with ispell/aspell
-- Essential editing features (electric-pair, show-paren, auto-revert)
-- Line numbers in programming modes
-
-**Useful Resources:**
-- [Emacs Manual: Using Emacs as a Server](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html)
-- [EmacsWiki: Emacs Client](https://www.emacswiki.org/emacs/EmacsClient)
-- [Mastering Emacs: Working with Emacs Server](https://www.masteringemacs.org/article/working-with-emacs-server-and-emacsclient)
+**Note:** Requires active GitHub Copilot subscription and Node.js 18+. For Node.js installation/upgrade, see [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) or [official Node.js downloads](https://nodejs.org/en/download/).
 
 ## Language Support
 
@@ -436,38 +454,6 @@ Edit `~/.emacs.d/init.el` to customize for your environment:
 ;; (setq my-settings-projectile-generic-command
 ;;       "find . -type f -not -path '*/node_modules/*' -print0")
 ```
-
-## GitHub Copilot Setup (Optional - Detailed)
-
-### Configuration Options
-
-Set `my-copilot-config` in `~/.emacs.d/init.el`:
-
-- **`'none`** (default): No Copilot support
-- **`'setup`**: Minimal configuration for server installation and authentication
-- **`'full`**: Complete configuration with advanced features:
-  - Enhanced keybindings (`C-c c` prefix)
-  - Smart TAB behavior (completion + indentation)
-  - Mode line indicator
-  - Language-specific optimizations
-  - Better integration with LSP and completion systems
-
-### Setup Process
-
-1. **Enable Copilot**:
-   ```elisp
-   ;; In ~/.emacs.d/init.el
-   (setq my-copilot-config 'setup)
-   ```
-
-2. **Install server**: `M-x copilot-install-server`
-3. **Authenticate**: `M-x copilot-login` (opens browser)
-4. **Upgrade to full config** (optional):
-   ```elisp
-   (setq my-copilot-config 'full)
-   ```
-
-**Note:** Requires active GitHub Copilot subscription and Node.js 18+
 
 ## Requirements
 
