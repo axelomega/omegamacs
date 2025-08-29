@@ -100,3 +100,8 @@
   (setq compilation-ask-about-save nil
         compilation-always-kill t
         compilation-scroll-output 'first-error))
+
+;; Hide comments temporarily to focus on code structure
+(use-package nocomments-mode
+  :ensure t
+  :bind (("<f12>" . nocomments-mode)))
