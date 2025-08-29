@@ -44,10 +44,13 @@ Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual
 
 **Requirements:** Emacs 27.1+ with Git installed
 
+**⚠️ Important:** This configuration is designed for Emacs server mode. The initial startup may be slow due to comprehensive packages and LSP integrations, but subsequent connections are instant. See [Startup Performance](#startup-performance) for timing details and optimization tips.
+
 1. **Clone and setup**:
    ```bash
    git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
    cp ~/omegamacs/templates/init.el ~/.emacs.d/init.el
+   cp ~/omegamacs/templates/early-init.el ~/.emacs.d/early-init.el
    ```
 
 2. **Start Emacs** - packages install automatically on first run
@@ -174,7 +177,7 @@ Omegamacs includes a comprehensive Getting Things Done (GTD) implementation usin
 ### Essential Commands
 
 - `C-c o c` - Quick capture (add items to inbox)
-- `C-c o a` - Main GTD dashboard agenda view  
+- `C-c o a` - Main GTD dashboard agenda view
 - `C-c o r` - Refile items from inbox to appropriate locations
 - `M-x my-list-hydras` - View all available hydra menus
 
@@ -290,7 +293,7 @@ All org files are automatically created in `~/omegamacs/org/` directory and are 
 ### GTD Workflow Tips
 
 1. **Daily**: Use GTD Dashboard (`C-c o a g`) to plan your day
-2. **Weekly**: Use Weekly Review (`C-c o a w`) for broader planning  
+2. **Weekly**: Use Weekly Review (`C-c o a w`) for broader planning
 3. **Context Switching**: Use Next Actions by Context (`C-c o a n`) when changing environments
 4. **Projects**: Use Project Review (`C-c o a p`) for periodic project health checks
 5. **Inbox Zero**: Regularly process and refile inbox items to keep system current
@@ -313,7 +316,7 @@ Optional AI-powered coding assistance using [copilot.el](https://github.com/copi
 
 **Setup:**
 1. Enable in `~/.emacs.d/init.el`: `(setq my-copilot-config 'setup)`
-2. Install server: `M-x copilot-install-server`  
+2. Install server: `M-x copilot-install-server`
 3. Authenticate: `M-x copilot-login`
 
 **Configuration Options:**
@@ -328,7 +331,7 @@ Optional AI-powered coding assistance using [copilot.el](https://github.com/copi
 ### Why Use Server Mode?
 
 - **Fast client connections**: After initial startup, new frames open instantly
-- **Persistent state**: Keep buffers, undo history, and session between frames  
+- **Persistent state**: Keep buffers, undo history, and session between frames
 - **Better performance**: Language servers and packages stay loaded
 - **Seamless workflow**: Close and reopen editor windows without losing context
 
@@ -348,7 +351,7 @@ export EDITOR="emacs -nw --minimal"
 
 This loads a lightweight configuration with essential features:
 - Basic settings from main config
-- Windmove for window navigation  
+- Windmove for window navigation
 - Spell checking with ispell/aspell
 - Essential editing features (electric-pair, show-paren, auto-revert)
 - Line numbers in programming modes
@@ -389,7 +392,7 @@ launchctl load ~/Library/LaunchAgents/gnu.emacs.daemon.plist
 
 **Supported Languages:**
 - **C/C++**: LSP support with clangd
-- **Python**: LSP support with pyright  
+- **Python**: LSP support with pyright
 - **Verilog/SystemVerilog**: Language-specific configuration
 - **LaTeX**: AUCTeX integration
 - **Emacs Lisp**: Enhanced evaluation and documentation
@@ -402,7 +405,7 @@ Most language servers need separate installation. The configuration will work wi
 # C/C++
 sudo apt install clangd  # or brew install llvm
 
-# Python  
+# Python
 pip install pyright
 
 # Verilog (optional)
@@ -413,7 +416,7 @@ pip install pyright
 
 **Configuration Files:**
 - `emacs_init.el` - Main initialization and loader
-- `packages.el` - Package management and archives  
+- `packages.el` - Package management and archives
 - `settings.el` - General Emacs settings and key bindings
 - `completion.el` - Completion framework setup (Vertico/Consult)
 - `development.el` - Development tools (undo-tree, helpful, etc.)
@@ -432,7 +435,7 @@ pip install pyright
 **Language-Specific Configurations:**
 - `languages/cpp.el` - C/C++ settings with LSP
 - `languages/python.el` - Python development setup
-- `languages/verilog.el` - Verilog/SystemVerilog configuration  
+- `languages/verilog.el` - Verilog/SystemVerilog configuration
 - `languages/latex.el` - LaTeX support with AUCTeX
 - `languages/elisp.el` - Emacs Lisp enhancements
 - `languages/xml.el` - XML mode optimizations
@@ -441,7 +444,7 @@ pip install pyright
 - `templates/init.el` - Copy to `~/.emacs.d/init.el` for customization
 - `templates/early-init.el` - Optional performance optimization setup
 
-**Copilot Integration:**  
+**Copilot Integration:**
 - `copilot/copilot-setup.el` - Minimal Copilot setup
 - `copilot/copilot.el` - Complete Copilot configuration
 
@@ -493,7 +496,7 @@ Edit `~/.emacs.d/init.el` to customize for your environment:
 ;;       my-settings-jira-project "PROJECT")
 
 ;; Custom projectile file filtering
-;; (setq my-settings-projectile-generic-command 
+;; (setq my-settings-projectile-generic-command
 ;;       "find . -type f -not -path '*/node_modules/*' -print0")
 ```
 
@@ -504,7 +507,7 @@ Edit `~/.emacs.d/init.el` to customize for your environment:
 Set `my-copilot-config` in `~/.emacs.d/init.el`:
 
 - **`'none`** (default): No Copilot support
-- **`'setup`**: Minimal configuration for server installation and authentication  
+- **`'setup`**: Minimal configuration for server installation and authentication
 - **`'full`**: Complete configuration with advanced features:
   - Enhanced keybindings (`C-c c` prefix)
   - Smart TAB behavior (completion + indentation)
@@ -558,7 +561,7 @@ pip install pyright
 
 **Key Features for Best Experience:**
 - `NATIVE_COMP` - Native compilation for better performance
-- `TREE_SITTER` - Modern syntax highlighting and parsing  
+- `TREE_SITTER` - Modern syntax highlighting and parsing
 - `IMAGEMAGICK` - Image display and manipulation
 - `GNUTLS` - Secure connections for package downloads
 - `JSON` - Fast JSON parsing
@@ -587,6 +590,42 @@ XPM LUCID ZLIB
 ```
 
 For building instructions, see [official Emacs build documentation](https://www.gnu.org/software/emacs/manual/html_node/efaq/Installing-Emacs.html).
+
+## Startup Performance
+
+Omegamacs tracks startup times to help monitor configuration performance and identify potential issues.
+
+### Checking Startup Time
+
+**Built-in timing display:**
+Startup times are tracked but not automatically displayed. You can view startup profiling with:
+- `M-x benchmark-init/show-durations-tree` - Tree view of package load times
+- `M-x benchmark-init/show-durations-tabulated` - Tabulated view sorted by duration
+- `M-x emacs-init-time` - Show total startup time
+
+### Typical Performance
+
+**Expected startup times (cold start):**
+- **Modern SSD with native compilation**: 3-8 seconds
+- **Network-mounted home directory**: 8-15 seconds
+- **Older hardware or HDDs**: 10-20+ seconds
+
+**Factors affecting startup time:**
+- **Native compilation**: Significantly improves performance after initial compile
+- **Storage type**: SSDs much faster than HDDs, local faster than network
+- **Package count**: Full configuration loads 50+ packages
+- **LSP servers**: Language servers add initialization overhead
+
+### Optimization Tips
+
+**For best performance:**
+1. **Use server mode**: Start once, connect many times
+2. **Enable local data directory**: Use `early-init.el` template for network homes
+3. **Native compilation**: Use Emacs build with `NATIVE_COMP` support
+4. **SSD storage**: Local SSD dramatically improves load times
+5. **Minimal mode**: Use `--minimal` flag for quick terminal edits
+
+**Server mode eliminates startup concerns** - after the initial daemon start, new frames open in ~0.1 seconds.
 
 ---
 
