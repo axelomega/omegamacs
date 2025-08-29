@@ -455,7 +455,7 @@ All org files are automatically created in `~/.emacs.d/org/` directory and are i
 4. **Projects**: Use Project Review (`C-c o a p`) for periodic project health checks
 5. **Inbox Zero**: Regularly process and refile inbox items to keep system current
 
-**All org files are automatically created in `~/omegamacs/org/` and immediately available in agenda views.**
+**All org files are automatically created in `~/.emacs.d/org/` and immediately available in agenda views.**
 
 ## Requirements
 

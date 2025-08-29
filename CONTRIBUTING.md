@@ -150,6 +150,8 @@ If your language uses an LSP server:
 5. **Update documentation** as needed
 6. **Submit pull request** with clear description
 
+**Note on Commit History:** I use commit squashing to keep the master branch clean with one commit per pull request. Feel free to make multiple commits during development - I'll squash them when merging to maintain a linear, readable history.
+
 ### Pull Request Description
 Please include:
 - **What**: Brief description of the change
