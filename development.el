@@ -100,3 +100,8 @@
   (setq compilation-ask-about-save nil
         compilation-always-kill t
         compilation-scroll-output 'first-error))
+
+;; Remove comments to focus on clean code if needed
+(use-package nocomments-mode
+  :ensure t
+  :bind (("<f12>" . nocomments-mode)))
