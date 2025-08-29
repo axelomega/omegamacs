@@ -8,7 +8,9 @@ A modern, modular Emacs configuration with comprehensive support for multiple pr
 
 This is my personal Emacs setup that I've iteratively refined over time to work well for my development workflow. I'm happy to share it with the wider Emacs community as it has proven to be a robust, capable configuration that strikes a good balance between power and maintainability.
 
-The configuration emphasizes transparency, modern packages, and real Emacs Lisp code over abstractions. Whether you use it as-is, adapt parts for your own setup, or simply browse for ideas, I hope you find it useful for your Emacs journey.
+The configuration emphasizes transparency, modern packages, and real Emacs Lisp code over abstractions. A key design principle is **clean separation**: Omegamacs strives to separate the shareable configuration files (which you can check out from this repository) from user-specific config files that contain local settings, secrets, or proprietary information that Omegamacs can't possibly know about.
+
+Whether you use it as-is, adapt parts for your own setup, or simply browse for ideas, I hope you find it useful for your Emacs journey.
 
 ## Rationale: Why Choose Omegamacs?
 
@@ -61,17 +63,18 @@ Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual
 
 2. **Start Emacs** - packages install automatically on first run
 
-3. **For server mode** (recommended):
+3. **Start in server mode** (recommended):
    ```bash
-   emacs --fg-daemon && emacsclient -c
+   emacs --daemon (or --fg-daemon)
+   emacsclient -c
    ```
 
-4. **For minimal mode** (quick edits):
+4. **Minimal mode** (for using as simple editor):
    ```bash
    export EDITOR="emacs -nw --minimal"
    ```
 
-**See [Installation Options](#installation-options) for detailed setup and [Requirements](#requirements) for full build recommendations.**
+**See [Installation Options](#installation-options) for detailed setup, [Emacs Server Mode](#emacs-server-mode-detailed) for advanced server configuration, and [Requirements](#requirements) for full build recommendations.**
 
 ## Installation Options
 
@@ -80,6 +83,7 @@ Omegamacs follows a **"code as config"** philosophy - we're not afraid of actual
 ```bash
 git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
 cp ~/omegamacs/templates/init.el ~/.emacs.d/init.el
+cp ~/omegamacs/templates/early-init.el ~/.emacs.d/early-init.el
 ```
 
 Edit `~/.emacs.d/init.el` to customize settings as needed, then start Emacs.
@@ -89,6 +93,7 @@ Edit `~/.emacs.d/init.el` to customize settings as needed, then start Emacs.
 ```bash
 git clone https://github.com/axelomega/omegamacs.git ~/my-custom-emacs
 cp ~/my-custom-emacs/templates/init.el ~/.emacs.d/init.el
+cp ~/my-custom-emacs/templates/early-init.el ~/.emacs.d/early-init.el
 ```
 
 Edit `~/.emacs.d/init.el` and set:
@@ -98,13 +103,9 @@ Edit `~/.emacs.d/init.el` and set:
 
 ### Performance Optimization (Network-Mounted Home)
 
-If your `$HOME` is on NFS or network storage:
+If your `$HOME` is on NFS or network storage, you may experience slow file operations. Using local storage for frequently-accessed files (backups, undo history, native compilation cache) can dramatically improve performance by avoiding network I/O for these operations.
 
-```bash
-cp ~/omegamacs/templates/early-init.el ~/.emacs.d/early-init.el
-```
-
-Edit `~/.emacs.d/early-init.el` and set:
+Edit `~/.emacs.d/early-init.el` and set, for example:
 ```elisp
 (setq my-user-emacs-directory-local "/local/ssd/.emacs.d.local")
 ```
@@ -119,55 +120,25 @@ By default, packages use cached lists for faster startup. To update:
 EMACS_PACKAGE_UPDATE_ENABLE=1 emacs
 ```
 
-### Server Mode Setup (Recommended)
-
-**Manual:**
-```bash
-emacs --daemon
-emacsclient -c
-```
-
-**Auto-start with systemd:**
-```bash
-# Create ~/.config/systemd/user/emacs.service
-[Unit]
-Description=Emacs text editor
-
-[Service]
-Type=notify
-ExecStart=/usr/bin/emacs --fg-daemon
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-
-# Enable
-systemctl --user enable emacs.service
-systemctl --user start emacs.service
-```
-
-**See [Emacs Server Mode](#emacs-server-mode-detailed) for complete setup instructions including macOS launchd configuration.**
-
 ## Feature Overview
 
 **Core Features:**
 - **Modern completion** with Vertico, Marginalia, and Consult
-- **LSP support** for C/C++, Python, Verilog, Emacs Lisp, and XML
+- **LSP support** for C/C++, Python, Verilog, Emacs Lisp, and XML - see [Language Support](#language-support)
 - **Git integration** with Magit and Forge
 - **Project management** with Projectile
 - **Syntax checking** with Flycheck
 - **Code completion** with Company
-- **AI assistance** with GitHub Copilot (optional)
+- **AI assistance** with [GitHub Copilot](#github-copilot-integration) (optional)
 
 **Advanced Features:**
-- **GTD-based org-mode** with comprehensive task and project management
-- **Hydra menus** for quick access to common operations
+- **GTD-based org-mode** with comprehensive [task and project management](#gtd-task-management-system)
+- **Hydra menus** for [quick access to common operations](#hydra-menus)
 - **Terminal integration** with VTerm
 - **LaTeX support** with AUCTeX
 - **Undo tree** with persistent history
 - **Indentation guides** and syntax highlighting
-- **Minimal mode** for fast terminal editing
+- **Minimal mode** for fast terminal editing - see [Server Mode](#emacs-server-mode-detailed)
 
 **See individual sections below for detailed descriptions of complex features.**
 
@@ -347,22 +318,31 @@ Optional AI-powered coding assistance using [copilot.el](https://github.com/copi
 
 **Quick test:** `emacs --fg-daemon` then `emacsclient -c`
 
-### Minimal Mode for Quick Edits
-
-For terminal tasks (git commits, etc.), use minimal mode:
-
-```bash
-export EDITOR="emacs -nw --minimal"
-```
-
-This loads a lightweight configuration with essential features:
-- Basic settings from main config
-- Windmove for window navigation
-- Spell checking with ispell/aspell
-- Essential editing features (electric-pair, show-paren, auto-revert)
-- Line numbers in programming modes
-
 ### Advanced Server Setup
+
+**Recommendation:** Test manually first with `emacs --fg-daemon` to ensure your configuration loads properly before setting up automated startup.
+
+**Linux with systemd:**
+```bash
+# Create ~/.config/systemd/user/emacs.service
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/emacs --fg-daemon
+ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+
+# Enable and start:
+systemctl --user enable emacs.service
+systemctl --user start emacs.service
+```
 
 **macOS with launchd:**
 ```xml
@@ -388,6 +368,21 @@ This loads a lightweight configuration with essential features:
 # Load with:
 launchctl load ~/Library/LaunchAgents/gnu.emacs.daemon.plist
 ```
+
+### Alternative: Minimal Mode for Quick Edits
+
+For terminal tasks (git commits, etc.) where you need a fast-starting editor, use minimal mode:
+
+```bash
+export EDITOR="emacs -nw --minimal"
+```
+
+This loads a lightweight configuration with essential features:
+- Basic settings from main config
+- Windmove for window navigation
+- Spell checking with ispell/aspell
+- Essential editing features (electric-pair, show-paren, auto-revert)
+- Line numbers in programming modes
 
 **Useful Resources:**
 - [Emacs Manual: Using Emacs as a Server](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html)
@@ -417,70 +412,6 @@ pip install pyright
 # Verilog (optional)
 # Install verilator or other SystemVerilog tools
 ```
-
-## File Structure and Organization
-
-**Configuration Files:**
-- `emacs_init.el` - Main initialization and loader
-- `packages.el` - Package management and archives
-- `settings.el` - General Emacs settings and key bindings
-- `completion.el` - Completion framework setup (Vertico/Consult)
-- `development.el` - Development tools (undo-tree, helpful, etc.)
-- `programming.el` - General programming configurations
-- `compilation.el` - Build and error navigation
-- `magit.el` - Git integration with Forge
-- `projectile.el` - Project management
-- `company.el` - Code completion
-- `flycheck.el` - Syntax checking
-- `frame_buffer_handling.el` - Window and buffer management
-- `tramp.el` - Remote file access configuration
-- `hydra.el` - Hydra menus for workflow navigation
-- `org.el` - GTD-based org-mode configuration
-- `minimal.el` - Lightweight configuration for `--minimal` mode
-
-**Language-Specific Configurations:**
-- `languages/cpp.el` - C/C++ settings with LSP
-- `languages/python.el` - Python development setup
-- `languages/verilog.el` - Verilog/SystemVerilog configuration
-- `languages/latex.el` - LaTeX support with AUCTeX
-- `languages/elisp.el` - Emacs Lisp enhancements
-- `languages/xml.el` - XML mode optimizations
-
-**Template Files:**
-- `templates/init.el` - Copy to `~/.emacs.d/init.el` for customization
-- `templates/early-init.el` - Optional performance optimization setup
-
-**Copilot Integration:**
-- `copilot/copilot-setup.el` - Minimal Copilot setup
-- `copilot/copilot.el` - Complete Copilot configuration
-
-### Directory Organization
-
-Omegamacs uses clean separation between configuration files (git repository) and user data (`~/.emacs.d/`):
-
-```
-~/.emacs.d/
-├── init.el                    # Main entry point (from template)
-├── early-init.el              # Optional performance config (from template)
-├── backups/                   # File backups and auto-saves
-├── undo-tree/                 # Persistent undo history
-├── snippets/                  # YASnippet templates
-├── elpa/                     # Installed packages
-└── eln-cache/                # Native compilation cache
-
-~/omegamacs/                   # Configuration files (default location)
-├── emacs_init.el             # Main configuration loader
-├── *.el                      # Configuration modules
-├── templates/                # Template files
-├── copilot/                  # GitHub Copilot integration
-└── languages/                # Language-specific configurations
-```
-
-**Benefits:**
-- **Git-friendly**: Repository contains only configuration files
-- **Flexible location**: Clone anywhere, configure path if needed
-- **Easy updates**: `git pull` to get latest improvements
-- **Clean backups**: User data separate from config repository
 
 ## Local Customization
 
