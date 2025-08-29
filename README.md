@@ -4,6 +4,12 @@ A modern, modular Emacs configuration with comprehensive support for multiple pr
 
 **Real Emacs for real developers - no training wheels, no abstractions, just powerful, readable code you can own and control.**
 
+## Introduction
+
+This is my personal Emacs setup that I've iteratively refined over time to work well for my development workflow. I'm happy to share it with the wider Emacs community as it has proven to be a robust, capable configuration that strikes a good balance between power and maintainability.
+
+The configuration emphasizes transparency, modern packages, and real Emacs Lisp code over abstractions. Whether you use it as-is, adapt parts for your own setup, or simply browse for ideas, I hope you find it useful for your Emacs journey.
+
 ## Rationale: Why Choose Omegamacs?
 
 ### Philosophy: Code as Config
