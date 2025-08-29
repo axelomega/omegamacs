@@ -228,6 +228,98 @@ This loads a lightweight configuration with essential features:
 - [EmacsWiki: Emacs Client](https://www.emacswiki.org/emacs/EmacsClient)
 - [Mastering Emacs: Working with Emacs Server](https://www.masteringemacs.org/article/working-with-emacs-server-and-emacsclient)
 
+## Hydra Menus
+
+Omegamacs includes Hydra menus for quick access to common operations. Hydras provide transient keymaps that stay active until you explicitly exit.
+
+**Available Hydras:**
+- **Org-mode** (`C-c o`): Complete GTD workflow commands
+- **Additional menus**: Run `M-x my-list-hydras` to see all available hydras
+
+## GitHub Copilot Integration
+
+Optional AI-powered coding assistance using [copilot.el](https://github.com/copilot-emacs/copilot.el).
+
+**Prerequisites:** GitHub Copilot subscription and Node.js 18+
+
+### Configuration Options
+
+Set `my-copilot-config` in `~/.emacs.d/init.el`:
+
+- **`'none`** (default): No Copilot support
+- **`'setup`**: Minimal configuration for server installation and authentication
+- **`'full`**: Complete configuration with advanced features:
+  - Enhanced keybindings (`C-c c` prefix)
+  - Smart TAB behavior (completion + indentation)
+  - Mode line indicator
+  - Language-specific optimizations
+  - Better integration with LSP and completion systems
+
+### Setup Process
+
+1. **Enable Copilot**:
+   ```elisp
+   ;; In ~/.emacs.d/init.el
+   (setq my-copilot-config 'setup)
+   ```
+
+2. **Install server**: `M-x copilot-install-server`
+3. **Authenticate**: `M-x copilot-login` (opens browser)
+4. **Upgrade to full config**
+   ```elisp
+   (setq my-copilot-config 'full)
+   ```
+
+**Note:** Requires active GitHub Copilot subscription and Node.js 18+. For Node.js installation/upgrade, see [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) or [official Node.js downloads](https://nodejs.org/en/download/).
+
+## Language Support
+
+**Supported Languages:**
+- **C/C++**: LSP support with clangd
+- **Python**: LSP support with pyright
+- **Verilog/SystemVerilog**: Language-specific configuration
+- **LaTeX**: AUCTeX integration
+- **Emacs Lisp**: Enhanced evaluation and documentation
+- **XML**: Performance-optimized nxml-mode
+
+**Language Server Setup:**
+Most language servers need separate installation. The configuration will work with standard package managers:
+
+```bash
+# C/C++
+sudo apt install clangd  # or brew install llvm
+
+# Python
+pip install pyright
+
+# Verilog (optional)
+# Install verilator or other SystemVerilog tools
+```
+
+## Local Customization
+
+Edit `~/.emacs.d/init.el` to customize for your environment:
+
+```elisp
+;; Configuration directory (only if not using ~/omegamacs)
+;; (setq my-emacs-config-dir "~/my-custom-location")
+
+;; Performance optimization for network home directories
+;; (setq my-user-emacs-directory-local "/local/ssd/.emacs.d.local")
+
+;; GitHub Copilot integration
+;; (setq my-copilot-config 'setup)    ; 'none, 'setup, or 'full
+
+;; JIRA integration (optional)
+;; (setq my-settings-jira-url "https://company.atlassian.net"
+;;       my-settings-jira-username "username"
+;;       my-settings-jira-project "PROJECT")
+
+;; Custom projectile file filtering
+;; (setq my-settings-projectile-generic-command
+;;       "find . -type f -not -path '*/node_modules/*' -print0")
+```
+
 ## GTD Task Management System
 
 ### Overview
@@ -351,7 +443,7 @@ Use `C-c C-q` in any org file to add context tags:
 - Time tracking for any task with `C-c C-x C-i/C-o`
 
 **File Organization:**
-All org files are automatically created in `~/omegamacs/org/` directory and are immediately available in agenda views.
+All org files are automatically created in `~/.emacs.d/org/` directory and are immediately available in agenda views. Note that even when using local storage optimization for NFS-mounted home directories, org files intentionally remain in your `~/.emacs.d/` directory since you likely want access to your tasks and notes across different hosts.
 
 ### GTD Workflow Tips
 
@@ -362,98 +454,6 @@ All org files are automatically created in `~/omegamacs/org/` directory and are 
 5. **Inbox Zero**: Regularly process and refile inbox items to keep system current
 
 **All org files are automatically created in `~/omegamacs/org/` and immediately available in agenda views.**
-
-## Hydra Menus
-
-Omegamacs includes Hydra menus for quick access to common operations. Hydras provide transient keymaps that stay active until you explicitly exit.
-
-**Available Hydras:**
-- **Org-mode** (`C-c o`): Complete GTD workflow commands
-- **Additional menus**: Run `M-x my-list-hydras` to see all available hydras
-
-## GitHub Copilot Integration
-
-Optional AI-powered coding assistance using [copilot.el](https://github.com/copilot-emacs/copilot.el).
-
-**Prerequisites:** GitHub Copilot subscription and Node.js 18+
-
-### Configuration Options
-
-Set `my-copilot-config` in `~/.emacs.d/init.el`:
-
-- **`'none`** (default): No Copilot support
-- **`'setup`**: Minimal configuration for server installation and authentication
-- **`'full`**: Complete configuration with advanced features:
-  - Enhanced keybindings (`C-c c` prefix)
-  - Smart TAB behavior (completion + indentation)
-  - Mode line indicator
-  - Language-specific optimizations
-  - Better integration with LSP and completion systems
-
-### Setup Process
-
-1. **Enable Copilot**:
-   ```elisp
-   ;; In ~/.emacs.d/init.el
-   (setq my-copilot-config 'setup)
-   ```
-
-2. **Install server**: `M-x copilot-install-server`
-3. **Authenticate**: `M-x copilot-login` (opens browser)
-4. **Upgrade to full config**
-   ```elisp
-   (setq my-copilot-config 'full)
-   ```
-
-**Note:** Requires active GitHub Copilot subscription and Node.js 18+. For Node.js installation/upgrade, see [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) or [official Node.js downloads](https://nodejs.org/en/download/).
-
-## Language Support
-
-**Supported Languages:**
-- **C/C++**: LSP support with clangd
-- **Python**: LSP support with pyright
-- **Verilog/SystemVerilog**: Language-specific configuration
-- **LaTeX**: AUCTeX integration
-- **Emacs Lisp**: Enhanced evaluation and documentation
-- **XML**: Performance-optimized nxml-mode
-
-**Language Server Setup:**
-Most language servers need separate installation. The configuration will work with standard package managers:
-
-```bash
-# C/C++
-sudo apt install clangd  # or brew install llvm
-
-# Python
-pip install pyright
-
-# Verilog (optional)
-# Install verilator or other SystemVerilog tools
-```
-
-## Local Customization
-
-Edit `~/.emacs.d/init.el` to customize for your environment:
-
-```elisp
-;; Configuration directory (only if not using ~/omegamacs)
-;; (setq my-emacs-config-dir "~/my-custom-location")
-
-;; Performance optimization for network home directories
-;; (setq my-user-emacs-directory-local "/local/ssd/.emacs.d.local")
-
-;; GitHub Copilot integration
-;; (setq my-copilot-config 'setup)    ; 'none, 'setup, or 'full
-
-;; JIRA integration (optional)
-;; (setq my-settings-jira-url "https://company.atlassian.net"
-;;       my-settings-jira-username "username"
-;;       my-settings-jira-project "PROJECT")
-
-;; Custom projectile file filtering
-;; (setq my-settings-projectile-generic-command
-;;       "find . -type f -not -path '*/node_modules/*' -print0")
-```
 
 ## Requirements
 
