@@ -156,7 +156,7 @@ This provides consistent symlink resolution across all file opening operations."
        (t (expand-file-name ".bash_history" "~"))))))
 
 ;; Read shell history into compile command history
-(defun my--load-bash-history-to-compile ()
+(defun my--load-shell-history-to-compile ()
   "Load shell history into compilation command history."
   (let ((history-size (if (boundp 'my-compile-mode-shell-history-size)
                           my-compile-mode-shell-history-size
@@ -173,8 +173,9 @@ This provides consistent symlink resolution across all file opening operations."
                 (delete-dups (append shell-commands compile-history)))))))
 
 ;; Load bash history when compile command is read
-  "Advice to load shell history before reading compile command."
-  (my--load-bash-history-to-compile)
+(defun my--compilation-read-command-with-history (orig-fun &rest args)
+   "Advice to load shell history before reading compile command."
+  (my--load-shell-history-to-compile)
   (apply orig-fun args))
 
 (advice-add 'compilation-read-command :around #'my--compilation-read-command-with-history)
