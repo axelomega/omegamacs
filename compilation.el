@@ -142,3 +142,23 @@ This provides consistent symlink resolution across all file opening operations."
 ;; Optional keybindings for enhanced error navigation
 ;; (global-set-key (kbd "M-g n") #'my-goto-next-error-resolve-symlinks)
 ;; (global-set-key (kbd "M-g p") #'my-goto-previous-error-resolve-symlinks)
+
+;; Read bash history into compile command history
+(defun my--load-bash-history-to-compile ()
+  "Load bash history from HISTFILE into compilation command history."
+  (when-let ((histfile (or (getenv "HISTFILE")
+                          (expand-file-name ".bash_history" "~"))))
+    (when (file-readable-p histfile)
+      (with-temp-buffer
+        (insert-file-contents histfile)
+        (let ((bash-commands (reverse (split-string (buffer-string) "\n" t))))
+          (setq compile-history
+                (delete-dups (append bash-commands compile-history))))))))
+
+;; Load bash history when compile command is read
+(defun my--compilation-read-command-with-history (orig-fun &rest args)
+  "Advice to load bash history before reading compile command."
+  (my--load-bash-history-to-compile)
+  (apply orig-fun args))
+
+(advice-add 'compilation-read-command :around #'my--compilation-read-command-with-history)
