@@ -30,6 +30,13 @@
 ;;; Projectile
 ;; (setq my-settings-projectile-generic-command "find . -type f -not -wholename '*some_folder_to_filter/*' -not -wholename '*some_other_folder_to_filter/*' -print0")
 
+;; Configuration variable for shell history integration into compile mode
+(defvar my-compile-mode-shell-history-size 5
+  "Control how many lines of shell history to read into compile mode.
+nil: never read shell history
+0: read full shell history
+1-N: read this many lines of most recent history")
+
 ;; Load main configuration from the configured directory
 (let ((config-dir (or (and (boundp 'my-emacs-config-dir) my-emacs-config-dir)
                       "~/omegamacs")))  ; Default fallback

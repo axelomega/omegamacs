@@ -146,14 +146,21 @@ This provides consistent symlink resolution across all file opening operations."
 ;; Read bash history into compile command history
 (defun my--load-bash-history-to-compile ()
   "Load bash history from HISTFILE into compilation command history."
-  (when-let ((histfile (or (getenv "HISTFILE")
-                          (expand-file-name ".bash_history" "~"))))
-    (when (file-readable-p histfile)
-      (with-temp-buffer
-        (insert-file-contents histfile)
-        (let ((bash-commands (reverse (split-string (buffer-string) "\n" t))))
-          (setq compile-history
-                (delete-dups (append bash-commands compile-history))))))))
+  (let ((history-size (if (boundp 'my-compile-mode-shell-history-size)
+                          my-compile-mode-shell-history-size
+                        nil)))
+    (when (and history-size
+             (let* ((histfile (or (getenv "HISTFILE")
+                                 (expand-file-name ".bash_history" "~"))))
+               (when (and histfile (file-readable-p histfile))
+                 (with-temp-buffer
+                   (insert-file-contents histfile)
+                   (let* ((all-commands (reverse (split-string (buffer-string) "\n" t)))
+                          (bash-commands (if (zerop history-size)
+                                           all-commands
+                                         (seq-take all-commands history-size))))
+                     (setq compile-history
+                           (delete-dups (append bash-commands compile-history)))))))))))
 
 ;; Load bash history when compile command is read
 (defun my--compilation-read-command-with-history (orig-fun &rest args)
