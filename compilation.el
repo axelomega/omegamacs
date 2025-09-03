@@ -162,16 +162,15 @@ This provides consistent symlink resolution across all file opening operations."
                           my-compile-mode-shell-history-size
                         nil))
         (histfile (my--get-shell-history-file)))
-    (when (and history-size
-               (when (and histfile (file-readable-p histfile))
-                 (with-temp-buffer
-                   (insert-file-contents histfile)
-                   (let* ((all-commands (reverse (split-string (buffer-string) "\n" t)))
-                          (shell-commands (if (zerop history-size)
-                                            all-commands
-                                          (seq-take all-commands history-size))))
-                     (setq compile-history
-                           (delete-dups (append shell-commands compile-history))))))))))
+    (when (and history-size histfile (file-readable-p histfile))
+      (with-temp-buffer
+        (insert-file-contents histfile)
+        (let* ((all-commands (reverse (split-string (buffer-string) "\n" t)))
+               (shell-commands (if (zerop history-size)
+                                 all-commands
+                               (seq-take all-commands history-size))))
+          (setq compile-history
+                (delete-dups (append shell-commands compile-history)))))))
 
 ;; Load bash history when compile command is read
 (defun my--compilation-read-command-with-history (orig-fun &rest args)
