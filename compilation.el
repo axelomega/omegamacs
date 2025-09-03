@@ -170,7 +170,7 @@ This provides consistent symlink resolution across all file opening operations."
                                  all-commands
                                (seq-take all-commands history-size))))
           (setq compile-history
-                (delete-dups (append shell-commands compile-history)))))))
+                (delete-dups (append shell-commands compile-history))))))))
 
 ;; Load bash history when compile command is read
 (defun my--compilation-read-command-with-history (orig-fun &rest args)
