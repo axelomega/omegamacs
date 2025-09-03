@@ -142,3 +142,40 @@ This provides consistent symlink resolution across all file opening operations."
 ;; Optional keybindings for enhanced error navigation
 ;; (global-set-key (kbd "M-g n") #'my-goto-next-error-resolve-symlinks)
 ;; (global-set-key (kbd "M-g p") #'my-goto-previous-error-resolve-symlinks)
+
+;; Helper function to determine shell history file
+(defun my--get-shell-history-file ()
+  "Get the appropriate shell history file path."
+  (if (boundp 'my-compile-mode-shell-history-file)
+      my-compile-mode-shell-history-file
+    (let ((shell (file-name-nondirectory (or (getenv "SHELL") "/bin/bash"))))
+      (cond
+       ((string-match "zsh" shell) (expand-file-name ".zsh_history" "~"))
+       ((string-match "fish" shell) (expand-file-name ".local/share/fish/fish_history" "~"))
+       ((string-match "tcsh\\|csh" shell) (expand-file-name ".history" "~"))
+       (t (expand-file-name ".bash_history" "~"))))))
+
+;; Read shell history into compile command history
+(defun my--load-shell-history-to-compile ()
+  "Load shell history into compilation command history."
+  (let ((history-size (if (boundp 'my-compile-mode-shell-history-size)
+                          my-compile-mode-shell-history-size
+                        nil))
+        (histfile (my--get-shell-history-file)))
+    (when (and history-size histfile (file-readable-p histfile))
+      (with-temp-buffer
+        (insert-file-contents histfile)
+        (let* ((all-commands (reverse (split-string (buffer-string) "\n" t)))
+               (shell-commands (if (zerop history-size)
+                                 all-commands
+                               (seq-take all-commands history-size))))
+          (setq compile-history
+                (delete-dups (append shell-commands compile-history))))))))
+
+;; Load bash history when compile command is read
+(defun my--compilation-read-command-with-history (orig-fun &rest args)
+   "Advice to load shell history before reading compile command."
+  (my--load-shell-history-to-compile)
+  (apply orig-fun args))
+
+(advice-add 'compilation-read-command :around #'my--compilation-read-command-with-history)

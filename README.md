@@ -272,6 +272,43 @@ Set `my-copilot-config` in `~/.emacs.d/init.el`:
 
 **Note:** Requires active GitHub Copilot subscription and Node.js 18+. For Node.js installation/upgrade, see [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) or [official Node.js downloads](https://nodejs.org/en/download/).
 
+## Shell History Integration
+
+Omegamacs tries to integrate your shell command history with Emacs compile mode, making it easy to access and reuse commands across your development workflow.
+
+### Configuration
+
+Set these variables in `~/.emacs.d/init.el` (examples available in `templates/init.el`):
+
+```elisp
+;; Control how many shell history commands to load
+(setq my-compile-mode-shell-history-size 100)  ; Default: 100 commands
+;; Options:
+;; nil   - disable shell history integration
+;; 0     - load full shell history
+;; 1-N   - load N most recent commands
+
+;; Optional: specify custom history file location
+(setq my-compile-mode-shell-history-file (getenv "HISTFILE"))
+;; Or use a specific path:
+;; (setq my-compile-mode-shell-history-file "~/.bash_history")
+```
+
+### Features
+- **Auto-detection**: If `my-compile-mode-shell-history-file` is not set, Omegamacs tries to guess your history file based on your shell
+- **Smart loading**: Refreshes history every time you invoke compile mode (`C-q`)
+- **Navigation**: Use `M-p`/`M-n` in compile command prompt to browse shell history
+- **Recent first**: Most recent commands appear first in history navigation
+
+### History File Guesses Based on Shell
+
+- **bash**: `~/.bash_history`
+- **zsh**: `~/.zsh_history`
+- **fish**: `~/.local/share/fish/fish_history`
+- **csh/tcsh**: `~/.history`
+
+If none of the above history files are found or readable, the integration will be disabled.
+
 ## Language Support
 
 These are the languages I have needed so far in my development work. I would appreciate contributions to extend language support in Omegamacs for additional programming languages.
