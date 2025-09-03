@@ -173,8 +173,7 @@ This provides consistent symlink resolution across all file opening operations."
                 (delete-dups (append shell-commands compile-history)))))))
 
 ;; Load bash history when compile command is read
-(defun my--compilation-read-command-with-history (orig-fun &rest args)
-  "Advice to load bash history before reading compile command."
+  "Advice to load shell history before reading compile command."
   (my--load-bash-history-to-compile)
   (apply orig-fun args))
 
