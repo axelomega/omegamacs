@@ -32,7 +32,7 @@ jobs:
               --personal=./.github/aspell-dict | \
             sort -u > misspelled_words.el.txt
 
-          if [ -s misspelled_words.txt ]; then
+          if [ -s misspelled_words.el.txt ]; then
             echo "::error::Misspelled words found:"
             cat misspelled_words.el.txt
             exit 1
@@ -50,7 +50,7 @@ jobs:
               --personal=./.github/aspell-dict | \
             sort -u > misspelled_words.md.txt
 
-          if [ -s misspelled_words.txt ]; then
+          if [ -s misspelled_words.md.txt ]; then
             echo "::error::Misspelled words found:"
             cat misspelled_words.md.txt
             exit 1
