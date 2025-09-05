@@ -30,7 +30,7 @@
 ;;; Projectile
 ;; (setq my-settings-projectile-generic-command "find . -type f -not -wholename '*some_folder_to_filter/*' -not -wholename '*some_other_folder_to_filter/*' -print0")
 
-;; Uncomment and set to use a specific shell history file
+;; Un-comment and set to use a specific shell history file
 ;; (setq my-compile-mode-shell-history-file (getenv "HISTFILE"))
 ;; Or set to a specific file path:
 ;; (setq my-compile-mode-shell-history-file "~/.bash_history")
