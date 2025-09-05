@@ -1,0 +1,49 @@
+name: Spell Check
+
+on:
+  push:
+    paths:
+      - "**.el"
+      - ".github/workflows/spellcheck.yml"
+  pull_request:
+    paths:
+      - "**.el"
+      - ".github/workflows/spellcheck.yml"
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install aspell
+        run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
+
+      - name: Spell check Emacs Lisp comments and strings
+        run: |
+          # Extract comments and strings from .el files and spell check them
+          find . -name "*.el" -exec awk '
+            # Extract ;; comments
+            /^[[:space:]]*;;/ { 
+              gsub(/^[[:space:]]*;;[[:space:]]*/, ""); 
+              if (length($0) > 0) print $0 
+            }
+            # Extract strings (basic pattern)
+            /"[^"]*"/ {
+              while (match($0, /"([^"\\]|\\.)*"/)) {
+                str = substr($0, RSTART+1, RLENGTH-2)
+                gsub(/\\[nt"\\]/, " ", str)  # Replace common escapes with spaces
+                if (length(str) > 2) print str
+                $0 = substr($0, RSTART+RLENGTH)
+              }
+            }
+          ' {} \; | aspell list --lang=en | sort -u > misspelled_words.txt
+          
+          if [ -s misspelled_words.txt ]; then
+            echo "::error::Misspelled words found:"
+            cat misspelled_words.txt
+            exit 1
+          else
+            echo "No misspelled words found"
+          fi
