@@ -23,7 +23,7 @@ jobs:
       - name: Spell check Emacs Lisp comments and strings
         run: |
           # Spell check .el files using aspell with context filters
-          find . -name "*.el" -exec cat {} + | \
+          find . -regex ".*\.\(el\|md\)" -exec cat {} + | \
             aspell list \
               --ignore-case \
               --add-filter=context \

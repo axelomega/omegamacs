@@ -441,7 +441,7 @@ Comprehensive weekly planning view:
 - **PROJECT** - Multi-step outcomes with sub-tasks
 - **WAIT** - Waiting for someone else (requires note)
 - **DONE** - Completed tasks (timestamped)
-- **CANCELLED** - Abandoned tasks (requires note)
+- **CANCELED** - Abandoned tasks (requires note)
 
 **Priority Levels:**
 - **[#A]** - High priority (red in agenda)
