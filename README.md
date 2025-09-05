@@ -1,6 +1,6 @@
 # Omegamacs
 
-A modern, modular Emacs configuration with comprehensive support for multiple programming languages, completion frameworks, and development tools.
+A modddern, modular Emacs configuration with comprehensive support for multiple programming languages, completion frameworks, and development tools.
 
 **Real Emacs for real developers - no training wheels, no abstractions, just powerful, readable code you can own and control.**
 
