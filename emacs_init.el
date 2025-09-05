@@ -80,6 +80,7 @@
     (load (my-get-fullpath "languages/latex"))
     (load (my-get-fullpath "languages/xml"))
     (load (my-get-fullpath "languages/elisp"))
+    (load (my-get-fullpath "languages/yaml"))
     (load (my-get-fullpath "compilation"))
     (load (my-get-fullpath "projectile"))
     (load (my-get-fullpath "magit"))
