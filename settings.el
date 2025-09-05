@@ -101,7 +101,7 @@
 ;; Brows things in emacs
 (setq browse-url-browser-function 'eww-browse-url)
 
-;;; Trim whitespaces
+;;; Trim white spaces
 ;;(use-package ws-butler
 ;;  :ensure t
 ;;  :config

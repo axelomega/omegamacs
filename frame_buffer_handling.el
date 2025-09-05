@@ -18,10 +18,10 @@
 (use-package sml-modeline
   :ensure t
   :config
-  (sml-modeline-mode 1) ;; show buffer pos in the mode line
-  (scroll-bar-mode -1)) ;; turn off the scrollbar
+  (sml-modeline-mode 1) ;; show buffer position in the mode line
+  (scroll-bar-mode -1)) ;; turn off the scroll-bar
 
-;;Show paranthesis
+;;Show parentheses
 (setq show-paren-delay 0)           ; how long to wait?
 (show-paren-mode t)                 ; turn paren-mode on
 (setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'

@@ -29,7 +29,7 @@ Improve existing features while maintaining the core philosophy I've established
 Improve the README, create usage examples, or start a wiki page if the README is getting too long.
 
 ### 5. Performance Improvements
-Optimize startup time or runtime performance.
+Optimize startup time or run-time performance.
 
 ## Adding Language Support
 
@@ -186,7 +186,7 @@ Requires: cargo install rust-analyzer
 ### Style Issues
 - Don't mix different configuration styles in the same file
 - Avoid overly complex configurations - keep it readable
-- Don't hardcode paths - use appropriate Emacs functions
+- Don't hard code paths - use appropriate Emacs functions
 
 ## Getting Help
 
