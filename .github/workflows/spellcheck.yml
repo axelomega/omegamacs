@@ -22,24 +22,16 @@ jobs:
 
       - name: Spell check Emacs Lisp comments and strings
         run: |
-          # Extract comments and strings from .el files and spell check them
-          find . -name "*.el" -exec awk '
-            # Extract ;; comments
-            /^[[:space:]]*;;/ { 
-              gsub(/^[[:space:]]*;;[[:space:]]*/, ""); 
-              if (length($0) > 0) print $0 
-            }
-            # Extract strings (basic pattern)
-            /"[^"]*"/ {
-              while (match($0, /"([^"\\]|\\.)*"/)) {
-                str = substr($0, RSTART+1, RLENGTH-2)
-                gsub(/\\[nt"\\]/, " ", str)  # Replace common escapes with spaces
-                if (length(str) > 2) print str
-                $0 = substr($0, RSTART+RLENGTH)
-              }
-            }
-          ' {} \; | aspell list --lang=en | sort -u > misspelled_words.txt
-          
+          # Spell check .el files using aspell with context filters
+          find . -name "*.el" -exec cat {} \; | \
+            aspell list \
+              --ignore-case \
+              --add-filter=context \
+              --add-context-delimiters='; \0' \
+              --rem-context-delimiters='" "' \
+              --personal=./.github/aspell-dict | \
+            sort -u > misspelled_words.txt
+
           if [ -s misspelled_words.txt ]; then
             echo "::error::Misspelled words found:"
             cat misspelled_words.txt
