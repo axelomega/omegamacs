@@ -1,4 +1,4 @@
-personal_ws-1.1 en 91 
+personal_ws-1.1 en 94 
 AUCTeX
 ControlMaster
 DejaVu
@@ -40,6 +40,7 @@ cmake
 config
 defun
 dired
+dolist
 dwim
 eglot
 el
@@ -66,6 +67,7 @@ nongnu
 paren
 pcomplete
 prog
+quickstart
 realgud
 reconnection
 repo
@@ -81,6 +83,7 @@ texlab
 tmp
 todo
 toml
+treesit
 tsx
 uniquified
 unpushed
