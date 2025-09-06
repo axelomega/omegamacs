@@ -82,7 +82,6 @@
        (set-face-background 'smerge-refined-change "dark magenta")))
 
 ;; Keep backups in a dedicated folder
-
 (let ((backup-dir (my-user-emacs-subdirectory-local "backups")))
   (setq backup-directory-alist (list (cons "." backup-dir))
         backup-by-copying t

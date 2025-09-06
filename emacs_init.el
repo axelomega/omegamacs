@@ -67,8 +67,8 @@
   (progn
     ;; Full configuration
     (load (my-get-fullpath "packages"))
-    (load (my-get-fullpath "settings"))
     (load (my-get-fullpath "hydra"))
+    (load (my-get-fullpath "settings"))
     (load (my-get-fullpath "flycheck"))
     (load (my-get-fullpath "company"))
     (load (my-get-fullpath "completion"))
@@ -96,10 +96,10 @@
         (load (my-get-fullpath "copilot/copilot")))))
     ))
 
-(setq fill-column 200)
+(setq fill-column 140)
 
 ;; Separate custom file for cleaner configuration
-    (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 ;; Convenient reload function
 (defun my-reload-config ()

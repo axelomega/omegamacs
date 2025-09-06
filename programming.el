@@ -91,7 +91,6 @@ Potential side effects:
   :bind (:map lsp-mode-map
          ([remap xref-find-apropos] . consult-lsp-symbols)))
 
-
 ;; Enable breadcrumbs/function display
 (use-package which-func
   :ensure t  ; Built-in

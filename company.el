@@ -12,10 +12,10 @@
         company-tooltip-align-annotations t
         company-tooltip-maximum-width 100
         company-tooltip-minimum-width 20)
-  
+
   ;; Better sorting - show frequently used completions first
   (setq company-transformers '(company-sort-by-occurrence))
-  
+
   ;; Improved keybindings
   :bind (:map company-active-map
          ("C-n" . company-select-next)

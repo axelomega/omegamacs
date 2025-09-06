@@ -24,12 +24,10 @@
   (setq package-enable-at-startup nil
         package-quickstart t))
 
-
 (use-package benchmark-init
   :ensure t
   :init (benchmark-init/activate)
   :hook (after-init . benchmark-init/deactivate))
-
 
 ;; Auto update packages - only when environment variable is set
 (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")

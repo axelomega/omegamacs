@@ -227,7 +227,6 @@
                            '((:auto-category t))))))
            nil)))
 
-
   ;; Optional: export PDF via LaTeX (install TeX separately)
   ;; (setq org-latex-compiler "xelatex")
 )
