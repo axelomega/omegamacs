@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - "**.el"
+      - "**.md"
       - ".github/workflows/spellcheck.yml"
   pull_request:
     paths:
       - "**.el"
+      - "**.md"
       - ".github/workflows/spellcheck.yml"
 
 jobs:
