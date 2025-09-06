@@ -1,8 +1,8 @@
 # Contributing to Omegamacs
 
-Thank you for your interest in contributing to Omegamacs! 
-
+Thank you for your interest in contributing to Omegamacs!
 Omegamacs has been my personal Emacs configuration that I've developed and refined for my own workflow. However, I believe it has grown into something that could benefit the broader Emacs community, so I'm opening it up for contributions from others. This guide will help you understand how to contribute effectively while maintaining the configuration's core principles and quality that I've established.
+
 ## Philosophy
 
 Before contributing, please understand the core philosophy I've established for Omegamacs:
