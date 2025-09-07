@@ -21,7 +21,8 @@
   :type '(choice (const :tag "Dark Theme" dark)
                  (const :tag "Light Theme" light)
                  (const :tag "Mid Gray Theme" mid-gray)
-                 (const :tag "Dark X11 Theme" dark-x11))
+                 (const :tag "Dark X11 Theme" dark-x11)
+                 (const :tag "Classic Theme" classic))
   :group 'omegamacs-theme
   :set (lambda (symbol value)
          (set-default symbol value)
@@ -226,7 +227,56 @@
                  ;; Company/completion colors
                  (completion-highlight . "gray40")
                  (completion-selection . "gray30")
-                 (completion-annotation . "lightgray"))))
+                 (completion-annotation . "lightgray")))
+
+    (classic . ((background . "gray20")
+                (background-alt . "gray20")
+                (background-light . "gray25")
+                (background-lighter . "gray30")
+                (foreground . "gray80")
+                (foreground-alt . "gray70")
+                (foreground-dim . "gray60")
+                (cursor . "cyan")
+                (region . "gray30")
+                (highlight . "Gray10")
+                (line-number . "gray60")
+                (line-number-current . "white")
+                (line-number-bg . "gray20")
+                (line-number-current-bg . "gray25")
+                (mode-line-bg . "grey75")
+                (mode-line-fg . "black")
+                (mode-line-inactive-bg . "grey30")
+                (mode-line-inactive-fg . "grey20")
+                (fringe . "gray20")
+                (border . "gray60")
+                (minibuffer-prompt . "cyan")
+                (link . "lightblue")
+                (trailing-whitespace . "gray15")
+                (show-paren-match . "gray30")
+                ;; Syntax highlighting (matching Emacs defaults on gray20 background)
+                (comment . "darkorange")
+                (string . "palegreen")
+                (keyword . "cyan")
+                (function-name . "blue")
+                (variable-name . "yellow")
+                (type . "green")
+                (constant . "magenta")
+                ;; UI element colors
+                (success . "green")
+                (warning . "orange")
+                (error . "red")
+                (info . "lightblue")
+                ;; Indent guide colors (matching original)
+                (indent-guide-normal . "black")
+                (indent-guide-current . "black")
+                ;; Diff colors
+                (diff-added . "darkgreen")
+                (diff-removed . "darkred")
+                (diff-changed . "dark magenta")
+                ;; Company/completion colors
+                (completion-highlight . "gray40")
+                (completion-selection . "gray30")
+                (completion-annotation . "gray70"))))
   "Color palettes for different themes.
 Each theme is an alist mapping color names to hex color values.")
 
@@ -281,7 +331,7 @@ For example, 'background becomes the background color value."
   "Apply THEME as the current theme.
 This updates the current theme and runs all change hooks."
   (interactive (list (intern (completing-read "Apply theme: "
-                                              (mapcar #'symbol-name 
+                                              (mapcar #'symbol-name
                                                       (mapcar #'car omegamacs-theme--color-palettes))
                                               nil t))))
   (setq omegamacs-theme-current theme)
@@ -424,13 +474,14 @@ Returns a hex color string."
 
 (defhydra hydra-theme (:color pink :hint nil)
   "
-Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   _r_eload   _q_uit
+Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   cla_s_sic   _r_eload   _q_uit
 "
   ("c" omegamacs-theme-cycle "cycle")
   ("d" (omegamacs-theme-apply 'dark) "dark")
   ("l" (omegamacs-theme-apply 'light) "light")
   ("m" (omegamacs-theme-apply 'mid-gray) "mid-gray")
   ("x" (omegamacs-theme-apply 'dark-x11) "x11-dark")
+  ("s" (omegamacs-theme-apply 'classic) "classic")
   ("r" omegamacs-theme-reload "reload")
   ("q" nil "quit" :exit t))
 
