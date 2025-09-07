@@ -194,26 +194,11 @@ Potential side effects:
   ;; Set manual colors that work with most themes
   (setq highlight-indent-guides-character ?|)
 
-  ;; Configure faces using theme system
-  (with-eval-after-load 'highlight-indent-guides
-    (defun omegamacs-programming--apply-indent-guide-colors (theme)
-      "Apply theme colors to highlight-indent-guides faces."
-      (omegamacs-theme-with-colors theme
-        (set-face-foreground 'highlight-indent-guides-odd-face indent-guide-normal)
-        (set-face-foreground 'highlight-indent-guides-even-face indent-guide-normal)
-        (set-face-foreground 'highlight-indent-guides-character-face indent-guide-normal)
-        ;; Subtle but visible colors for fill mode
-        (set-face-background 'highlight-indent-guides-odd-face background-light)
-        (set-face-background 'highlight-indent-guides-even-face background-lighter)
-        ;; Current indentation level highlighting
-        (set-face-background 'highlight-indent-guides-top-odd-face indent-guide-current)
-        (set-face-background 'highlight-indent-guides-top-even-face indent-guide-current)
-        (set-face-background 'highlight-indent-guides-stack-odd-face indent-guide-current)
-        (set-face-background 'highlight-indent-guides-stack-even-face indent-guide-current)))
-
-    ;; Register with theme system and apply current theme
-    (omegamacs-theme-add-hook #'omegamacs-programming--apply-indent-guide-colors)
-    (omegamacs-programming--apply-indent-guide-colors omegamacs-theme-current)))
+  ;; Use automatic color calculation based on background
+  (setq highlight-indent-guides-auto-enabled t
+        highlight-indent-guides-auto-odd-face-perc 15
+        highlight-indent-guides-auto-even-face-perc 20
+        highlight-indent-guides-auto-character-face-perc 25))
 
 (use-package imenu-list
   :ensure t
