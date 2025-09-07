@@ -49,4 +49,4 @@
 (use-package bison-mode
   :ensure t
   :defer my-enable-lazy-loading
-  :mode ("\\.y\\'" "\\.yy\\'" "\\.l\\'" "\\.ll\\'"))
+  :mode ("\\.yy?\\'" "\\.ll?\\'"))
