@@ -179,6 +179,8 @@ For example, 'background becomes the background color value."
 
 ;;; Theme Management Functions
 
+;; TODO: Theme switching sometimes requires cursor movement to fully refresh display.
+;; This suggests a timing or redraw issue that should be investigated further.
 (defun omegamacs-theme-apply (theme)
   "Apply THEME as the current theme.
 This updates the current theme and runs all change hooks."
