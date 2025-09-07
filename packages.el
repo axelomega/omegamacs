@@ -33,6 +33,7 @@
 (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")
   (use-package auto-package-update
     :ensure t
+    :defer t
     :config
     (setq auto-package-update-delete-old-versions t
           auto-package-update-interval 7)

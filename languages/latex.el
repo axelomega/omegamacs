@@ -51,6 +51,7 @@
 ;; Company completion for LaTeX
 (use-package company-auctex
   :ensure t
+  :defer t
   :after (company auctex)
   :config
   (company-auctex-init))
@@ -58,6 +59,7 @@
 ;; Math input improvements
 (use-package cdlatex
   :ensure t
+  :defer t
   :hook (LaTeX-mode . cdlatex-mode)
   :config
   ;; Use TAB for cdlatex in LaTeX mode

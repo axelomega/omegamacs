@@ -51,4 +51,5 @@
 ;; Lark grammar files support
 (use-package lark-mode
   :ensure t
+  :defer t
   :mode "\\.lark\\'")

@@ -3,7 +3,9 @@
 (use-package org
   :ensure t
   :pin gnu
+  :defer t
   :bind ("C-c o" . hydra-org/body)
+  :mode ("\.org\'" . org-mode)
   :init
   ;; Org files should be accessible from $HOME in general
   (setq my--org-dir (my-user-emacs-subdirectory "org")
@@ -233,6 +235,7 @@
 
 (use-package org-super-agenda
   :ensure t
+  :defer t
   :after org
   :config
   (org-super-agenda-mode)

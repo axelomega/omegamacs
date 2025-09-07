@@ -44,10 +44,12 @@
 
 (use-package lsp-ui
   :ensure t
+  :defer t
   :commands lsp-ui-mode)
 
 (use-package lsp-treemacs
   :ensure t
+  :defer t
   :after (lsp-mode treemacs)
   :config
   ;; Allow C-x 1 to work normally by removing no-delete-other-windows parameter
@@ -87,6 +89,7 @@ Potential side effects:
 ;; Use consult-lsp for LSP integration with Vertico
 (use-package consult-lsp
   :ensure t
+  :defer t
   :after (lsp-mode consult)
   :bind (:map lsp-mode-map
          ([remap xref-find-apropos] . consult-lsp-symbols)))
@@ -157,11 +160,13 @@ Potential side effects:
 ;; Common snippets collection
 (use-package yasnippet-snippets
   :ensure t
+  :defer t
   :after yasnippet)
 
 ;; Indentation visualization with highlight-indent-guides
 (use-package highlight-indent-guides
   :ensure t
+  :defer t
   :hook ((prog-mode . highlight-indent-guides-mode)
          (yaml-mode . highlight-indent-guides-mode)
          (verilog-mode . highlight-indent-guides-mode)
@@ -198,6 +203,9 @@ Potential side effects:
 
 (use-package imenu-list
   :ensure t
+  :defer t
+  :commands (imenu-list-smart-toggle imenu-list-minor-mode)
+  :bind ("C-c i" . imenu-list-smart-toggle)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-focus-after-activation t
@@ -207,16 +215,21 @@ Potential side effects:
   :bind ("C-c i" . imenu-list-smart-toggle))
 
 (use-package flycheck-pos-tip
-  :ensure t)
+  :ensure t
+  :defer t
+  :after flycheck
+  :config
+  (with-eval-after-load 'flycheck (flycheck-pos-tip-mode)))
 
 (use-package dap-mode
   :ensure t
+  :defer t
   :after lsp-mode)
 
 (use-package realgud
   :ensure t
-  :after (lsp-mode dap-mode)
   :defer t
+  :after (lsp-mode dap-mode)
   :config
   ;; Use realgud for debugging
   (setq realgud-safe-mode t
@@ -226,8 +239,10 @@ Potential side effects:
 
 (use-package realgud-ipdb
   :ensure t
+  :defer t
   :after realgud)
 
 (use-package realgud-lldb
   :ensure t
+  :defer t
   :after realgud)
