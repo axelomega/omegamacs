@@ -5,7 +5,7 @@
 ;; AUCTeX - The premier LaTeX mode for Emacs
 (use-package auctex
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :mode ("\\.tex\\'" . LaTeX-mode)
   :config
   ;; Basic AUCTeX settings
@@ -39,7 +39,7 @@
 ;; RefTeX for references, citations, and labels
 (use-package reftex
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :hook (LaTeX-mode . reftex-mode)
   :config
   ;; RefTeX settings
@@ -51,6 +51,7 @@
 ;; Company completion for LaTeX
 (use-package company-auctex
   :ensure t
+  :defer my-enable-lazy-loading
   :after (company auctex)
   :config
   (company-auctex-init))
@@ -58,6 +59,7 @@
 ;; Math input improvements
 (use-package cdlatex
   :ensure t
+  :defer my-enable-lazy-loading
   :hook (LaTeX-mode . cdlatex-mode)
   :config
   ;; Use TAB for cdlatex in LaTeX mode

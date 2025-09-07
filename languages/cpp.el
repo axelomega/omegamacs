@@ -33,14 +33,20 @@
               (c-set-style "my-c-style"))))
 
 (use-package flycheck-clang-tidy
-  :ensure t)
+  :ensure t
+  :defer my-enable-lazy-loading
+  :hook (flycheck-mode . flycheck-clang-tidy-setup))
 
 (use-package flycheck-clang-analyzer
-  :ensure t)
+  :ensure t
+  :defer my-enable-lazy-loading
+  :hook (flycheck-mode . flycheck-clang-analyzer-setup))
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
   (require 'dap-cpptools))
 
 (use-package bison-mode
-  :ensure t)
+  :ensure t
+  :defer my-enable-lazy-loading
+  :mode ("\\.yy?\\'" "\\.ll?\\'"))

@@ -29,15 +29,18 @@
 
 (use-package verilog-ts-mode
   :ensure t
+  :defer my-enable-lazy-loading
   :hook (verilog-ts-mode . my-setup-verilog-indent))
 
 (use-package verilog-mode
   :ensure t
+  :defer my-enable-lazy-loading
   :hook (verilog-mode . my-setup-verilog-indent))
 
 ;; https://github.com/gmlarumbe/verilog-ext
 (use-package verilog-ext
   :ensure t
+  :defer my-enable-lazy-loading
   :hook ((verilog-ts-mode . verilog-ext-mode)
          (verilog-mode . verilog-ext-mode))
   :init

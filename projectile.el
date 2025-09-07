@@ -3,6 +3,7 @@
 ;; Projectile mode
 (use-package projectile
   :ensure t
+  :defer my-enable-lazy-loading
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
@@ -36,4 +37,6 @@
 (global-set-key (kbd "C-c f p") 'my-copy-file-path-from-project-root)
 
 (use-package treemacs-projectile
-  :ensure t)
+  :ensure t
+  :defer my-enable-lazy-loading
+  :after (treemacs projectile))

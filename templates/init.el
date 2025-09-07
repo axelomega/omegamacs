@@ -2,6 +2,10 @@
 ;;; Omegamacs initialization file
 ;;; Copy this file to ~/.emacs.d/init.el
 ;;; This file loads the main configuration from a configurable directory
+;;; 
+;;; Command line arguments:
+;;;   --minimal   : Load minimal configuration only
+;;;   --no-defer  : Disable lazy loading (load all packages immediately)
 
 ;;; Emacs configuration root directory
 ;; (setq my-emacs-config-dir "~/omegamacs")

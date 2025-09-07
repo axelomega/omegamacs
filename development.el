@@ -36,6 +36,7 @@
 
 (use-package dired-subtree
   :ensure t
+  :defer my-enable-lazy-loading
   :bind (:map dired-mode-map
          ("<tab>" . dired-subtree-toggle)
          ("<backtab>" . dired-subtree-cycle)))
@@ -43,11 +44,13 @@
 ;; Enhanced programming modes
 (use-package rainbow-delimiters
   :ensure t
+  :defer my-enable-lazy-loading
   :hook (prog-mode . rainbow-delimiters-mode)
   :config (setq sp-autoinsert-pair nil))
 
 (use-package smartparens
   :ensure t
+  :defer my-enable-lazy-loading
   :hook (prog-mode . smartparens-mode)
   :config
   (require 'smartparens-config))
@@ -55,6 +58,7 @@
 ;; Better editing with multiple cursors
 (use-package multiple-cursors
   :ensure t
+  :defer my-enable-lazy-loading
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
@@ -85,7 +89,7 @@
 ;; Enhanced terminal integration
 (use-package vterm
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :commands (vterm vterm-other-window)
   :config
   (setq vterm-max-scrollback 10000))
@@ -104,4 +108,5 @@
 ;; Hide comments temporarily to focus on code structure
 (use-package nocomments-mode
   :ensure t
+  :defer my-enable-lazy-loading
   :bind (("<f12>" . nocomments-mode)))
