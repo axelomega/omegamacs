@@ -2,7 +2,7 @@
 ;;; Verilog Language Configuration
 
 ;; Shared Verilog configuration with performance optimizations
-(defun my-setup-verilog-indent ()
+(defun omegamacs-setup-verilog-indent ()
   "Configure Verilog indentation settings."
   (message "VERILOG MODE SETUP")
   (setq verilog-indent-level              4
@@ -29,18 +29,18 @@
 
 (use-package verilog-ts-mode
   :ensure t
-  :defer my-enable-lazy-loading
-  :hook (verilog-ts-mode . my-setup-verilog-indent))
+  :defer omegamacs-enable-lazy-loading
+  :hook (verilog-ts-mode . omegamacs-setup-verilog-indent))
 
 (use-package verilog-mode
   :ensure t
-  :defer my-enable-lazy-loading
-  :hook (verilog-mode . my-setup-verilog-indent))
+  :defer omegamacs-enable-lazy-loading
+  :hook (verilog-mode . omegamacs-setup-verilog-indent))
 
 ;; https://github.com/gmlarumbe/verilog-ext
 (use-package verilog-ext
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook ((verilog-ts-mode . verilog-ext-mode)
          (verilog-mode . verilog-ext-mode))
   :init

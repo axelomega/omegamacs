@@ -3,25 +3,25 @@
 (use-package org
   :ensure t
   :pin gnu
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :bind ("C-c o" . hydra-org/body)
   :mode ("\.org\'" . org-mode)
   :init
   ;; Org files should be accessible from $HOME in general
-  (setq my--org-dir (my-user-emacs-subdirectory "org")
-        my--org-file-inbox (expand-file-name "inbox.org" my--org-dir)
-        my--org-file-projects (expand-file-name "projects.org" my--org-dir)
-        my--org-file-next (expand-file-name "next.org" my--org-dir)
-        my--org-file-someday (expand-file-name "someday.org" my--org-dir)
-        my--org-file-journal (expand-file-name "journal.org" my--org-dir))
+  (setq omegamacs--org-dir (omegamacs-user-emacs-subdirectory "org")
+        omegamacs--org-file-inbox (expand-file-name "inbox.org" omegamacs--org-dir)
+        omegamacs--org-file-projects (expand-file-name "projects.org" omegamacs--org-dir)
+        omegamacs--org-file-next (expand-file-name "next.org" omegamacs--org-dir)
+        omegamacs--org-file-someday (expand-file-name "someday.org" omegamacs--org-dir)
+        omegamacs--org-file-journal (expand-file-name "journal.org" omegamacs--org-dir))
 
   ;; Where your GTD files live
-  (setq org-directory my--org-dir
-        org-agenda-files (list my--org-file-inbox
-                               my--org-file-projects
-                               my--org-file-next
-                               my--org-file-someday
-                               my--org-file-journal))
+  (setq org-directory omegamacs--org-dir
+        org-agenda-files (list omegamacs--org-file-inbox
+                               omegamacs--org-file-projects
+                               omegamacs--org-file-next
+                               omegamacs--org-file-someday
+                               omegamacs--org-file-journal))
 
   ;; [Claude] ensure that all org files exist
   (dolist (file org-agenda-files)
@@ -70,45 +70,45 @@
 
   ;; Refile: move items from inbox to project/next/someday
   (setq org-refile-targets
-     `((,my--org-file-projects :maxlevel . 3)
-       (,my--org-file-next     :maxlevel . 2)
-       (,my--org-file-someday  :maxlevel . 2)))
+     `((,omegamacs--org-file-projects :maxlevel . 3)
+       (,omegamacs--org-file-next     :maxlevel . 2)
+       (,omegamacs--org-file-someday  :maxlevel . 2)))
 
   (setq org-outline-path-complete-in-steps nil
         org-refile-use-outline-path 'file) ;; completion like: projects.org/Projects/…
 
   ;; Capture (C-c c)
-  (setq org-default-notes-file my--org-file-inbox)
+  (setq org-default-notes-file omegamacs--org-file-inbox)
   (setq org-capture-templates
         `(
           ;; Quick inbox task
           ("t" "Todo → Inbox" entry
-           (file+headline my--org-file-inbox "Inbox")
+           (file+headline omegamacs--org-file-inbox "Inbox")
            "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n%a\n" :empty-lines 1)
 
           ;; Next action to Next file
           ("n" "Next action" entry
-           (file my--org-file-next)
+           (file omegamacs--org-file-next)
            "* NEXT %? %^g\n%a\n" :empty-lines 1)
 
           ;; New project skeleton
           ("p" "Project" entry
-           (file+headline my--org-file-projects "Projects")
+           (file+headline omegamacs--org-file-projects "Projects")
            "* PROJECT %^{Project name}\n** NEXT %?\n" :empty-lines 1)
 
           ;; Someday/Maybe
           ("s" "Someday" entry
-           (file my--org-file-someday)
+           (file omegamacs--org-file-someday)
            "* TODO %? :someday:\n" :empty-lines 1)
 
           ;; Journal
           ("j" "Journal" entry
-           (file+datetree my--org-file-journal)
+           (file+datetree omegamacs--org-file-journal)
            "* %U %?\n%i\n" :empty-lines 1)
 
           ;; Meeting note + clocking
           ("m" "Meeting (clocked)" entry
-           (file+datetree my--org-file-journal)
+           (file+datetree omegamacs--org-file-journal)
            "* %^{Title}\n:PROPERTIES:\n:Participants: %^{Who}\n:END:\n%U\n%?\n"
            :clock-in t :clock-resume t :empty-lines 1)
           ))
@@ -235,7 +235,7 @@
 
 (use-package org-super-agenda
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after org
   :config
   (org-super-agenda-mode)

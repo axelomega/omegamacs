@@ -90,15 +90,15 @@
   (setq tramp-default-method "ssh"          ; SSH as default (more secure than scp)
         tramp-verbose 1                      ; Minimal verbosity (increase to 6 for debugging)
         tramp-use-ssh-controlmaster-options t ; Use SSH ControlMaster for connection reuse
-        tramp-persistency-file-name (my-user-emacs-subdirectory-local "cache/tramp") ; Persist connection data
+        tramp-persistency-file-name (omegamacs-user-emacs-subdirectory-local "cache/tramp") ; Persist connection data
         tramp-completion-reread-directory-timeout nil ; Disable to improve performance
-        tramp-auto-save-directory (my-user-emacs-subdirectory-local "tramp-auto-save") ; Separate auto-save dir
+        tramp-auto-save-directory (omegamacs-user-emacs-subdirectory-local "tramp-auto-save") ; Separate auto-save dir
         remote-file-name-inhibit-cache nil   ; Enable caching (set to t to disable for fresh data)
         vc-ignore-dir-regexp (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp) ; Disable VC for TRAMP
         tramp-chunksize 8192)                ; Optimize chunk size for better performance
 
   ;; Create TRAMP directories if they don't exist
-  (dolist (dir (list (my-user-emacs-subdirectory-local "tramp-auto-save")
+  (dolist (dir (list (omegamacs-user-emacs-subdirectory-local "tramp-auto-save")
                      (file-name-directory tramp-persistency-file-name)))
     (unless (file-directory-p dir)
       (make-directory dir t)))
@@ -112,17 +112,17 @@
 
   ;; Backup configuration for remote files
   (add-to-list 'backup-directory-alist
-               (cons tramp-file-name-regexp (my-user-emacs-subdirectory-local "tramp-backups")))
-  ;; Directory creation is handled by my-user-emacs-subdirectory-local function
-  (my-user-emacs-subdirectory-local "tramp-backups")
+               (cons tramp-file-name-regexp (omegamacs-user-emacs-subdirectory-local "tramp-backups")))
+  ;; Directory creation is handled by omegamacs-user-emacs-subdirectory-local function
+  (omegamacs-user-emacs-subdirectory-local "tramp-backups")
 
   ;; Performance: Disable version control for remote files
-  (defun my--tramp-disable-vc (orig-fun &rest args)
+  (defun omegamacs--tramp-disable-vc (orig-fun &rest args)
     "Disable version control for TRAMP files to improve performance."
     (if (file-remote-p default-directory)
         nil
       (apply orig-fun args)))
-  (advice-add 'vc-backend :around #'my--tramp-disable-vc)
+  (advice-add 'vc-backend :around #'omegamacs--tramp-disable-vc)
 
   ;; Security: Prompt for passwords instead of storing them
   (setq password-cache-expiry 300           ; Cache passwords for 5 minutes
@@ -170,11 +170,11 @@
       :category tramp-host
       :face     consult-file
       :history  file-name-history
-      :items    ,#'my--tramp-host-candidates
-      :action   ,#'my--tramp-open-host)
+      :items    ,#'omegamacs--tramp-host-candidates
+      :action   ,#'omegamacs--tramp-open-host)
     "TRAMP host candidate source for `consult-buffer'.")
 
-  (defun my--tramp-host-candidates ()
+  (defun omegamacs--tramp-host-candidates ()
     "Return list of TRAMP host candidates from SSH config and known hosts."
     (let ((hosts '())
           (ssh-config (expand-file-name "~/.ssh/config"))
@@ -200,7 +200,7 @@
                 (push (format "/ssh:%s:" host) hosts))))))
       (delete-dups hosts)))
 
-  (defun my--tramp-open-host (host)
+  (defun omegamacs--tramp-open-host (host)
     "Open TRAMP connection to HOST."
     (find-file host))
 
@@ -225,7 +225,7 @@
           consult--source-tramp-host))
 
   ;; Custom function to show buffers without TRAMP hosts
-  (defun my-consult-buffer-no-tramp ()
+  (defun omegamacs-consult-buffer-no-tramp ()
     "Show consult-buffer without TRAMP host candidates."
     (interactive)
     (let ((consult-buffer-sources
@@ -250,14 +250,14 @@
     "TRAMP buffer candidate source for `consult-buffer'.")
 
   ;; Function to toggle TRAMP sources in buffer list
-  (defvar my-tramp-sources-enabled t
+  (defvar omegamacs-tramp-sources-enabled t
     "Whether TRAMP sources are shown in consult-buffer.")
 
-  (defun my-toggle-tramp-in-buffer-list ()
+  (defun omegamacs-toggle-tramp-in-buffer-list ()
     "Toggle display of TRAMP sources in consult-buffer."
     (interactive)
-    (setq my-tramp-sources-enabled (not my-tramp-sources-enabled))
-    (if my-tramp-sources-enabled
+    (setq omegamacs-tramp-sources-enabled (not omegamacs-tramp-sources-enabled))
+    (if omegamacs-tramp-sources-enabled
         (progn
           (add-to-list 'consult-buffer-sources 'consult--source-tramp-host t)
           (add-to-list 'consult-buffer-sources 'consult--source-tramp-buffer t)
@@ -268,7 +268,7 @@
       (message "TRAMP sources disabled in buffer list"))))
 
 ;; Enhanced TRAMP commands with Vertico completion
-(defun my-tramp-cleanup-all ()
+(defun omegamacs-tramp-cleanup-all ()
   "Clean up all TRAMP connections and buffers."
   (interactive)
   (when (y-or-n-p "Clean up all TRAMP connections? ")
@@ -276,7 +276,7 @@
     (tramp-cleanup-all-buffers)
     (message "All TRAMP connections cleaned up")))
 
-(defun my-tramp-cleanup-current ()
+(defun omegamacs-tramp-cleanup-current ()
   "Clean up TRAMP connection for current buffer."
   (interactive)
   (when (file-remote-p default-directory)
@@ -284,7 +284,7 @@
       (tramp-cleanup-connection vec)
       (message "Cleaned up connection to %s" (tramp-make-tramp-file-name vec)))))
 
-(defun my-tramp-reopen-current ()
+(defun omegamacs-tramp-reopen-current ()
   "Reopen current file after cleaning up its TRAMP connection."
   (interactive)
   (when (and (file-remote-p default-directory)
@@ -292,12 +292,12 @@
     (let ((file buffer-file-name)
           (line (line-number-at-pos))
           (col (current-column)))
-      (my-tramp-cleanup-current)
+      (omegamacs-tramp-cleanup-current)
       (find-file file)
       (goto-line line)
       (move-to-column col))))
 
-(defun my-tramp-sudo-find-file (file)
+(defun omegamacs-tramp-sudo-find-file (file)
   "Open FILE with sudo via TRAMP."
   (interactive "FFind file (sudo): ")
   (find-file (if (file-remote-p file)
@@ -315,50 +315,50 @@
 ;; Projectile integration for TRAMP
 (with-eval-after-load 'projectile
   ;; Optimize projectile for TRAMP
-  (defun my--projectile-project-root-tramp (orig-fn &rest args)
+  (defun omegamacs--projectile-project-root-tramp (orig-fn &rest args)
     "Optimize project root detection for TRAMP files."
     (if (file-remote-p default-directory)
         (let ((projectile-git-command "git ls-files -zco --exclude-standard")
               (projectile-generic-command "find . -type f -print0"))
           (apply orig-fn args))
       (apply orig-fn args)))
-  (advice-add 'projectile-project-root :around #'my--projectile-project-root-tramp))
+  (advice-add 'projectile-project-root :around #'omegamacs--projectile-project-root-tramp))
 
 ;; Magit integration for TRAMP
 (with-eval-after-load 'magit
   ;; Improve magit performance over TRAMP
-  (defun my--magit-process-environment (env)
+  (defun omegamacs--magit-process-environment (env)
     "Add TRAMP-friendly environment settings to magit."
     (cons "GIT_PAGER=cat" env))
-  (advice-add 'magit-process-environment :filter-return #'my--magit-process-environment)
+  (advice-add 'magit-process-environment :filter-return #'omegamacs--magit-process-environment)
 
   ;; Disable certain magit features for remote repos
-  (defun my--magit-disable-for-tramp ()
+  (defun omegamacs--magit-disable-for-tramp ()
     "Disable certain magit features when in TRAMP buffer."
     (when (file-remote-p default-directory)
       (setq-local magit-refresh-verbose t)
       (setq-local magit-git-executable "git")
       (setq-local auto-revert-mode nil)))
-  (add-hook 'magit-mode-hook #'my--magit-disable-for-tramp))
+  (add-hook 'magit-mode-hook #'omegamacs--magit-disable-for-tramp))
 
 ;; Key bindings
-(global-set-key (kbd "C-c t c") #'my-tramp-cleanup-current)
-(global-set-key (kbd "C-c t C") #'my-tramp-cleanup-all)
-(global-set-key (kbd "C-c t r") #'my-tramp-reopen-current)
-(global-set-key (kbd "C-c t s") #'my-tramp-sudo-find-file)
+(global-set-key (kbd "C-c t c") #'omegamacs-tramp-cleanup-current)
+(global-set-key (kbd "C-c t C") #'omegamacs-tramp-cleanup-all)
+(global-set-key (kbd "C-c t r") #'omegamacs-tramp-reopen-current)
+(global-set-key (kbd "C-c t s") #'omegamacs-tramp-sudo-find-file)
 (global-set-key (kbd "C-c t h") #'(lambda () (interactive)
                                     (consult-buffer '(consult--source-tramp-host))))
-(global-set-key (kbd "C-c t b") #'my-consult-buffer-no-tramp)
-(global-set-key (kbd "C-c t t") #'my-toggle-tramp-in-buffer-list)
+(global-set-key (kbd "C-c t b") #'omegamacs-consult-buffer-no-tramp)
+(global-set-key (kbd "C-c t t") #'omegamacs-toggle-tramp-in-buffer-list)
 
 ;; Debugging helpers
-(defun my-tramp-toggle-debug ()
+(defun omegamacs-tramp-toggle-debug ()
   "Toggle TRAMP debugging."
   (interactive)
   (setq tramp-verbose (if (= tramp-verbose 1) 6 1))
   (message "TRAMP verbosity set to %d" tramp-verbose))
 
-(global-set-key (kbd "C-c t d") #'my-tramp-toggle-debug)
+(global-set-key (kbd "C-c t d") #'omegamacs-tramp-toggle-debug)
 
 ;; Auto-cleanup idle connections
 (run-with-idle-timer 3600 t #'tramp-cleanup-all-connections)

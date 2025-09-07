@@ -17,20 +17,20 @@
 ;(add-to-list 'default-frame-alist '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*"))
 
 ;; Color settings
-(defun my--set-colors ()
+(defun omegamacs--set-colors ()
   (set-background-color "gray20")
   (set-cursor-color "cyan")
   (set-foreground-color "gray80"))
 
-(defun my--set-frame-colors (frame)
+(defun omegamacs--set-frame-colors (frame)
   (select-frame frame)
   (set-background-color "gray20")
   (set-cursor-color "cyan")
   (set-foreground-color "gray80"))
 
 (if (daemonp)
-	(add-hook 'after-make-frame-functions #'my--set-frame-colors)
-  (my--set-colors))
+	(add-hook 'after-make-frame-functions #'omegamacs--set-frame-colors)
+  (omegamacs--set-colors))
 
 ;;Use space not tabs
 (setq-default indent-tabs-mode nil)
@@ -55,15 +55,15 @@
 (global-hl-line-mode t) ; turn it on for all modes by default
 
 ;; Zoom text
-(defun my-text-zoom (n)
+(defun omegamacs-text-zoom (n)
   "with positive N, increase the font size, otherwise decrease it"
   (set-face-attribute 'default (selected-frame) :height
     (+ (face-attribute 'default :height) (* (if (> n 0) 1 -1) 10))))
 
-(global-set-key (kbd "C-+")      #'(lambda nil (interactive) (my-text-zoom 1)))
-(global-set-key [C-kp-add]       #'(lambda nil (interactive) (my-text-zoom 1)))
-(global-set-key (kbd "C--")      #'(lambda nil (interactive) (my-text-zoom -1)))
-(global-set-key [C-kp-subtract]  #'(lambda nil (interactive) (my-text-zoom -1)))
+(global-set-key (kbd "C-+")      #'(lambda nil (interactive) (omegamacs-text-zoom 1)))
+(global-set-key [C-kp-add]       #'(lambda nil (interactive) (omegamacs-text-zoom 1)))
+(global-set-key (kbd "C--")      #'(lambda nil (interactive) (omegamacs-text-zoom -1)))
+(global-set-key [C-kp-subtract]  #'(lambda nil (interactive) (omegamacs-text-zoom -1)))
 
 (defhydra hydra-zoom (:color pink :hint nil)
   "
@@ -82,7 +82,7 @@
        (set-face-background 'smerge-refined-change "dark magenta")))
 
 ;; Keep backups in a dedicated folder
-(let ((backup-dir (my-user-emacs-subdirectory-local "backups")))
+(let ((backup-dir (omegamacs-user-emacs-subdirectory-local "backups")))
   (setq backup-directory-alist (list (cons "." backup-dir))
         backup-by-copying t
         delete-old-versions t

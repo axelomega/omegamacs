@@ -27,7 +27,7 @@
 ;; Enhanced company UI with icons and better styling
 (use-package company-box
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook (company-mode . company-box-mode)
   :config
   (setq company-box-icons-alist 'company-box-icons-all-the-icons

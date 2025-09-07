@@ -49,7 +49,7 @@
                (lambda () (derived-mode-p 'vterm-mode)))
 
   ;; Custom functions for better integration
-  (defun my-copilot-toggle ()
+  (defun omegamacs-copilot-toggle ()
     "Toggle Copilot mode on/off."
     (interactive)
     (if copilot-mode
@@ -60,7 +60,7 @@
         (copilot-mode 1)
         (message "Copilot enabled"))))
 
-  (defun my-copilot-complete-or-accept ()
+  (defun omegamacs-copilot-complete-or-accept ()
     "Accept Copilot suggestion or trigger completion if no suggestion."
     (interactive)
     (if (copilot--overlay-visible)
@@ -69,7 +69,7 @@
           (company-manual-begin)
         (completion-at-point))))
 
-  (defun my-copilot-accept-word-or-line ()
+  (defun omegamacs-copilot-accept-word-or-line ()
     "Accept Copilot suggestion by word, or full line if at end."
     (interactive)
     (if (copilot--overlay-visible)
@@ -79,7 +79,7 @@
       (message "No Copilot suggestion available")))
 
   ;; Global keybindings for Copilot control
-  (global-set-key (kbd "C-c c t") 'my-copilot-toggle)
+  (global-set-key (kbd "C-c c t") 'omegamacs-copilot-toggle)
   (global-set-key (kbd "C-c c c") 'copilot-complete)
   (global-set-key (kbd "C-c c d") 'copilot-diagnose)
   (global-set-key (kbd "C-c c l") 'copilot-login)
@@ -89,7 +89,7 @@
   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
 
   ;; Enhanced TAB behavior that works with indentation
-  (defun my-copilot-tab-or-indent ()
+  (defun omegamacs-copilot-tab-or-indent ()
     "Accept Copilot completion or indent line."
     (interactive)
     (if (copilot--overlay-visible)
@@ -97,11 +97,11 @@
       (indent-for-tab-command)))
 
   ;; Override TAB in programming modes
-  (define-key prog-mode-map (kbd "<tab>") 'my-copilot-tab-or-indent)
-  (define-key prog-mode-map (kbd "TAB") 'my-copilot-tab-or-indent)
+  (define-key prog-mode-map (kbd "<tab>") 'omegamacs-copilot-tab-or-indent)
+  (define-key prog-mode-map (kbd "TAB") 'omegamacs-copilot-tab-or-indent)
 
   ;; Mode line indicator
-  (defun my--copilot-mode-line ()
+  (defun omegamacs--copilot-mode-line ()
     "Return mode line string for Copilot status."
     (when copilot-mode
       (if (copilot--overlay-visible)
@@ -109,7 +109,7 @@
         " Co")))
 
   ;; Add to mode line
-  (add-to-list 'mode-line-misc-info '(:eval (my--copilot-mode-line)))
+  (add-to-list 'mode-line-misc-info '(:eval (omegamacs--copilot-mode-line)))
 
   ;; Advice to improve interaction with other completion systems
   (advice-add 'copilot-accept-completion :around
@@ -131,7 +131,7 @@
    '(copilot-overlay-face ((t (:foreground "#6272A4" :italic t)))))
 
   ;; Diagnostic function for troubleshooting
-  (defun my-copilot-status ()
+  (defun omegamacs-copilot-status ()
     "Show detailed Copilot status information."
     (interactive)
     (message "Copilot mode: %s | Logged in: %s | Version: %s | Node.js: %s"
@@ -140,4 +140,4 @@
              (or copilot-version "unknown")
              (or copilot--node-executable "not found")))
 
-  (global-set-key (kbd "C-c c i") 'my-copilot-status))
+  (global-set-key (kbd "C-c c i") 'omegamacs-copilot-status))

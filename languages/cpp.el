@@ -13,7 +13,7 @@
         c-basic-offset 4)
 
   ;; Custom indentation rules
-  (c-add-style "my-c-style"
+  (c-add-style "omegamacs-c-style"
                '("linux"
                  (c-offsets-alist
                   (innamespace . 0)           ; No indentation for namespace contents
@@ -27,19 +27,19 @@
   ;; Apply the style to C/C++ modes
   (add-hook 'c-mode-hook
             (lambda ()
-              (c-set-style "my-c-style")))
+              (c-set-style "omegamacs-c-style")))
   (add-hook 'c++-mode-hook
             (lambda ()
-              (c-set-style "my-c-style"))))
+              (c-set-style "omegamacs-c-style"))))
 
 (use-package flycheck-clang-tidy
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook (flycheck-mode . flycheck-clang-tidy-setup))
 
 (use-package flycheck-clang-analyzer
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook (flycheck-mode . flycheck-clang-analyzer-setup))
 
 (with-eval-after-load 'lsp-mode
@@ -48,5 +48,5 @@
 
 (use-package bison-mode
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :mode ("\\.yy?\\'" "\\.ll?\\'"))

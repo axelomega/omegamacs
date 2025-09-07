@@ -107,8 +107,8 @@ If your language uses an LSP server:
 ```
 
 ### Variable Naming
-- Use `my-` prefix for custom variables and functions
-- Use `my--` prefix for internal/private variables
+- Use `omegamacs-` prefix for custom variables and functions
+- Use `omegamacs--` prefix for internal/private variables
 - Be descriptive: `my-python-test-command` not `my-pytest`
 
 ## Testing Your Changes

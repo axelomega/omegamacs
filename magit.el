@@ -29,7 +29,7 @@
 ;; For initial setup see https://magit.vc/manual/forge/Initial-Setup.html
 (use-package forge
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after magit)
 
 (defhydra hydra-git (:color teal :hint nil)

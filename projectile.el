@@ -3,7 +3,7 @@
 ;; Projectile mode
 (use-package projectile
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
@@ -11,8 +11,8 @@
   (setq projectile-indexing-method 'alien)
   ;; Use git ls-files when in git repo, fallback to find for non-git projects
   (setq projectile-generic-command
-        (if my-settings-projectile-generic-command
-            my-settings-projectile-generic-command
+        (if omegamacs-settings-projectile-generic-command
+            omegamacs-settings-projectile-generic-command
             "git ls-files -zco --exclude-standard 2>/dev/null || find . -type f -print0"))
   (setq projectile-sort-order 'recently-active)
 
@@ -20,7 +20,7 @@
   (setq projectile-completion-system 'default))
 
 ;; Custom function to copy current file path relative to project root to clipboard
-(defun my-copy-file-path-from-project-root ()
+(defun omegamacs-copy-file-path-from-project-root ()
   "Copy the current file's path relative to project root to clipboard."
   (interactive)
   (when buffer-file-name
@@ -34,9 +34,9 @@
       (message "Copied to clipboard: %s" relative-path))))
 
 ;; Bind to a convenient key combination
-(global-set-key (kbd "C-c f p") 'my-copy-file-path-from-project-root)
+(global-set-key (kbd "C-c f p") 'omegamacs-copy-file-path-from-project-root)
 
 (use-package treemacs-projectile
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after (treemacs projectile))

@@ -17,7 +17,7 @@
                `(python-ts-mode . ("pyright-langserver" "--stdio")))
 
   ;; Enhanced auto-start function with better error handling
-  (defun my--python-eglot-ensure ()
+  (defun omegamacs--python-eglot-ensure ()
     "Start eglot for Python with error handling."
     (when (and (executable-find "pyright-langserver")
                (not (eglot-current-server)))
@@ -27,17 +27,17 @@
          (message "Eglot failed to start: %s" (error-message-string err))))))
 
   ;; Manual eglot commands for debugging
-  (defun my-eglot-restart ()
+  (defun omegamacs-eglot-restart ()
     "Restart eglot server for current buffer."
     (interactive)
     (when (eglot-current-server)
       (eglot-shutdown (eglot-current-server)))
     (eglot-ensure))
 
-  :hook ((python-mode . my--python-eglot-ensure)
-         (python-ts-mode . my--python-eglot-ensure))
+  :hook ((python-mode . omegamacs--python-eglot-ensure)
+         (python-ts-mode . omegamacs--python-eglot-ensure))
   :bind (:map python-mode-map
-         ("C-c l r" . my-eglot-restart)
+         ("C-c l r" . omegamacs-eglot-restart)
          ("C-c l s" . eglot)))
 
 ;; Enable eglot breadcrumbs for managed buffers
@@ -51,5 +51,5 @@
 ;; Lark grammar files support
 (use-package lark-mode
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :mode "\\.lark\\'")
