@@ -2,7 +2,7 @@
 
 ;; This works the first time but does not work on subsequent runs
 ;; TODO: Investigate why
-;; (setq package-user-dir (my-user-emacs-subdirectory-local "elpa"))
+;; (setq package-user-dir (omegamacs-user-emacs-subdirectory-local "elpa"))
 
 (use-package package
   :config
@@ -33,7 +33,7 @@
 (when (getenv "EMACS_PACKAGE_UPDATE_ENABLE")
   (use-package auto-package-update
     :ensure t
-    :defer my-enable-lazy-loading
+    :defer omegamacs-enable-lazy-loading
     :config
     (setq auto-package-update-delete-old-versions t
           auto-package-update-interval 7)

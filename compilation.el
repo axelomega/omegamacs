@@ -63,7 +63,7 @@
                  "^INFO:.*\\[\\([/_\\.[:alnum:]]*\\):\\([[:digit:]]*\\)$"
                  1 2 nil 0)))
 
-(defun my--colorize-compilation-buffer ()
+(defun omegamacs--colorize-compilation-buffer ()
   (read-only-mode)
   (ansi-color-apply-on-region (point-min) (point-max))
   (read-only-mode))
@@ -71,12 +71,12 @@
 (use-package ansi-color
   :ensure t
   :config
-  (add-hook 'compilation-filter-hook 'my--colorize-compilation-buffer))
+  (add-hook 'compilation-filter-hook 'omegamacs--colorize-compilation-buffer))
 
 (setq compilation-hidden-output '("^ninja: Entering[^\n]+\n"))
 
 ;; Symlink resolution for compilation error navigation
-(defun my--resolve-symlink-in-compilation-error (data)
+(defun omegamacs--resolve-symlink-in-compilation-error (data)
   "Resolve symlinks in compilation error file paths.
 This function is used as advice for `compilation-find-file' to ensure
 that when jumping to compilation errors, symlinked file paths are
@@ -89,7 +89,7 @@ resolved to their real paths."
             (setcar data real-path))))))
   data)
 
-(defun my--compilation-find-file-resolve-symlinks (orig-fun marker filename directory &rest formats)
+(defun omegamacs--compilation-find-file-resolve-symlinks (orig-fun marker filename directory &rest formats)
   "Advice for `compilation-find-file' to resolve symlinks to real paths.
 This ensures that when jumping to compilation errors, Emacs opens the
 actual file rather than the symlink, providing consistent file handling."
@@ -103,10 +103,10 @@ actual file rather than the symlink, providing consistent file handling."
     result))
 
 ;; Apply the advice to resolve symlinks during compilation error navigation
-(advice-add 'compilation-find-file :around #'my--compilation-find-file-resolve-symlinks)
+(advice-add 'compilation-find-file :around #'omegamacs--compilation-find-file-resolve-symlinks)
 
 ;; Alternative approach: resolve symlinks in next-error navigation
-(defun my--next-error-resolve-symlinks ()
+(defun omegamacs--next-error-resolve-symlinks ()
   "Hook to resolve symlinks when navigating to compilation errors.
 This ensures consistent file handling when using next-error/previous-error."
   (when (and (buffer-file-name)
@@ -117,37 +117,37 @@ This ensures consistent file handling when using next-error/previous-error."
         (find-file real-path)))))
 
 ;; Add hook for next-error navigation
-(add-hook 'next-error-hook #'my--next-error-resolve-symlinks)
+(add-hook 'next-error-hook #'omegamacs--next-error-resolve-symlinks)
 
 ;; Configuration to handle symlinks globally in find-file operations
-(defun my--find-file-resolve-symlinks (filename &optional wildcards)
+(defun omegamacs--find-file-resolve-symlinks (filename &optional wildcards)
   "Resolve symlinks when opening files through find-file operations.
 This provides consistent symlink resolution across all file opening operations."
   (when (and filename (stringp filename) (file-exists-p filename))
     (file-truename filename)))
 
 ;; Enhanced compilation error navigation with symlink awareness
-(defun my-goto-next-error-resolve-symlinks ()
+(defun omegamacs-goto-next-error-resolve-symlinks ()
   "Navigate to next compilation error and resolve any symlinks."
   (interactive)
   (next-error)
-  (my--next-error-resolve-symlinks))
+  (omegamacs--next-error-resolve-symlinks))
 
-(defun my-goto-previous-error-resolve-symlinks ()
+(defun omegamacs-goto-previous-error-resolve-symlinks ()
   "Navigate to previous compilation error and resolve any symlinks."
   (interactive)
   (previous-error)
-  (my--next-error-resolve-symlinks))
+  (omegamacs--next-error-resolve-symlinks))
 
 ;; Optional keybindings for enhanced error navigation
-;; (global-set-key (kbd "M-g n") #'my-goto-next-error-resolve-symlinks)
-;; (global-set-key (kbd "M-g p") #'my-goto-previous-error-resolve-symlinks)
+;; (global-set-key (kbd "M-g n") #'omegamacs-goto-next-error-resolve-symlinks)
+;; (global-set-key (kbd "M-g p") #'omegamacs-goto-previous-error-resolve-symlinks)
 
 ;; Helper function to determine shell history file
-(defun my--get-shell-history-file ()
+(defun omegamacs--get-shell-history-file ()
   "Get the appropriate shell history file path."
-  (if (boundp 'my-compile-mode-shell-history-file)
-      my-compile-mode-shell-history-file
+  (if (boundp 'omegamacs-compile-mode-shell-history-file)
+      omegamacs-compile-mode-shell-history-file
     (let ((shell (file-name-nondirectory (or (getenv "SHELL") "/bin/bash"))))
       (cond
        ((string-match "zsh" shell) (expand-file-name ".zsh_history" "~"))
@@ -156,12 +156,12 @@ This provides consistent symlink resolution across all file opening operations."
        (t (expand-file-name ".bash_history" "~"))))))
 
 ;; Read shell history into compile command history
-(defun my--load-shell-history-to-compile ()
+(defun omegamacs--load-shell-history-to-compile ()
   "Load shell history into compilation command history."
-  (let ((history-size (if (boundp 'my-compile-mode-shell-history-size)
-                          my-compile-mode-shell-history-size
+  (let ((history-size (if (boundp 'omegamacs-compile-mode-shell-history-size)
+                          omegamacs-compile-mode-shell-history-size
                         nil))
-        (histfile (my--get-shell-history-file)))
+        (histfile (omegamacs--get-shell-history-file)))
     (when (and history-size histfile (file-readable-p histfile))
       (with-temp-buffer
         (insert-file-contents histfile)
@@ -173,9 +173,9 @@ This provides consistent symlink resolution across all file opening operations."
                 (delete-dups (append shell-commands compile-history))))))))
 
 ;; Load bash history when compile command is read
-(defun my--compilation-read-command-with-history (orig-fun &rest args)
+(defun omegamacs--compilation-read-command-with-history (orig-fun &rest args)
    "Advice to load shell history before reading compile command."
-  (my--load-shell-history-to-compile)
+  (omegamacs--load-shell-history-to-compile)
   (apply orig-fun args))
 
-(advice-add 'compilation-read-command :around #'my--compilation-read-command-with-history)
+(advice-add 'compilation-read-command :around #'omegamacs--compilation-read-command-with-history)

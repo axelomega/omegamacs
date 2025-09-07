@@ -5,7 +5,7 @@
 ;; AUCTeX - The premier LaTeX mode for Emacs
 (use-package auctex
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :mode ("\\.tex\\'" . LaTeX-mode)
   :config
   ;; Basic AUCTeX settings
@@ -39,7 +39,7 @@
 ;; RefTeX for references, citations, and labels
 (use-package reftex
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook (LaTeX-mode . reftex-mode)
   :config
   ;; RefTeX settings
@@ -51,7 +51,7 @@
 ;; Company completion for LaTeX
 (use-package company-auctex
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after (company auctex)
   :config
   (company-auctex-init))
@@ -59,7 +59,7 @@
 ;; Math input improvements
 (use-package cdlatex
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook (LaTeX-mode . cdlatex-mode)
   :config
   ;; Use TAB for cdlatex in LaTeX mode
@@ -81,13 +81,13 @@
 ;;                    :server-id 'texlab))
 ;;
 ;;  ;; Auto-start lsp for LaTeX if texlab is available
-;;  (defun my-latex-lsp-ensure ()
+;;  (defun omegamacs-latex-lsp-ensure ()
 ;;    "Start lsp for LaTeX only if texlab is available."
 ;;    (when (executable-find "texlab")
 ;;      (lsp-deferred)))
 ;;
-;;  (add-hook 'LaTeX-mode-hook 'my-latex-lsp-ensure)
-;;  (add-hook 'latex-mode-hook 'my-latex-lsp-ensure))
+;;  (add-hook 'LaTeX-mode-hook 'omegamacs-latex-lsp-ensure)
+;;  (add-hook 'latex-mode-hook 'omegamacs-latex-lsp-ensure))
 
 ;; Preview support
 (use-package preview

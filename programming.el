@@ -44,16 +44,16 @@
 
 (use-package lsp-ui
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :commands lsp-ui-mode)
 
 (use-package lsp-treemacs
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after (lsp-mode treemacs)
   :config
   ;; Allow C-x 1 to work normally by removing no-delete-other-windows parameter
-  (defun my--delete-other-windows-advice (orig-fun &rest args)
+  (defun omegamacs--delete-other-windows-advice (orig-fun &rest args)
     "Allow C-x 1 (delete-other-windows) to work normally even when packages set no-delete-other-windows.
 
 Some packages (notably lsp-treemacs) set the 'no-delete-other-windows window parameter
@@ -75,21 +75,21 @@ Potential side effects:
       (set-window-parameter window 'no-delete-other-windows nil))
     (apply orig-fun args))
 
-  (advice-add 'delete-other-windows :around #'my--delete-other-windows-advice)
+  (advice-add 'delete-other-windows :around #'omegamacs--delete-other-windows-advice)
 
-  (defun my--lsp-treemacs-symbols-auto ()
+  (defun omegamacs--lsp-treemacs-symbols-auto ()
     "Auto-open treemacs symbols for C/C++ files when LSP starts."
     (when (and (or (derived-mode-p 'c-mode) (derived-mode-p 'c++-mode))
                (lsp-workspaces))
       (run-with-timer 1 nil #'lsp-treemacs-symbols)))
 
-  :hook (lsp-mode . my--lsp-treemacs-symbols-auto)
+  :hook (lsp-mode . omegamacs--lsp-treemacs-symbols-auto)
   :commands lsp-treemacs-symbols)
 
 ;; Use consult-lsp for LSP integration with Vertico
 (use-package consult-lsp
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after (lsp-mode consult)
   :bind (:map lsp-mode-map
          ([remap xref-find-apropos] . consult-lsp-symbols)))
@@ -124,7 +124,7 @@ Potential side effects:
         (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
         (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-(defun my-compile-treesit-grammars ()
+(defun omegamacs-compile-treesit-grammars ()
   "Compile all tree-sitter grammars defined in `treesit-language-source-alist'."
   (interactive)
   (dolist (lang treesit-language-source-alist)
@@ -139,15 +139,15 @@ Potential side effects:
 
 ;; LSP performance optimizations
 ;; Increase GC threshold to 100MB to reduce garbage collection frequency during LSP operations.
-(defconst my/gc-cons-threshold 100000000
+(defconst omegamacs/gc-cons-threshold 100000000
   "Garbage collection threshold set to 100MB for improved LSP performance.")
-(setq gc-cons-threshold my/gc-cons-threshold)
+(setq gc-cons-threshold omegamacs/gc-cons-threshold)
 (setq read-process-output-max (* 1024 1024 4)) ;; 4 MB
 
 ;; Yasnippet for code snippets
 (use-package yasnippet
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook ((prog-mode . yas-minor-mode)
          (text-mode . yas-minor-mode))
   :config
@@ -160,13 +160,13 @@ Potential side effects:
 ;; Common snippets collection
 (use-package yasnippet-snippets
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after yasnippet)
 
 ;; Indentation visualization with highlight-indent-guides
 (use-package highlight-indent-guides
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook ((prog-mode . highlight-indent-guides-mode)
          (yaml-mode . highlight-indent-guides-mode)
          (verilog-mode . highlight-indent-guides-mode)
@@ -203,7 +203,7 @@ Potential side effects:
 
 (use-package imenu-list
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :commands (imenu-list-smart-toggle imenu-list-minor-mode)
   :config
   (setq imenu-list-auto-resize t
@@ -215,17 +215,17 @@ Potential side effects:
 
 (use-package flycheck-pos-tip
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after flycheck)
 
 (use-package dap-mode
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after lsp-mode)
 
 (use-package realgud
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after (lsp-mode dap-mode)
   :config
   ;; Use realgud for debugging
@@ -236,10 +236,10 @@ Potential side effects:
 
 (use-package realgud-ipdb
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after realgud)
 
 (use-package realgud-lldb
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :after realgud)

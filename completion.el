@@ -28,7 +28,7 @@
   :init
   (savehist-mode)
   :config
-  (setq savehist-file (my-user-emacs-file-local "savehist" "cache")
+  (setq savehist-file (omegamacs-user-emacs-file-local "savehist" "cache")
         savehist-additional-variables '(search-ring regexp-search-ring)
         savehist-autosave-interval 60))
 
@@ -38,7 +38,7 @@
   :init
   (recentf-mode)
   :config
-  (setq recentf-save-file (my-user-emacs-file-local "recentf" "cache")
+  (setq recentf-save-file (omegamacs-user-emacs-file-local "recentf" "cache")
         recentf-max-saved-items 200
         recentf-max-menu-items 50
         recentf-exclude '("^\*trace" "^\*GTAGS" "^session\\..*" "^\*"
@@ -66,7 +66,7 @@
 ;; Consult - enhanced completion commands
 (use-package consult
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :bind (;; Replace common ido bindings
          ("C-x b" . consult-buffer)                ; replaces ido-switch-buffer
          ("C-x C-b" . consult-buffer)              ; alternative buffer switching
@@ -105,7 +105,7 @@
 ;; Embark - act on completion targets
 (use-package embark
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :bind (("C-." . embark-act)
          ("C-;" . embark-dwim)
          ("C-h B" . embark-bindings))
@@ -121,7 +121,7 @@
 ;; Embark-consult integration
 (use-package embark-consult
   :ensure t
-  :defer my-enable-lazy-loading
+  :defer omegamacs-enable-lazy-loading
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Enhanced minibuffer behavior

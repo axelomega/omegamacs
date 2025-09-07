@@ -4,7 +4,7 @@
 (use-package hydra
   :ensure t
   :config
-  (defun my-list-hydras ()
+  (defun omegamacs-list-hydras ()
     "List all defined hydras (functions ending with /body) in a *Hydras* buffer.
 Shows the hydra name, any bound keys, and the docstring (first line)."
     (interactive)
