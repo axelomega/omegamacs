@@ -281,7 +281,8 @@ For example, 'background becomes the background color value."
   "Apply THEME as the current theme.
 This updates the current theme and runs all change hooks."
   (interactive (list (intern (completing-read "Apply theme: "
-                                              '(dark light mid-gray dark-x11)
+                                              (mapcar #'symbol-name 
+                                                      (mapcar #'car omegamacs-theme--color-palettes))
                                               nil t))))
   (setq omegamacs-theme-current theme)
   (run-hook-with-args 'omegamacs-theme--change-hooks theme)
@@ -291,13 +292,12 @@ This updates the current theme and runs all change hooks."
   (message "Applied theme: %s" theme))
 
 (defun omegamacs-theme-cycle ()
-  "Cycle through available themes: dark -> light -> mid-gray -> dark-x11 -> dark..."
+  "Cycle through available themes automatically based on defined themes."
   (interactive)
-  (let ((next-theme (cond ((eq omegamacs-theme-current 'dark) 'light)
-                          ((eq omegamacs-theme-current 'light) 'mid-gray)
-                          ((eq omegamacs-theme-current 'mid-gray) 'dark-x11)
-                          ((eq omegamacs-theme-current 'dark-x11) 'dark)
-                          (t 'dark)))) ; fallback to dark if unknown theme
+  (let* ((available-themes (mapcar #'car omegamacs-theme--color-palettes))
+         (current-index (or (cl-position omegamacs-theme-current available-themes) 0))
+         (next-index (mod (1+ current-index) (length available-themes)))
+         (next-theme (nth next-index available-themes)))
     (omegamacs-theme-apply next-theme)))
 
 (defun omegamacs-theme-reload ()
