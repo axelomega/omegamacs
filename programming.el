@@ -205,7 +205,6 @@ Potential side effects:
   :ensure t
   :defer my-enable-lazy-loading
   :commands (imenu-list-smart-toggle imenu-list-minor-mode)
-  :bind ("C-c i" . imenu-list-smart-toggle)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-focus-after-activation t
@@ -217,9 +216,7 @@ Potential side effects:
 (use-package flycheck-pos-tip
   :ensure t
   :defer my-enable-lazy-loading
-  :after flycheck
-  :config
-  (with-eval-after-load 'flycheck (flycheck-pos-tip-mode)))
+  :after flycheck)
 
 (use-package dap-mode
   :ensure t
