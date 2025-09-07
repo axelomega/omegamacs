@@ -3,7 +3,7 @@
 (use-package org
   :ensure t
   :pin gnu
-  :defer t
+  :defer my-enable-lazy-loading
   :bind ("C-c o" . hydra-org/body)
   :mode ("\.org\'" . org-mode)
   :init
@@ -235,7 +235,7 @@
 
 (use-package org-super-agenda
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :after org
   :config
   (org-super-agenda-mode)

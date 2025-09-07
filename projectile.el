@@ -3,7 +3,7 @@
 ;; Projectile mode
 (use-package projectile
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
@@ -38,5 +38,5 @@
 
 (use-package treemacs-projectile
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :after (treemacs projectile))

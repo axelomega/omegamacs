@@ -59,8 +59,18 @@
 (defvar my-minimal-config (member "--minimal" command-line-args)
   "When non-nil, load only essential configuration.")
 
-;; Remove the argument so it doesn't cause issues
+;; Check for no-defer argument
+(defvar my-enable-lazy-loading (not (member "--no-defer" command-line-args))
+  "When non-nil, enable lazy loading with :defer. Set to nil for immediate loading of all packages.")
+
+;; Remove the arguments so they don't cause issues
 (setq command-line-args (delete "--minimal" command-line-args))
+(setq command-line-args (delete "--no-defer" command-line-args))
+
+;; Show startup mode information
+(message "Omegamacs startup: %s mode, lazy loading %s" 
+         (if my-minimal-config "minimal" "full")
+         (if my-enable-lazy-loading "enabled" "disabled"))
 
 (if my-minimal-config
     (load (my-get-fullpath "minimal"))

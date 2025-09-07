@@ -66,7 +66,7 @@
 ;; Consult - enhanced completion commands
 (use-package consult
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :bind (;; Replace common ido bindings
          ("C-x b" . consult-buffer)                ; replaces ido-switch-buffer
          ("C-x C-b" . consult-buffer)              ; alternative buffer switching
@@ -105,7 +105,7 @@
 ;; Embark - act on completion targets
 (use-package embark
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :bind (("C-." . embark-act)
          ("C-;" . embark-dwim)
          ("C-h B" . embark-bindings))
@@ -121,7 +121,7 @@
 ;; Embark-consult integration
 (use-package embark-consult
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Enhanced minibuffer behavior

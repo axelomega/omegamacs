@@ -34,12 +34,12 @@
 
 (use-package flycheck-clang-tidy
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :hook (flycheck-mode . flycheck-clang-tidy-setup))
 
 (use-package flycheck-clang-analyzer
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :hook (flycheck-mode . flycheck-clang-analyzer-setup))
 
 (with-eval-after-load 'lsp-mode
@@ -48,5 +48,5 @@
 
 (use-package bison-mode
   :ensure t
-  :defer t
+  :defer my-enable-lazy-loading
   :mode "\.y\'|\.yy\'|\.l\'|\.ll\'")
