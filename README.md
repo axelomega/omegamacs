@@ -98,7 +98,7 @@ cp ~/my-custom-emacs/templates/early-init.el ~/.emacs.d/early-init.el
 
 Edit `~/.emacs.d/init.el` and set:
 ```elisp
-(setq my-emacs-config-dir "~/my-custom-emacs")
+(setq omegamacs-emacs-config-dir "~/my-custom-emacs")
 ```
 
 ### Performance Optimization (Network-Mounted Home)
@@ -107,7 +107,7 @@ If your `$HOME` is on NFS or network storage, you may experience slow file opera
 
 Edit `~/.emacs.d/early-init.el` and set, for example:
 ```elisp
-(setq my-user-emacs-directory-local "/local/ssd/.emacs.d.local")
+(setq omegamacs-user-emacs-directory-local "/local/ssd/.emacs.d.local")
 ```
 
 This redirects backups, undo history, and native compilation cache to local storage.
@@ -234,7 +234,7 @@ Omegamacs includes Hydra menus for quick access to common operations. Hydras pro
 
 **Available Hydras:**
 - **Org-mode** (`C-c o`): Complete GTD workflow commands
-- **Additional menus**: Run `M-x my-list-hydras` to see all available hydras
+- **Additional menus**: Run `M-x omegamacs-list-hydras` to see all available hydras
 
 ## GitHub Copilot Integration
 
@@ -244,7 +244,7 @@ Optional AI-powered coding assistance using [copilot.el](https://github.com/copi
 
 ### Configuration Options
 
-Set `my-copilot-config` in `~/.emacs.d/init.el`:
+Set `omegamacs-copilot-config` in `~/.emacs.d/init.el`:
 
 - **`'none`** (default): No Copilot support
 - **`'setup`**: Minimal configuration for server installation and authentication
@@ -260,14 +260,14 @@ Set `my-copilot-config` in `~/.emacs.d/init.el`:
 1. **Enable Copilot**:
    ```elisp
    ;; In ~/.emacs.d/init.el
-   (setq my-copilot-config 'setup)
+   (setq omegamacs-copilot-config 'setup)
    ```
 
 2. **Install server**: `M-x copilot-install-server`
 3. **Authenticate**: `M-x copilot-login` (opens browser)
 4. **Upgrade to full config**
    ```elisp
-   (setq my-copilot-config 'full)
+   (setq omegamacs-copilot-config 'full)
    ```
 
 **Note:** Requires active GitHub Copilot subscription and Node.js 18+. For Node.js installation/upgrade, see [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) or [official Node.js downloads](https://nodejs.org/en/download/).
@@ -282,20 +282,20 @@ Set these variables in `~/.emacs.d/init.el` (examples available in `templates/in
 
 ```elisp
 ;; Control how many shell history commands to load
-(setq my-compile-mode-shell-history-size 100)  ; Default: 100 commands
+(setq omegamacs-compile-mode-shell-history-size 100)  ; Default: 100 commands
 ;; Options:
 ;; nil   - disable shell history integration
 ;; 0     - load full shell history
 ;; 1-N   - load N most recent commands
 
 ;; Optional: specify custom history file location
-(setq my-compile-mode-shell-history-file (getenv "HISTFILE"))
+(setq omegamacs-compile-mode-shell-history-file (getenv "HISTFILE"))
 ;; Or use a specific path:
-;; (setq my-compile-mode-shell-history-file "~/.bash_history")
+;; (setq omegamacs-compile-mode-shell-history-file "~/.bash_history")
 ```
 
 ### Features
-- **Auto-detection**: If `my-compile-mode-shell-history-file` is not set, Omegamacs tries to guess your history file based on your shell
+- **Auto-detection**: If `omegamacs-compile-mode-shell-history-file` is not set, Omegamacs tries to guess your history file based on your shell
 - **Smart loading**: Refreshes history every time you invoke compile mode (`C-q`)
 - **Navigation**: Use `M-p`/`M-n` in compile command prompt to browse shell history
 - **Recent first**: Most recent commands appear first in history navigation
@@ -341,21 +341,21 @@ Edit `~/.emacs.d/init.el` to customize for your environment:
 
 ```elisp
 ;; Configuration directory (only if not using ~/omegamacs)
-;; (setq my-emacs-config-dir "~/my-custom-location")
+;; (setq omegamacs-emacs-config-dir "~/my-custom-location")
 
 ;; Performance optimization for network home directories
-;; (setq my-user-emacs-directory-local "/local/ssd/.emacs.d.local")
+;; (setq omegamacs-user-emacs-directory-local "/local/ssd/.emacs.d.local")
 
 ;; GitHub Copilot integration
-;; (setq my-copilot-config 'setup)    ; 'none, 'setup, or 'full
+;; (setq omegamacs-copilot-config 'setup)    ; 'none, 'setup, or 'full
 
 ;; JIRA integration (optional)
-;; (setq my-settings-jira-url "https://company.atlassian.net"
-;;       my-settings-jira-username "username"
-;;       my-settings-jira-project "PROJECT")
+;; (setq omegamacs-settings-jira-url "https://company.atlassian.net"
+;;       omegamacs-settings-jira-username "username"
+;;       omegamacs-settings-jira-project "PROJECT")
 
 ;; Custom projectile file filtering
-;; (setq my-settings-projectile-generic-command
+;; (setq omegamacs-settings-projectile-generic-command
 ;;       "find . -type f -not -path '*/node_modules/*' -print0")
 ```
 
@@ -373,7 +373,7 @@ Omegamacs includes a comprehensive Getting Things Done (GTD) implementation usin
 - `C-c o c` - Quick capture (add items to inbox)
 - `C-c o a` - Main GTD dashboard agenda view
 - `C-c o r` - Refile items from inbox to appropriate locations
-- `M-x my-list-hydras` - View all available hydra menus
+- `M-x omegamacs-list-hydras` - View all available hydra menus
 
 ### GTD Workflow Structure
 
