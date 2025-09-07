@@ -20,7 +20,8 @@
   "Current active theme."
   :type '(choice (const :tag "Dark Theme" dark)
                  (const :tag "Light Theme" light)
-                 (const :tag "Mid Gray Theme" mid-gray))
+                 (const :tag "Mid Gray Theme" mid-gray)
+                 (const :tag "Dark X11 Theme" dark-x11))
   :group 'omegamacs-theme
   :set (lambda (symbol value)
          (set-default symbol value)
@@ -176,7 +177,56 @@
                  (diff-changed . "#886644")
                  (completion-highlight . "#888888")
                  (completion-selection . "#777777")
-                 (completion-annotation . "#aaaaaa"))))
+                 (completion-annotation . "#aaaaaa")))
+
+    (dark-x11 . ((background . "gray20")
+                 (background-alt . "gray10")
+                 (background-light . "gray25")
+                 (background-lighter . "gray30")
+                 (foreground . "gainsboro")
+                 (foreground-alt . "lightgray")
+                 (foreground-dim . "dimgray")
+                 (cursor . "cyan")
+                 (region . "gray30")
+                 (highlight . "gray10")
+                 (line-number . "dimgray")
+                 (line-number-current . "white")
+                 (line-number-bg . "gray25")
+                 (line-number-current-bg . "gray30")
+                 (mode-line-bg . "gray15")
+                 (mode-line-fg . "white")
+                 (mode-line-inactive-bg . "gray30")
+                 (mode-line-inactive-fg . "lightgray")
+                 (fringe . "gray20")
+                 (border . "dimgray")
+                 (minibuffer-prompt . "cyan")
+                 (link . "lightblue")
+                 (trailing-whitespace . "darkred")
+                 (show-paren-match . "gray30")
+                 ;; Syntax highlighting colors
+                 (comment . "lightgray")
+                 (string . "lightgreen")
+                 (keyword . "lightyellow")
+                 (function-name . "yellow")
+                 (variable-name . "lightcyan")
+                 (type . "orange")
+                 (constant . "lightcoral")
+                 ;; UI element colors
+                 (success . "green")
+                 (warning . "orange")
+                 (error . "red")
+                 (info . "lightblue")
+                 ;; Indent guide colors
+                 (indent-guide-normal . "gray40")
+                 (indent-guide-current . "gray50")
+                 ;; Diff colors
+                 (diff-added . "darkgreen")
+                 (diff-removed . "darkred")
+                 (diff-changed . "darkorange")
+                 ;; Company/completion colors
+                 (completion-highlight . "gray40")
+                 (completion-selection . "gray30")
+                 (completion-annotation . "lightgray"))))
   "Color palettes for different themes.
 Each theme is an alist mapping color names to hex color values.")
 
@@ -231,7 +281,7 @@ For example, 'background becomes the background color value."
   "Apply THEME as the current theme.
 This updates the current theme and runs all change hooks."
   (interactive (list (intern (completing-read "Apply theme: "
-                                              '(dark light mid-gray)
+                                              '(dark light mid-gray dark-x11)
                                               nil t))))
   (setq omegamacs-theme-current theme)
   (run-hook-with-args 'omegamacs-theme--change-hooks theme)
@@ -241,11 +291,12 @@ This updates the current theme and runs all change hooks."
   (message "Applied theme: %s" theme))
 
 (defun omegamacs-theme-cycle ()
-  "Cycle through available themes: dark -> light -> mid-gray -> dark..."
+  "Cycle through available themes: dark -> light -> mid-gray -> dark-x11 -> dark..."
   (interactive)
   (let ((next-theme (cond ((eq omegamacs-theme-current 'dark) 'light)
                           ((eq omegamacs-theme-current 'light) 'mid-gray)
-                          ((eq omegamacs-theme-current 'mid-gray) 'dark)
+                          ((eq omegamacs-theme-current 'mid-gray) 'dark-x11)
+                          ((eq omegamacs-theme-current 'dark-x11) 'dark)
                           (t 'dark)))) ; fallback to dark if unknown theme
     (omegamacs-theme-apply next-theme)))
 
@@ -373,12 +424,13 @@ Returns a hex color string."
 
 (defhydra hydra-theme (:color pink :hint nil)
   "
-Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _r_eload   _q_uit
+Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   _r_eload   _q_uit
 "
   ("c" omegamacs-theme-cycle "cycle")
   ("d" (omegamacs-theme-apply 'dark) "dark")
   ("l" (omegamacs-theme-apply 'light) "light")
   ("m" (omegamacs-theme-apply 'mid-gray) "mid-gray")
+  ("x" (omegamacs-theme-apply 'dark-x11) "x11-dark")
   ("r" omegamacs-theme-reload "reload")
   ("q" nil "quit" :exit t))
 
