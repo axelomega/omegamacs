@@ -100,9 +100,16 @@ Potential side effects:
   :config
   (which-function-mode 1)
   (setq which-func-display 'header)
-  ;; Fix which-func colors for dark themes
-  (set-face-foreground 'which-func "white")
-  (set-face-background 'which-func "gray20"))
+  ;; Configure which-func colors using theme system
+  (defun omegamacs-programming--apply-which-func-colors (theme)
+    "Apply theme colors to which-func face."
+    (omegamacs-theme-with-colors theme
+      (set-face-foreground 'which-func foreground)
+      (set-face-background 'which-func background-alt)))
+
+  ;; Register with theme system and apply current theme
+  (omegamacs-theme-add-hook #'omegamacs-programming--apply-which-func-colors)
+  (omegamacs-programming--apply-which-func-colors omegamacs-theme-current))
 
 ;; Tree sitter
 ;; These are some source for grammars
@@ -187,19 +194,26 @@ Potential side effects:
   ;; Set manual colors that work with most themes
   (setq highlight-indent-guides-character ?|)
 
-  ;; Configure faces after theme is loaded
+  ;; Configure faces using theme system
   (with-eval-after-load 'highlight-indent-guides
-    (set-face-foreground 'highlight-indent-guides-odd-face "black")
-    (set-face-foreground 'highlight-indent-guides-even-face "black")
-    (set-face-foreground 'highlight-indent-guides-character-face "black")
-    ;; Subtle but visible colors for fill mode
-    (set-face-background 'highlight-indent-guides-odd-face "gray40")
-    (set-face-background 'highlight-indent-guides-even-face "gray30")
-    ;; Current indentation level highlighting
-    (set-face-background 'highlight-indent-guides-top-odd-face "black")
-    (set-face-background 'highlight-indent-guides-top-even-face "black")
-    (set-face-background 'highlight-indent-guides-stack-odd-face "black")
-    (set-face-background 'highlight-indent-guides-stack-even-face "black")))
+    (defun omegamacs-programming--apply-indent-guide-colors (theme)
+      "Apply theme colors to highlight-indent-guides faces."
+      (omegamacs-theme-with-colors theme
+        (set-face-foreground 'highlight-indent-guides-odd-face indent-guide-normal)
+        (set-face-foreground 'highlight-indent-guides-even-face indent-guide-normal)
+        (set-face-foreground 'highlight-indent-guides-character-face indent-guide-normal)
+        ;; Subtle but visible colors for fill mode
+        (set-face-background 'highlight-indent-guides-odd-face background-light)
+        (set-face-background 'highlight-indent-guides-even-face background-lighter)
+        ;; Current indentation level highlighting
+        (set-face-background 'highlight-indent-guides-top-odd-face indent-guide-current)
+        (set-face-background 'highlight-indent-guides-top-even-face indent-guide-current)
+        (set-face-background 'highlight-indent-guides-stack-odd-face indent-guide-current)
+        (set-face-background 'highlight-indent-guides-stack-even-face indent-guide-current)))
+
+    ;; Register with theme system and apply current theme
+    (omegamacs-theme-add-hook #'omegamacs-programming--apply-indent-guide-colors)
+    (omegamacs-programming--apply-indent-guide-colors omegamacs-theme-current)))
 
 (use-package imenu-list
   :ensure t
