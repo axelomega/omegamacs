@@ -38,15 +38,22 @@
          (python-ts-mode . omegamacs--python-eglot-ensure))
   :bind (:map python-mode-map
          ("C-c l r" . omegamacs-eglot-restart)
-         ("C-c l s" . eglot)))
+         ("C-c l s" . eglot))
+  :config
+  ;; Configure eglot breadcrumb colors using theme system
+  (defun omegamacs-python--apply-eglot-colors (theme)
+    "Apply theme colors to eglot faces."
+    (omegamacs-theme-with-colors theme
+      (set-face-foreground 'header-line foreground)
+      (set-face-background 'header-line background-alt)))
+
+  ;; Register with theme system and apply current theme
+  (omegamacs-theme-add-hook #'omegamacs-python--apply-eglot-colors)
+  (omegamacs-python--apply-eglot-colors omegamacs-theme-current))
 
 ;; Enable eglot breadcrumbs for managed buffers
 (add-hook 'eglot-managed-mode-hook 'eglot-inlay-hints-mode)
 
-;; Fix eglot breadcrumb colors for dark themes
-(with-eval-after-load 'eglot
-  (set-face-foreground 'header-line "white")
-  (set-face-background 'header-line "gray20"))
 
 ;; Lark grammar files support
 (use-package lark-mode

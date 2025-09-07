@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; Load only essential settings
+(load (omegamacs-get-fullpath "themes"))
 (load (omegamacs-get-fullpath "settings"))
 
 (windmove-default-keybindings)
