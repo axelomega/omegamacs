@@ -187,6 +187,9 @@ This updates the current theme and runs all change hooks."
                                               nil t))))
   (setq omegamacs-theme-current theme)
   (run-hook-with-args 'omegamacs-theme--change-hooks theme)
+  ;; Use a timer to ensure all theme changes are processed before redrawing
+  (redraw-display)
+  (force-mode-line-update t)
   (message "Applied theme: %s" theme))
 
 (defun omegamacs-theme-toggle ()
@@ -315,11 +318,20 @@ Returns a hex color string."
                         :background show-paren-match
                         :weight 'bold)))
 
-;;; Key Bindings
+;;; Theme Hydra
 
-(global-set-key (kbd "C-c t t") 'omegamacs-theme-toggle)
-(global-set-key (kbd "C-c t a") 'omegamacs-theme-apply)
-(global-set-key (kbd "C-c t r") 'omegamacs-theme-reload)
+(defhydra hydra-theme (:color pink :hint nil)
+  "
+Theme: _t_oggle   _d_ark   _l_ight   _r_eload   _q_uit
+"
+  ("t" omegamacs-theme-toggle "toggle")
+  ("d" (omegamacs-theme-apply 'dark) "dark")
+  ("l" (omegamacs-theme-apply 'light) "light")
+  ("r" omegamacs-theme-reload "reload")
+  ("q" nil "quit" :exit t))
+
+;; Key Binding
+(global-set-key (kbd "C-c T") 'hydra-theme/body)
 
 ;;; Initialization
 
