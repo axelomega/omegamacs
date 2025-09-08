@@ -29,7 +29,7 @@
          (when (fboundp 'omegamacs-theme-apply)
            (omegamacs-theme-apply value))))
 
-(defvar omegamacs-theme--color-palettes
+(defvar omegamacs--theme-color-palettes
   '((dark . ((background . "#2e2e2e")
              (background-alt . "#1a1a1a")
              (background-light . "#3a3a3a")
@@ -292,7 +292,7 @@
   "Color palettes for different themes.
 Each theme is an alist mapping color names to hex color values.")
 
-(defvar omegamacs-theme--change-hooks nil
+(defvar omegamacs--theme-change-hooks nil
   "List of functions to call when theme changes.
 Each function is called with the new theme name as argument.")
 
@@ -303,7 +303,7 @@ Each function is called with the new theme name as argument.")
 COLOR-NAME should be a symbol representing the color.
 THEME defaults to the current theme."
   (let* ((theme (or theme omegamacs-theme-current))
-         (palette (cdr (assq theme omegamacs-theme--color-palettes))))
+         (palette (cdr (assq theme omegamacs--theme-color-palettes))))
     (cdr (assq color-name palette))))
 
 (defun omegamacs-theme-colors (&optional theme)
@@ -311,7 +311,7 @@ THEME defaults to the current theme."
 Returns an alist of (color-name . color-value) pairs.
 THEME defaults to the current theme."
   (let ((theme (or theme omegamacs-theme-current)))
-    (cdr (assq theme omegamacs-theme--color-palettes))))
+    (cdr (assq theme omegamacs--theme-color-palettes))))
 
 (defmacro omegamacs-theme-with-colors (theme &rest body)
   "Execute BODY with color variables bound from THEME.
@@ -323,7 +323,7 @@ For example, 'background becomes the background color value."
                           (apply #'append
                                  (mapcar (lambda (theme-def)
                                            (mapcar #'car (cdr theme-def)))
-                                         omegamacs-theme--color-palettes)))))
+                                         omegamacs--theme-color-palettes)))))
     `(let* ((colors (omegamacs-theme-colors ,theme))
             ,@(mapcar (lambda (color-name)
                         `(,color-name (cdr (assq ',color-name colors))))
@@ -346,10 +346,10 @@ For example, 'background becomes the background color value."
 This updates the current theme and runs all change hooks."
   (interactive (list (intern (completing-read "Apply theme: "
                                               (mapcar #'symbol-name
-                                                      (mapcar #'car omegamacs-theme--color-palettes))
+                                                      (mapcar #'car omegamacs--theme-color-palettes))
                                               nil t))))
   (setq omegamacs-theme-current theme)
-  (run-hook-with-args 'omegamacs-theme--change-hooks theme)
+  (run-hook-with-args 'omegamacs--theme-change-hooks theme)
   ;; Use a timer to ensure all theme changes are processed before redrawing
   (redraw-display)
   (force-mode-line-update t)
@@ -358,7 +358,7 @@ This updates the current theme and runs all change hooks."
 (defun omegamacs-theme-cycle ()
   "Cycle through available themes automatically based on defined themes."
   (interactive)
-  (let* ((available-themes (mapcar #'car omegamacs-theme--color-palettes))
+  (let* ((available-themes (mapcar #'car omegamacs--theme-color-palettes))
          (current-index (or (cl-position omegamacs-theme-current available-themes) 0))
          (next-index (mod (1+ current-index) (length available-themes)))
          (next-theme (nth next-index available-themes)))
@@ -375,11 +375,11 @@ This re-applies the current theme, useful after color palette changes."
 (defun omegamacs-theme-add-hook (function)
   "Add FUNCTION to be called when theme changes.
 FUNCTION should accept a theme name as its argument."
-  (add-hook 'omegamacs-theme--change-hooks function))
+  (add-hook 'omegamacs--theme-change-hooks function))
 
 (defun omegamacs-theme-remove-hook (function)
   "Remove FUNCTION from theme change hooks."
-  (remove-hook 'omegamacs-theme--change-hooks function))
+  (remove-hook 'omegamacs--theme-change-hooks function))
 
 ;;; Color Utilities
 
@@ -393,7 +393,7 @@ THEME defaults to the current theme."
 THEME defaults to the current theme."
   (or (omegamacs-theme-color color-name theme) fallback-color))
 
-(defun omegamacs-theme--color-to-hex (color)
+(defun omegamacs--theme-color-to-hex (color)
   "Convert COLOR (hex or named) to hex string #RRGGBB.
 Returns nil if COLOR is invalid."
   (cond
@@ -420,8 +420,8 @@ Returns nil if HEX is not a valid 6-digit hex color."
   "Interpolate between COLOR1 and COLOR2 by FACTOR (0.0 to 1.0).
 Returns a hex color string."
   ;; Convert both colors to hex
-  (let* ((hex1 (omegamacs-theme--color-to-hex color1))
-         (hex2 (omegamacs-theme--color-to-hex color2))
+  (let* ((hex1 (omegamacs--theme-color-to-hex color1))
+         (hex2 (omegamacs--theme-color-to-hex color2))
          (rgb1 (omegamacs--theme-parse-hex-color hex1))
          (rgb2 (omegamacs--theme-parse-hex-color hex2)))
     (if (and rgb1 rgb2)
@@ -440,7 +440,7 @@ Returns a hex color string."
 
 ;;; Built-in Face Configuration
 
-(defun omegamacs-theme--apply-builtin-faces (theme)
+(defun omegamacs--theme-apply-builtin-faces (theme)
   "Apply THEME colors to built-in Emacs faces."
   (omegamacs-theme-with-colors theme
     ;; Basic faces
@@ -534,13 +534,13 @@ Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   cla_s_sic   _r_elo
 
 ;;; Initialization
 
-(defun omegamacs-theme--initialize ()
+(defun omegamacs--theme-initialize ()
   "Initialize the theme system."
   ;; Register built-in face handler
-  (omegamacs-theme-add-hook #'omegamacs-theme--apply-builtin-faces)
+  (omegamacs-theme-add-hook #'omegamacs--theme-apply-builtin-faces)
 
   ;; Apply the current theme
   (omegamacs-theme-apply omegamacs-theme-current))
 
 ;; Initialize when this file is loaded
-(omegamacs-theme--initialize)
+(omegamacs--theme-initialize)
