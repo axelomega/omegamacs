@@ -265,7 +265,7 @@
                 (comment . "darkorange")
                 (string . "palegreen")
                 (keyword . "cyan")
-                (function-name . "tomato")
+                (function-name . "violet")
                 (variable-name . "yellow")
                 (type . "green")
                 (constant . "magenta")
@@ -318,16 +318,11 @@ THEME defaults to the current theme."
 Each color in the theme palette becomes a local variable.
 For example, 'background becomes the background color value."
   (declare (indent 1))
-  ;; Get all unique color names from all themes at macro expansion time
-  (let ((all-color-names (delete-dups
-                          (apply #'append
-                                 (mapcar (lambda (theme-def)
-                                           (mapcar #'car (cdr theme-def)))
-                                         omegamacs--theme-color-palettes)))))
-    `(let* ((colors (omegamacs-theme-colors ,theme))
-            ,@(mapcar (lambda (color-name)
-                        `(,color-name (cdr (assq ',color-name colors))))
-                      all-color-names))
+  ;; Bind color variables at runtime, based on the palette for THEME.
+  `(let* ((colors (omegamacs-theme-colors ,theme)))
+     (let ,(mapcar (lambda (pair)
+                    `(,(car pair) (cdr pair)))
+                  colors)
        ,@body)))
 
 ;;; Theme Management Functions
