@@ -199,9 +199,9 @@ Potential side effects:
     (defun omegamacs-programming--apply-indent-guide-colors (theme)
       "Apply theme colors to highlight-indent-guides faces."
       (omegamacs-theme-with-colors theme
-        (set-face-foreground 'highlight-indent-guides-odd-face indent-guide-normal)
-        (set-face-foreground 'highlight-indent-guides-even-face indent-guide-normal)
-        (set-face-foreground 'highlight-indent-guides-character-face indent-guide-normal)
+        (set-face-foreground 'highlight-indent-guides-odd-face indent-guide-odd)
+        (set-face-foreground 'highlight-indent-guides-even-face indent-guide-even)
+        (set-face-foreground 'highlight-indent-guides-character-face indent-guide-odd)
         ;; Subtle but visible colors for fill mode
         (set-face-background 'highlight-indent-guides-odd-face background-light)
         (set-face-background 'highlight-indent-guides-even-face background-lighter)
