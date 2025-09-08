@@ -333,9 +333,8 @@ For example, 'background becomes the background color value."
 ;;; Theme Management Functions
 
 ;; TODO: Theme switching sometimes requires cursor movement to fully refresh display,
-;; especially after switching between 'dark' and 'light' themes or when certain UI elements
-;; (e.g., mode line, minibuffer, or custom faces) are present. This has been observed on
-;; Emacs 28+ under both X11 and macOS, but may vary by window system.
+;; especially after switching between themes. This has been observed on
+;; Emacs 28+ under X11.
 ;; Potential investigation approaches:
 ;; - Check if all relevant hooks (e.g., 'window-configuration-change-hook', 'after-change-major-mode-hook')
 ;;   are being triggered after theme application.
