@@ -16,18 +16,6 @@
   :group 'omegamacs
   :prefix "omegamacs-theme-")
 
-(defcustom omegamacs-theme-current 'dark
-  "Current active theme."
-  :type '(choice (const :tag "Dark Theme" dark)
-                 (const :tag "Light Theme" light)
-                 (const :tag "Mid Gray Theme" mid-gray)
-                 (const :tag "Dark X11 Theme" dark-x11)
-                 (const :tag "Classic Theme" classic))
-  :group 'omegamacs-theme
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (when (fboundp 'omegamacs-theme-apply)
-           (omegamacs-theme-apply value))))
 
 (defvar omegamacs--theme-color-palettes
   '((dark . ((background . "#2e2e2e")
@@ -291,6 +279,19 @@
                 (completion-annotation . "gray70"))))
   "Color palettes for different themes.
 Each theme is an alist mapping color names to hex color values.")
+
+(defcustom omegamacs-theme-current 'dark
+  "Current active theme."
+  :type `(choice ,@(mapcar (lambda (theme-def)
+                             (let ((theme-name (car theme-def)))
+                               `(const :tag ,(capitalize (replace-regexp-in-string "-" " " (symbol-name theme-name))) 
+                                       ,theme-name)))
+                           omegamacs--theme-color-palettes))
+  :group 'omegamacs-theme
+  :set (lambda (symbol value)
+         (set-default symbol value)
+         (when (fboundp 'omegamacs-theme-apply)
+           (omegamacs-theme-apply value))))
 
 (defvar omegamacs--theme-change-hooks nil
   "List of functions to call when theme changes.
