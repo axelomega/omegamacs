@@ -414,9 +414,9 @@ Returns a hex color string."
               (g2 (string-to-number (substring hex2 3 5) 16))
               (b2 (string-to-number (substring hex2 5 7) 16)))
           (format "#%02x%02x%02x"
-                  (+ r1 (* factor (- r2 r1)))
-                  (+ g1 (* factor (- g2 g1)))
-                  (+ b1 (* factor (- b2 b1)))))
+                  (round (+ r1 (* factor (- r2 r1))))
+                  (round (+ g1 (* factor (- g2 g1))))
+                  (round (+ b1 (* factor (- b2 b1))))))
       ;; If either color is invalid, return nil
       nil)))
 
