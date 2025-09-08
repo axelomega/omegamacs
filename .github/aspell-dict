@@ -1,4 +1,4 @@
-personal_ws-1.1 en 121 
+personal_ws-1.1 en 129 
 AUCTeX
 ControlMaster
 DSLs
@@ -8,6 +8,7 @@ EmacsWiki
 GTD
 HDDs
 HISTFILE
+Imenu
 JIT
 LSP
 MELPA
@@ -19,17 +20,20 @@ Orderless
 Quartus
 README
 README's
+RRGGBB
 Recentf
 RefTeX
 SCP
 SSD
 SSDs
 Savehist
+Scrollbar
 Smerge
 Spacemacs
 Sudo
 SystemVerilog
 TLS
+Treemacs
 UI
 UX
 Uncategorized
@@ -61,8 +65,11 @@ el
 eldoc
 elpa
 eval
+fallbacks
+ffffff
 flycheck
 formatter
+frontend
 func
 gc
 getenv
@@ -96,6 +103,7 @@ realgud
 reconnection
 repo
 repos
+rgb
 ripgrep
 semgrep
 setq
