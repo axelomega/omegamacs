@@ -1,52 +1,88 @@
-# Omegamacs Color-Focused Theme System
+# Omegamacs Theme System
 
-## Overview
+## Architecture and Rationale
 
-The Omegamacs theme system provides a centralized, color-focused approach to managing themes across the entire Emacs configuration. The system separates color definitions from package-specific settings, enabling easy theme switching and consistent visual experience.
+### Code as Config Philosophy
 
-## Key Design Principles
+The Omegamacs theme system follows the core "code as config" philosophy - no abstractions, no magic, just transparent Emacs Lisp code you can read and understand.
 
-- **Colors defined centrally** in `theme.el`
-- **Package configurations reference theme colors** instead of hard-coding them
-- **Automatic updates** when switching themes
-- **Clean separation** between color definitions and package settings
+**Design Principles:**
+- **Colors defined once** in `theme.el` as simple alist data structures
+- **Package configurations remain visible** - color settings stay in their respective files
+- **Direct function calls** - no framework abstractions or custom DSLs
+- **Explicit dependencies** - each file clearly shows what theme colors it uses
+- **Real Emacs Lisp** - uses standard face manipulation and hook functions
+
+### Architecture Overview
+
+The system has three components:
+
+1. **Color definitions** (`theme.el`) - Simple alists mapping semantic names to color values
+2. **Integration functions** (package files) - Standard Emacs Lisp functions that reference theme colors
+3. **Hook system** - Standard Emacs hooks that update colors when themes change
+
+**No abstractions, no magic** - just data structures and function calls.
+
+## Theme System Structure
+
+### Color Palette Format
+
+```elisp
+(defvar omegamacs-theme--color-palettes
+  '((theme-name . ((background . "#2e2e2e")
+                   (foreground . "#cccccc")
+                   (keyword . "#66d9ef")
+                   ;; ... more colors
+                   ))))
+```
+
+Each theme is an alist. Color names are symbols, color values are strings (hex or X11 names).
+
+### Integration Pattern
+
+Package files use this standard pattern:
+
+```elisp
+;; Define function that applies theme colors
+(defun package--apply-colors (theme)
+  "Apply theme colors to package faces."
+  (omegamacs-theme-with-colors theme
+    (set-face-attribute 'some-face nil
+                        :background background
+                        :foreground keyword)))
+
+;; Register function to run when theme changes
+(omegamacs-theme-add-hook #'package--apply-colors)
+
+;; Apply colors for current theme
+(package--apply-colors omegamacs-theme-current)
+```
+
+This keeps color settings visible in package files while referencing centralized color definitions.
 
 ## Available Themes
-
-The system currently includes 5 themes:
 
 1. **`dark`** - Modern dark theme with hex colors
 2. **`light`** - Clean light theme with high contrast
 3. **`mid-gray`** - Medium gray theme balancing dark and light
-4. **`dark-x11`** - Dark theme using X11 named colors (terminal-friendly)
+4. **`dark-x11`** - Terminal-friendly theme using X11 named colors
 5. **`classic`** - Recreates the original omegamacs color scheme
 
 ## Theme Management
 
 ### Theme Switching
 
-Access themes via the convenient hydra: **`C-c T`**
+Use **`C-c T`** to open the theme hydra:
 
-```
-Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   cla_s_sic   _r_eload   _q_uit
-```
+- `c` - Cycle through all themes automatically
+- `d` - Apply dark theme
+- `l` - Apply light theme
+- `m` - Apply mid-gray theme
+- `x` - Apply dark-x11 theme
+- `s` - Apply classic theme
+- `r` - Reload current theme
 
-- **`c`** - Cycle through all themes automatically
-- **`d`** - Apply dark theme
-- **`l`** - Apply light theme
-- **`m`** - Apply mid-gray theme
-- **`x`** - Apply dark-x11 theme
-- **`s`** - Apply classic theme
-- **`r`** - Reload current theme
-- **`q`** - Quit hydra
-
-### Theme Cycling
-
-The system automatically discovers all available themes and cycles through them in order. Adding new themes requires no code changes to the cycling function.
-
-## Core API
-
-### Color Access Functions
+### Core API Functions
 
 ```elisp
 ;; Get a color from current theme
@@ -57,103 +93,57 @@ The system automatically discovers all available themes and cycles through them 
 
 ;; Get all colors for a theme
 (omegamacs-theme-colors 'dark)
-```
 
-### Theme Color Macro
-
-```elisp
-(omegamacs-theme-with-colors theme
-  ;; Use color names directly as variables
-  (set-face-attribute 'my-face nil 
-                      :background background 
-                      :foreground keyword))
-```
-
-### Theme Management Functions
-
-```elisp
 ;; Apply specific theme
 (omegamacs-theme-apply 'dark)
 
 ;; Cycle through all themes
 (omegamacs-theme-cycle)
-
-;; Reload current theme
-(omegamacs-theme-reload)
 ```
 
-### Hook System
+### Theme Color Macro
+
+The `omegamacs-theme-with-colors` macro binds theme colors as local variables:
 
 ```elisp
-;; Register function to be called on theme changes
-(omegamacs-theme-add-hook #'my-theme-handler)
-
-;; Remove theme change handler
-(omegamacs-theme-remove-hook #'my-theme-handler)
+(omegamacs-theme-with-colors theme
+  ;; Colors available as variables: background, foreground, keyword, etc.
+  (set-face-attribute 'my-face nil
+                      :background background
+                      :foreground keyword))
 ```
 
-## Color Palette Structure
+The macro dynamically discovers all color names from theme definitions at compile time.
 
-Each theme defines semantic color names:
+## Color Vocabulary
 
-### Backgrounds
-- `background` - Main background
-- `background-alt` - Alternative/darker background  
-- `background-light` - Lighter background variant
-- `background-lighter` - Even lighter background
+Each theme defines these semantic colors:
 
-### Foregrounds
-- `foreground` - Main text color
-- `foreground-alt` - Alternative text color
-- `foreground-dim` - Dimmed text color
+**Backgrounds:** `background`, `background-alt`, `background-light`, `background-lighter`
 
-### UI Elements
-- `cursor` - Cursor color
-- `region` - Selected region background
-- `highlight` - Highlight background (hl-line, etc.)
-- `mode-line-bg/fg` - Mode line colors
-- `minibuffer-prompt` - Minibuffer prompt color
-- `link` - Link color
+**Text:** `foreground`, `foreground-alt`, `foreground-dim`
 
-### Syntax Highlighting
-- `comment` - Comment text
-- `string` - String literals
-- `keyword` - Language keywords
-- `function-name` - Function names
-- `variable-name` - Variable names
-- `type` - Type names
-- `constant` - Constants
+**UI Elements:** `cursor`, `region`, `highlight`, `mode-line-bg`, `mode-line-fg`, `minibuffer-prompt`, `link`
 
-### Status Colors
-- `success` - Success indicators
-- `warning` - Warning indicators  
-- `error` - Error indicators
-- `info` - Information indicators
+**Syntax Highlighting:** `comment`, `string`, `keyword`, `function-name`, `variable-name`, `type`, `constant`
 
-### Special Purpose
-- `trailing-whitespace` - Trailing whitespace background
-- `show-paren-match` - Matching parenthesis highlight
-- `indent-guide-odd/even/char/top/stack` - Indent guide colors
-- `diff-added/removed/changed` - Diff colors
-- `completion-bg/fg/selection/annotation` - Completion system colors
+**Status:** `success`, `warning`, `error`, `info`
 
-## Integration Patterns
+**Special Purpose:** `trailing-whitespace`, `show-paren-match`, `indent-guide-odd/even/char/top/stack`, `diff-added/removed/changed`, `completion-bg/fg/selection/annotation`
 
-### Basic Package Integration
+## Integration Examples
+
+### Basic Integration
 
 ```elisp
-;; Define theme color handler
 (defun my-package--apply-colors (theme)
-  "Apply theme colors to my-package faces."
+  "Apply theme colors to package faces."
   (omegamacs-theme-with-colors theme
-    (set-face-attribute 'my-face nil 
-                        :background background 
+    (set-face-attribute 'my-face nil
+                        :background background
                         :foreground keyword)))
 
-;; Register with theme system
 (omegamacs-theme-add-hook #'my-package--apply-colors)
-
-;; Apply current theme immediately
 (my-package--apply-colors omegamacs-theme-current)
 ```
 
@@ -161,18 +151,13 @@ Each theme defines semantic color names:
 
 ```elisp
 (use-package my-package
-  :ensure t
   :config
-  ;; Package configuration...
-  
-  ;; Theme integration
   (defun my-package--theme-colors (theme)
     (omegamacs-theme-with-colors theme
       (set-face-attribute 'my-package-face nil
                           :background background-alt
                           :foreground foreground)))
-  
-  ;; Register and apply
+
   (omegamacs-theme-add-hook #'my-package--theme-colors)
   (my-package--theme-colors omegamacs-theme-current))
 ```
@@ -183,104 +168,70 @@ Each theme defines semantic color names:
 (with-eval-after-load 'package-name
   (defun my-package--configure-colors (theme)
     (omegamacs-theme-with-colors theme
-      ;; Configure colors...
-      ))
-  
+      (set-face-attribute 'some-face nil :foreground comment)))
+
   (omegamacs-theme-add-hook #'my-package--configure-colors)
   (my-package--configure-colors omegamacs-theme-current))
 ```
 
 ## Adding New Themes
 
-Adding a new theme is simple - just extend the color palette:
+Extend the color palette in `theme.el`:
 
 ```elisp
 (setq omegamacs-theme--color-palettes
   (append omegamacs-theme--color-palettes
     '((my-theme . ((background . "#123456")
                    (foreground . "#abcdef")
-                   ;; ... define all required colors
+                   ;; ... define all semantic colors
                    )))))
 ```
 
-The new theme will automatically:
+New themes automatically:
 - Appear in theme cycling
-- Be available in interactive completion
-- Work with all existing integrations
+- Work with interactive completion
+- Integrate with all existing configurations
 
-## Dynamic Theme System
+**Note:** The hydra interface (`C-c T`) must be manually updated if you want a dedicated key for the new theme. Theme cycling and `M-x omegamacs-theme-apply` will work immediately.
 
-The theme system is fully dynamic:
+No code changes needed in management functions.
 
-- **Theme cycling** automatically discovers all available themes
-- **Interactive completion** lists all defined themes
-- **Adding themes** requires no code changes to management functions
+## Current Implementation Status
 
-## Current Integration Status
+Files using the theme system:
 
-The following configuration files have been updated to use the theme system:
-
-### ✅ Integrated Files
-- **`theme.el`** - Core theme system with built-in face support
-- **`settings.el`** - Basic UI colors (trailing-whitespace, hl-line, etc.)
+- **`theme.el`** - Core system and built-in Emacs faces
+- **`settings.el`** - Basic UI colors (trailing-whitespace, hl-line, frame colors)
 - **`programming.el`** - which-func and highlight-indent-guides colors
 - **`languages/python.el`** - eglot header-line colors
 
-### 🔄 Color Sources
-Each integrated file maintains its color settings visibly in the configuration, but references theme colors instead of hard-coding them.
+Each file maintains its color configuration code visibly, but references centralized theme colors.
 
 ## Implementation Notes
 
-### Redraw Behavior
-Theme switching includes automatic display refresh, though occasionally cursor movement may be needed for complete visual updates. This has been observed on Emacs 28+ under X11 and is documented in the code with potential investigation approaches including checking hook triggers, experimenting with additional redraw functions, and testing with minimal configurations.
+### Dynamic System
+Theme cycling automatically discovers themes from the palette data structure. Adding themes requires no code changes to management functions.
 
 ### Terminal Compatibility
-The `dark-x11` theme uses only X11 named colors, ensuring reliable appearance in terminal mode where hex colors might not be supported.
-
-### Dynamic Color System
-The `omegamacs-theme-with-colors` macro automatically discovers all available color names from theme definitions at macro expansion time, making the system fully dynamic. When new themes are added with new color names, those colors automatically become available as variables in the macro without code changes.
-
-### Color Interpolation
-The system includes robust color interpolation utilities that work with both hex colors and X11 named colors, with proper error handling for invalid color values.
+The `dark-x11` theme uses X11 named colors for reliable terminal display where hex colors might not work.
 
 ### Classic Theme
-The `classic` theme recreates the original omegamacs color scheme, including:
-- Gray20 background with gray80 foreground
-- Cyan cursor
-- Gray mode line (grey75 background)
-- Dark orange comments and pale green strings
-- Traditional Emacs syntax highlighting
+Recreates original omegamacs colors: gray20 background, gray80 foreground, cyan cursor, gray mode line, orange comments.
 
-## Architecture
+### Redraw Behavior
+Theme switching includes display refresh. Occasionally cursor movement needed for complete updates (documented issue on Emacs 28+ X11).
 
-The system follows modern Emacs Lisp practices:
+### Color Interpolation
+Includes utility functions for color manipulation that work with both hex and X11 color formats.
 
-- **Lexical binding** enabled throughout
-- **Proper namespacing** with `omegamacs-theme-` prefix
-- **Hook-based architecture** for extensibility
-- **Comprehensive documentation** and error handling
-- **Clean separation of concerns** between colors and functionality
+## Benefits of This Approach
 
-## Benefits
+**Transparency:** All color logic is visible Emacs Lisp code in the files where it's used.
 
-### 1. Consistency
-- All packages use the same color vocabulary
-- Coherent visual experience across all interfaces
-- Easy to ensure color accessibility
+**Maintainability:** Color changes in one place automatically propagate through the entire configuration.
 
-### 2. Maintainability  
-- Color changes in one place affect entire configuration
-- Clear dependencies between modules
-- Easy to debug color-related issues
+**No Lock-in:** Standard Emacs functions and hooks - no framework dependencies to become obsolete.
 
-### 3. Flexibility
-- Add new themes without touching existing code
-- Customize colors without modifying package configurations
-- Support for both GUI and terminal environments
+**Extensibility:** Adding themes or integrating new packages follows clear, documented patterns.
 
-### 4. Usability
-- Instant theme switching with visual feedback
-- Discoverable theme management via hydra
-- Automatic theme cycling through all available options
-
-The omegamacs theme system provides a robust foundation for visual customization while maintaining clean, maintainable code organization.
+**Learning:** Users see real Emacs Lisp color manipulation, not abstractions.
