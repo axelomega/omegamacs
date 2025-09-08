@@ -407,19 +407,30 @@ Returns nil if COLOR is invalid."
     (apply #'color-rgb-to-hex (color-name-to-rgb color)))
    (t nil)))
 
+(defun omegamacs-theme--parse-hex-color (hex)
+  "Parse HEX color string (#RRGGBB) and return list of (R G B) integers.
+Returns nil if HEX is not a valid 6-digit hex color."
+  (when (and (stringp hex)
+             (string-match "^#\\([[:xdigit:]]\\{6\\}\\)$" hex))
+    (list (string-to-number (substring hex 1 3) 16)
+          (string-to-number (substring hex 3 5) 16)
+          (string-to-number (substring hex 5 7) 16))))
+
 (defun omegamacs-theme-interpolate-color (color1 color2 factor)
   "Interpolate between COLOR1 and COLOR2 by FACTOR (0.0 to 1.0).
 Returns a hex color string."
   ;; Convert both colors to hex
   (let* ((hex1 (omegamacs-theme--color-to-hex color1))
-         (hex2 (omegamacs-theme--color-to-hex color2)))
-    (if (and hex1 hex2)
-        (let ((r1 (string-to-number (substring hex1 1 3) 16))
-              (g1 (string-to-number (substring hex1 3 5) 16))
-              (b1 (string-to-number (substring hex1 5 7) 16))
-              (r2 (string-to-number (substring hex2 1 3) 16))
-              (g2 (string-to-number (substring hex2 3 5) 16))
-              (b2 (string-to-number (substring hex2 5 7) 16)))
+         (hex2 (omegamacs-theme--color-to-hex color2))
+         (rgb1 (omegamacs-theme--parse-hex-color hex1))
+         (rgb2 (omegamacs-theme--parse-hex-color hex2)))
+    (if (and rgb1 rgb2)
+        (let ((r1 (nth 0 rgb1))
+              (g1 (nth 1 rgb1))
+              (b1 (nth 2 rgb1))
+              (r2 (nth 0 rgb2))
+              (g2 (nth 1 rgb2))
+              (b2 (nth 2 rgb2)))
           (format "#%02x%02x%02x"
                   (round (+ r1 (* factor (- r2 r1))))
                   (round (+ g1 (* factor (- g2 g1))))
