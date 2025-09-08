@@ -374,20 +374,39 @@ THEME defaults to the current theme."
 THEME defaults to the current theme."
   (or (omegamacs-theme-color color-name theme) fallback-color))
 
+(defun omegamacs-theme--color-to-hex (color)
+  "Convert COLOR (hex or named) to hex string #RRGGBB.
+Returns nil if COLOR is invalid."
+  (cond
+   ;; Already a hex color (#RRGGBB)
+   ((and (stringp color)
+         (string-match "^#\\([[:xdigit:]]\\{6\\}\\)$" color))
+    color)
+   ;; Named color: use color-name-to-rgb and color-rgb-to-hex
+   ((and (stringp color)
+         (color-defined-p color))
+    (apply #'color-rgb-to-hex (color-name-to-rgb color)))
+   (t nil)))
+
 (defun omegamacs-theme-interpolate-color (color1 color2 factor)
   "Interpolate between COLOR1 and COLOR2 by FACTOR (0.0 to 1.0).
 Returns a hex color string."
-  ;; Simple implementation - could be enhanced with proper color space math
-  (let ((r1 (string-to-number (substring color1 1 3) 16))
-        (g1 (string-to-number (substring color1 3 5) 16))
-        (b1 (string-to-number (substring color1 5 7) 16))
-        (r2 (string-to-number (substring color2 1 3) 16))
-        (g2 (string-to-number (substring color2 3 5) 16))
-        (b2 (string-to-number (substring color2 5 7) 16)))
-    (format "#%02x%02x%02x"
-            (+ r1 (* factor (- r2 r1)))
-            (+ g1 (* factor (- g2 g1)))
-            (+ b1 (* factor (- b2 b1))))))
+  ;; Convert both colors to hex
+  (let* ((hex1 (omegamacs-theme--color-to-hex color1))
+         (hex2 (omegamacs-theme--color-to-hex color2)))
+    (if (and hex1 hex2)
+        (let ((r1 (string-to-number (substring hex1 1 3) 16))
+              (g1 (string-to-number (substring hex1 3 5) 16))
+              (b1 (string-to-number (substring hex1 5 7) 16))
+              (r2 (string-to-number (substring hex2 1 3) 16))
+              (g2 (string-to-number (substring hex2 3 5) 16))
+              (b2 (string-to-number (substring hex2 5 7) 16)))
+          (format "#%02x%02x%02x"
+                  (+ r1 (* factor (- r2 r1)))
+                  (+ g1 (* factor (- g2 g1)))
+                  (+ b1 (* factor (- b2 b1)))))
+      ;; If either color is invalid, return nil
+      nil)))
 
 ;;; Built-in Face Configuration
 
