@@ -234,7 +234,6 @@
                  ;; Company/completion colors
                  (completion-bg . "gray25")
                  (completion-fg . "gainsboro")
-                 (completion-highlight . "gray40")
                  (completion-selection . "gray30")
                  (completion-annotation . "lightgray")))
 
@@ -286,7 +285,8 @@
                 (diff-removed . "darkred")
                 (diff-changed . "darkmagenta")
                 ;; Company/completion colors
-                (completion-highlight . "gray40")
+                (completion-bg . "gray40")
+                (completion-fg . "white")
                 (completion-selection . "gray30")
                 (completion-annotation . "gray70"))))
   "Color palettes for different themes.
