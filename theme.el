@@ -281,7 +281,7 @@
                 ;; Diff colors
                 (diff-added . "darkgreen")
                 (diff-removed . "darkred")
-                (diff-changed . "dark magenta")
+                (diff-changed . "darkmagenta")
                 ;; Company/completion colors
                 (completion-highlight . "gray40")
                 (completion-selection . "gray30")
