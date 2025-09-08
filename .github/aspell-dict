@@ -1,4 +1,4 @@
-personal_ws-1.1 en 137 
+personal_ws-1.1 en 138 
 AUCTeX
 ControlMaster
 DSLs
@@ -47,6 +47,7 @@ Vivado
 Windmove
 Yasnippet
 alist
+alists
 async
 auth
 capf
