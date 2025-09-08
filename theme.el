@@ -307,8 +307,8 @@ Each color in the theme palette becomes a local variable.
 For example, 'background becomes the background color value."
   (declare (indent 1))
   ;; Get all unique color names from all themes at macro expansion time
-  (let ((all-color-names (delete-dups 
-                          (apply #'append 
+  (let ((all-color-names (delete-dups
+                          (apply #'append
                                  (mapcar (lambda (theme-def)
                                            (mapcar #'car (cdr theme-def)))
                                          omegamacs-theme--color-palettes)))))
@@ -514,6 +514,3 @@ Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   cla_s_sic   _r_elo
 
 ;; Initialize when this file is loaded
 (omegamacs-theme--initialize)
-
-;;;(provide 'omegamacs-theme)
-;;; theme.el ends here
