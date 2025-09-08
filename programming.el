@@ -201,15 +201,15 @@ Potential side effects:
       (omegamacs-theme-with-colors theme
         (set-face-foreground 'highlight-indent-guides-odd-face indent-guide-odd)
         (set-face-foreground 'highlight-indent-guides-even-face indent-guide-even)
-        (set-face-foreground 'highlight-indent-guides-character-face indent-guide-odd)
+        (set-face-foreground 'highlight-indent-guides-character-face indent-guide-char)
         ;; Subtle but visible colors for fill mode
         (set-face-background 'highlight-indent-guides-odd-face background-light)
         (set-face-background 'highlight-indent-guides-even-face background-lighter)
         ;; Current indentation level highlighting
-        (set-face-background 'highlight-indent-guides-top-odd-face indent-guide-current)
-        (set-face-background 'highlight-indent-guides-top-even-face indent-guide-current)
-        (set-face-background 'highlight-indent-guides-stack-odd-face indent-guide-current)
-        (set-face-background 'highlight-indent-guides-stack-even-face indent-guide-current)))
+        (set-face-background 'highlight-indent-guides-top-odd-face indent-guide-top)
+        (set-face-background 'highlight-indent-guides-top-even-face indent-guide-top)
+        (set-face-background 'highlight-indent-guides-stack-odd-face indent-guide-stack)
+        (set-face-background 'highlight-indent-guides-stack-even-face indent-guide-stack)))
 
     ;; Register with theme system and apply current theme
     (omegamacs-theme-add-hook #'omegamacs-programming--apply-indent-guide-colors)
