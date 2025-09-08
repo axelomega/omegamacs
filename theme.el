@@ -307,9 +307,20 @@ Each color in the theme palette becomes a local variable.
 For example, 'background becomes the background color value."
   (declare (indent 1))
   `(let* ((colors (omegamacs-theme-colors ,theme))
-          ,@(mapcar (lambda (pair)
-                      `(,(car pair) (cdr (assq ',(car pair) colors))))
-                    colors))
+          ,@(mapcar (lambda (color-name)
+                      `(,color-name (cdr (assq ',color-name colors))))
+                    '(background background-alt background-light background-lighter
+                      foreground foreground-alt foreground-dim
+                      cursor region highlight
+                      line-number line-number-current line-number-bg line-number-current-bg
+                      mode-line-bg mode-line-fg mode-line-inactive-bg mode-line-inactive-fg
+                      fringe border minibuffer-prompt link
+                      comment string keyword function-name variable-name type constant
+                      success warning error info
+                      trailing-whitespace show-paren-match
+                      indent-guide-normal indent-guide-current
+                      diff-added diff-removed diff-changed
+                      completion-highlight completion-selection completion-annotation)))
      ,@body))
 
 ;;; Theme Management Functions
