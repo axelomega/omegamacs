@@ -407,7 +407,7 @@ Returns nil if COLOR is invalid."
     (apply #'color-rgb-to-hex (color-name-to-rgb color)))
    (t nil)))
 
-(defun omegamacs-theme--parse-hex-color (hex)
+(defun omegamacs--theme-parse-hex-color (hex)
   "Parse HEX color string (#RRGGBB) and return list of (R G B) integers.
 Returns nil if HEX is not a valid 6-digit hex color."
   (when (and (stringp hex)
@@ -422,8 +422,8 @@ Returns a hex color string."
   ;; Convert both colors to hex
   (let* ((hex1 (omegamacs-theme--color-to-hex color1))
          (hex2 (omegamacs-theme--color-to-hex color2))
-         (rgb1 (omegamacs-theme--parse-hex-color hex1))
-         (rgb2 (omegamacs-theme--parse-hex-color hex2)))
+         (rgb1 (omegamacs--theme-parse-hex-color hex1))
+         (rgb2 (omegamacs--theme-parse-hex-color hex2)))
     (if (and rgb1 rgb2)
         (let ((r1 (nth 0 rgb1))
               (g1 (nth 1 rgb1))
