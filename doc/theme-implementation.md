@@ -133,8 +133,9 @@ Each theme defines semantic color names:
 ### Special Purpose
 - `trailing-whitespace` - Trailing whitespace background
 - `show-paren-match` - Matching parenthesis highlight
-- `indent-guide-normal/current` - Indent guide colors
+- `indent-guide-odd/even/char/top/stack` - Indent guide colors
 - `diff-added/removed/changed` - Diff colors
+- `completion-bg/fg/selection/annotation` - Completion system colors
 
 ## Integration Patterns
 
@@ -231,17 +232,23 @@ Each integrated file maintains its color settings visibly in the configuration, 
 ## Implementation Notes
 
 ### Redraw Behavior
-Theme switching includes automatic display refresh, though occasionally cursor movement may be needed for complete visual updates (documented TODO for future investigation).
+Theme switching includes automatic display refresh, though occasionally cursor movement may be needed for complete visual updates. This has been observed on Emacs 28+ under X11 and is documented in the code with potential investigation approaches including checking hook triggers, experimenting with additional redraw functions, and testing with minimal configurations.
 
 ### Terminal Compatibility
 The `dark-x11` theme uses only X11 named colors, ensuring reliable appearance in terminal mode where hex colors might not be supported.
+
+### Dynamic Color System
+The `omegamacs-theme-with-colors` macro automatically discovers all available color names from theme definitions at macro expansion time, making the system fully dynamic. When new themes are added with new color names, those colors automatically become available as variables in the macro without code changes.
+
+### Color Interpolation
+The system includes robust color interpolation utilities that work with both hex colors and X11 named colors, with proper error handling for invalid color values.
 
 ### Classic Theme
 The `classic` theme recreates the original omegamacs color scheme, including:
 - Gray20 background with gray80 foreground
 - Cyan cursor
-- Gray mode line
-- Reddish-orange comments and strings
+- Gray mode line (grey75 background)
+- Dark orange comments and pale green strings
 - Traditional Emacs syntax highlighting
 
 ## Architecture
