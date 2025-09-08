@@ -232,6 +232,8 @@
                  (diff-removed . "darkred")
                  (diff-changed . "darkorange")
                  ;; Company/completion colors
+                 (completion-bg . "gray25")
+                 (completion-fg . "gainsboro")
                  (completion-highlight . "gray40")
                  (completion-selection . "gray30")
                  (completion-annotation . "lightgray")))
