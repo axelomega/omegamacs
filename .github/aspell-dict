@@ -1,8 +1,9 @@
-personal_ws-1.1 en 131 
+personal_ws-1.1 en 136 
 AUCTeX
 ControlMaster
 DSLs
 DejaVu
+Discoverable
 Elisp
 EmacsWiki
 GTD
@@ -67,6 +68,7 @@ eldoc
 elpa
 eq
 eval
+extensibility
 fallbacks
 ffffff
 flycheck
@@ -77,6 +79,7 @@ gc
 getenv
 goto
 gravatar
+hl
 ido
 init
 integrations
@@ -92,6 +95,7 @@ macOS
 minibuffer
 myssh
 namespace
+namespacing
 nongnu
 nvm
 nxml
@@ -125,6 +129,7 @@ uniquified
 unpushed
 untracked
 vertico
+whitespace
 wholename
 ws
 xelatex
