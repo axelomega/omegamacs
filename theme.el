@@ -332,8 +332,16 @@ For example, 'background becomes the background color value."
 
 ;;; Theme Management Functions
 
-;; TODO: Theme switching sometimes requires cursor movement to fully refresh display.
-;; This suggests a timing or redraw issue that should be investigated further.
+;; TODO: Theme switching sometimes requires cursor movement to fully refresh display,
+;; especially after switching between 'dark' and 'light' themes or when certain UI elements
+;; (e.g., mode line, minibuffer, or custom faces) are present. This has been observed on
+;; Emacs 28+ under both X11 and macOS, but may vary by window system.
+;; Potential investigation approaches:
+;; - Check if all relevant hooks (e.g., 'window-configuration-change-hook', 'after-change-major-mode-hook')
+;;   are being triggered after theme application.
+;; - Experiment with additional redraw functions such as 'redisplay', 'frame-flush', or 'face-remap-add-relative'.
+;; - Profile redraw events to identify delays or missed updates.
+;; - Test with minimal configuration to isolate interactions with other packages.
 (defun omegamacs-theme-apply (theme)
   "Apply THEME as the current theme.
 This updates the current theme and runs all change hooks."
