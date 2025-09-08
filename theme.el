@@ -179,7 +179,8 @@
                  (diff-added . "#448844")
                  (diff-removed . "#884444")
                  (diff-changed . "#886644")
-                 (completion-highlight . "#888888")
+                 (completion-bg . "#888888")
+                 (completion-fg . "#eeeeee")
                  (completion-selection . "#777777")
                  (completion-annotation . "#aaaaaa")))
 
