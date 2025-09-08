@@ -1,4 +1,4 @@
-personal_ws-1.1 en 136 
+personal_ws-1.1 en 137 
 AUCTeX
 ControlMaster
 DSLs
@@ -107,6 +107,7 @@ pyright
 quickstart
 realgud
 reconnection
+redisplay
 repo
 repos
 rgb
