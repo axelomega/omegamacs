@@ -265,7 +265,7 @@
                 (comment . "darkorange")
                 (string . "palegreen")
                 (keyword . "cyan")
-                (function-name . "blue")
+                (function-name . "violet")
                 (variable-name . "yellow")
                 (type . "green")
                 (constant . "magenta")
