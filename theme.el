@@ -319,11 +319,10 @@ Each color in the theme palette becomes a local variable.
 For example, 'background becomes the background color value."
   (declare (indent 1))
   ;; Bind color variables at runtime, based on the palette for THEME.
-  `(let* ((colors (omegamacs-theme-colors ,theme)))
-     (let ,(mapcar (lambda (pair)
-                    `(,(car pair) (cdr pair)))
-                  colors)
-       ,@body)))
+  `(let ,(mapcar (lambda (pair)
+                  `(,(car pair) (cdr pair)))
+                (omegamacs-theme-colors ,theme))
+     ,@body))
 
 ;;; Theme Management Functions
 
