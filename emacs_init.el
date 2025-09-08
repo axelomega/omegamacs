@@ -68,7 +68,7 @@
 (setq command-line-args (delete "--no-defer" command-line-args))
 
 ;; Show startup mode information
-(message "Omegamacs startup: %s mode, lazy loading %s" 
+(message "Omegamacs startup: %s mode, lazy loading %s"
          (if omegamacs-minimal-config "minimal" "full")
          (if omegamacs-enable-lazy-loading "enabled" "disabled"))
 
@@ -78,6 +78,7 @@
     ;; Full configuration
     (load (omegamacs-get-fullpath "packages"))
     (load (omegamacs-get-fullpath "hydra"))
+    (load (omegamacs-get-fullpath "theme"))
     (load (omegamacs-get-fullpath "settings"))
     (load (omegamacs-get-fullpath "flycheck"))
     (load (omegamacs-get-fullpath "company"))

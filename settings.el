@@ -8,7 +8,7 @@
 (tool-bar-mode -1)
 
 (setq-default show-trailing-whitespace t)
-(set-face-background 'trailing-whitespace "gray15")
+
 (global-set-key (kbd "C-x C-<backspace>") 'delete-trailing-whitespace)
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
@@ -16,17 +16,28 @@
 ;(set-frame-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*")
 ;(add-to-list 'default-frame-alist '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*"))
 
-;; Color settings
+;; Color settings using theme system
 (defun omegamacs--set-colors ()
-  (set-background-color "gray20")
-  (set-cursor-color "cyan")
-  (set-foreground-color "gray80"))
+  (omegamacs-theme-with-colors omegamacs-theme-current
+    (set-background-color background)
+    (set-cursor-color cursor)
+    (set-foreground-color foreground)))
 
 (defun omegamacs--set-frame-colors (frame)
   (select-frame frame)
-  (set-background-color "gray20")
-  (set-cursor-color "cyan")
-  (set-foreground-color "gray80"))
+  (omegamacs-theme-with-colors omegamacs-theme-current
+    (set-background-color background)
+    (set-cursor-color cursor)
+    (set-foreground-color foreground)))
+
+;; Update colors when theme changes
+(omegamacs-theme-add-hook (lambda (theme)
+                            (if (daemonp)
+                                ;; For daemon, update all frames
+                                (dolist (frame (frame-list))
+                                  (omegamacs--set-frame-colors frame))
+                              ;; For non-daemon, update current frame
+                              (omegamacs--set-colors))))
 
 (if (daemonp)
 	(add-hook 'after-make-frame-functions #'omegamacs--set-frame-colors)
@@ -54,6 +65,17 @@
 (setq hl-line-face 'hl-line)
 (global-hl-line-mode t) ; turn it on for all modes by default
 
+;; Apply all settings-related colors using theme system
+(defun omegamacs-settings--apply-colors (theme)
+  "Apply theme colors to all settings-related faces."
+  (omegamacs-theme-with-colors theme
+    (set-face-background 'trailing-whitespace trailing-whitespace)
+    (set-face-background 'hl-line highlight)))
+
+;; Register with theme system and apply current theme
+(omegamacs-theme-add-hook #'omegamacs-settings--apply-colors)
+(omegamacs-settings--apply-colors omegamacs-theme-current)
+
 ;; Zoom text
 (defun omegamacs-text-zoom (n)
   "with positive N, increase the font size, otherwise decrease it"
@@ -79,7 +101,8 @@
 ;;Smerge
 (add-hook 'smerge-mode-hook
    #'(lambda ()
-       (set-face-background 'smerge-refined-change "dark magenta")))
+       (omegamacs-theme-with-colors omegamacs-theme-current
+         (set-face-background 'smerge-refined-change diff-changed))))
 
 ;; Keep backups in a dedicated folder
 (let ((backup-dir (omegamacs-user-emacs-subdirectory-local "backups")))

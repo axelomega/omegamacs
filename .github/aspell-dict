@@ -1,13 +1,15 @@
-personal_ws-1.1 en 121 
+personal_ws-1.1 en 138 
 AUCTeX
 ControlMaster
 DSLs
 DejaVu
+Discoverable
 Elisp
 EmacsWiki
 GTD
 HDDs
 HISTFILE
+Imenu
 JIT
 LSP
 MELPA
@@ -19,17 +21,20 @@ Orderless
 Quartus
 README
 README's
+RRGGBB
 Recentf
 RefTeX
 SCP
 SSD
 SSDs
 Savehist
+Scrollbar
 Smerge
 Spacemacs
 Sudo
 SystemVerilog
 TLS
+Treemacs
 UI
 UX
 Uncategorized
@@ -42,6 +47,7 @@ Vivado
 Windmove
 Yasnippet
 alist
+alists
 async
 auth
 capf
@@ -52,6 +58,7 @@ cmake
 config
 configs
 csh
+defconst
 defun
 dired
 dolist
@@ -60,14 +67,20 @@ eglot
 el
 eldoc
 elpa
+eq
 eval
+extensibility
+fallbacks
+ffffff
 flycheck
 formatter
+frontend
 func
 gc
 getenv
 goto
 gravatar
+hl
 ido
 init
 integrations
@@ -83,6 +96,7 @@ macOS
 minibuffer
 myssh
 namespace
+namespacing
 nongnu
 nvm
 nxml
@@ -94,8 +108,10 @@ pyright
 quickstart
 realgud
 reconnection
+redisplay
 repo
 repos
+rgb
 ripgrep
 semgrep
 setq
@@ -115,6 +131,7 @@ uniquified
 unpushed
 untracked
 vertico
+whitespace
 wholename
 ws
 xelatex

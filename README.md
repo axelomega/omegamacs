@@ -133,6 +133,7 @@ EMACS_PACKAGE_UPDATE_ENABLE=1 emacs
 
 **Advanced Features:**
 - **GTD-based org-mode** with comprehensive [task and project management](#gtd-task-management-system)
+- **Comprehensive theme system** with [5 built-in themes](#theme-system) and easy theme switching
 - **Hydra menus** for [quick access to common operations](#hydra-menus)
 - **Terminal integration** with VTerm
 - **LaTeX support** with AUCTeX
@@ -228,11 +229,50 @@ This loads a lightweight configuration with essential features:
 - [EmacsWiki: Emacs Client](https://www.emacswiki.org/emacs/EmacsClient)
 - [Mastering Emacs: Working with Emacs Server](https://www.masteringemacs.org/article/working-with-emacs-server-and-emacsclient)
 
+## Theme System
+
+Omegamacs features a comprehensive theme system with 5 built-in themes and instant theme switching capabilities.
+
+### Available Themes
+
+- **Dark** - Modern dark theme with sophisticated color palette
+- **Light** - Clean light theme optimized for readability
+- **Mid-gray** - Balanced medium gray theme
+- **Dark-x11** - Terminal-friendly theme using X11 named colors
+- **Classic** - Recreates the original omegamacs color scheme
+
+### Theme Switching
+
+Access the theme hydra with **`C-c T`** for instant theme switching:
+
+```
+Theme: _c_ycle   _d_ark   _l_ight   _m_id-gray   _x_11-dark   cla_s_sic   _r_eload   _q_uit
+```
+
+- `c` - Cycle through all themes automatically
+- `d` - Apply dark theme
+- `l` - Apply light theme  
+- `m` - Apply mid-gray theme
+- `x` - Apply dark-x11 theme
+- `s` - Apply classic theme
+- `r` - Reload current theme
+
+### Key Features
+
+- **Centralized color management** - All themes use consistent semantic color names
+- **Automatic updates** - All UI elements update immediately when switching themes
+- **Terminal compatibility** - X11 theme works reliably in terminal mode
+- **Dynamic system** - Adding new themes requires no code changes
+- **Clean architecture** - Colors defined centrally, referenced throughout configuration
+
+**For complete theme system documentation, see [doc/theme-implementation.md](doc/theme-implementation.md)**
+
 ## Hydra Menus
 
 Omegamacs includes Hydra menus for quick access to common operations. Hydras provide transient keymaps that stay active until you explicitly exit.
 
 **Available Hydras:**
+- **Theme switching** (`C-c T`): Instant theme switching between 5 built-in themes
 - **Org-mode** (`C-c o`): Complete GTD workflow commands
 - **Additional menus**: Run `M-x omegamacs-list-hydras` to see all available hydras
 
