@@ -5,7 +5,8 @@
   :ensure nil  ; Built-in
   :mode ("\\.xml\\'" "\\.xsd\\'" "\\.xsl\\'" "\\.xslt\\'" "\\.svg\\'")
   :config
-  (setq nxml-slash-auto-complete-flag t
+  (setq nxml-slash-auto-complete-flag (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
+                                            omegamacs-parenthesis-autocomplete-enable)
         nxml-auto-insert-xml-declaration-flag nil
         nxml-outline-child-indent 2)
   ;; Performance improvements for large XML files
