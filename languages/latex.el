@@ -25,18 +25,8 @@
   (setq LaTeX-electric-left-right-brace t
         LaTeX-fill-break-at-separators nil)
 
-  ;; Auto-fill mode for LaTeX (preserve existing fill-column setting)
-  (defun omegamacs-latex-setup-fill-column ()
-    "Set up LaTeX mode to honor existing fill-column or use a reasonable default."
-    (auto-fill-mode 1)
-    ;; Check if fill-column is already set to a custom value
-    (if (boundp 'fill-column)
-        ;; Use the existing fill-column value
-        (setq-local fill-column fill-column)
-      ;; Set default value if not set
-      (setq-local fill-column 140)))
-
-  (add-hook 'LaTeX-mode-hook #'omegamacs-latex-setup-fill-column)
+  ;; Auto-fill mode for LaTeX
+  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
@@ -73,9 +63,7 @@
   :hook (LaTeX-mode . cdlatex-mode)
   :config
   ;; Use TAB for cdlatex in LaTeX mode
-  (setq cdlatex-use-dollar-to-ensure-math t
-        ;; Disable automatic parenthesis insertion for subscripts
-        cdlatex-takeover-parenthesis nil))
+  (setq cdlatex-use-dollar-to-ensure-math t))
 
 ;; LSP configuration for LaTeX with texlab (commented out until texlab is installed)
 ;; Uncomment the following block once you have texlab installed:

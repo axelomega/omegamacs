@@ -2,7 +2,7 @@
 ;;; Omegamacs initialization file
 ;;; Copy this file to ~/.emacs.d/init.el
 ;;; This file loads the main configuration from a configurable directory
-;;; 
+;;;
 ;;; Command line arguments:
 ;;;   --minimal   : Load minimal configuration only
 ;;;   --no-defer  : Disable lazy loading (load all packages immediately)
@@ -19,7 +19,7 @@
 ;; Suppress startup echo area message - replace "your-username" with your actual username
 ;; (setq inhibit-startup-echo-area-message "your-username")
 
-;; Fill column setting - controls line wrapping width
+;; Fill column setting - controls line wrapping width (defaults to 120 if unset)
 ;; (setq omegamacs-fill-column 200)
 
 ;;; helm-jira settings
