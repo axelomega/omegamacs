@@ -144,3 +144,5 @@ rg
 scrollback
 smartparens
 subtree
+autocomplete
+boundp
