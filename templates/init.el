@@ -19,6 +19,9 @@
 ;; Suppress startup echo area message - replace "your-username" with your actual username
 ;; (setq inhibit-startup-echo-area-message "your-username")
 
+;; Fill column setting - controls line wrapping width
+;; (setq omegamacs-fill-column 200)
+
 ;;; helm-jira settings
 ;; (setq omegamacs-settings-jira-url      "url to JIRA project")
 ;; (setq omegamacs-settings-jira-username "JIRA user")

@@ -107,7 +107,6 @@
         (load (omegamacs-get-fullpath "copilot/copilot")))))
     ))
 
-(setq fill-column 140)
 
 ;; Separate custom file for cleaner configuration
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
