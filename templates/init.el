@@ -22,6 +22,11 @@
 ;; Fill column setting - controls line wrapping width (defaults to 120 if unset)
 ;; (setq omegamacs-fill-column 200)
 
+;; Parenthesis auto-completion control (defaults to disabled if unset)
+;; Set to t to enable auto-pairing of parentheses, brackets, braces across modes
+;; Set to nil to disable automatic parenthesis completion
+;; (setq omegamacs-parenthesis-autocomplete-enable nil)
+
 ;;; helm-jira settings
 ;; (setq omegamacs-settings-jira-url      "url to JIRA project")
 ;; (setq omegamacs-settings-jira-username "JIRA user")
