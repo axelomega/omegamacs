@@ -1,4 +1,4 @@
-personal_ws-1.1 en 138 
+personal_ws-1.1 en 138
 AUCTeX
 ControlMaster
 DSLs
@@ -137,3 +137,10 @@ ws
 xelatex
 yaml
 zsh
+anzu
+autoinsert
+backtab
+rg
+scrollback
+smartparens
+subtree
