@@ -45,15 +45,20 @@
 (use-package rainbow-delimiters
   :ensure t
   :defer omegamacs-enable-lazy-loading
-  :hook (prog-mode . rainbow-delimiters-mode)
-  :config (setq sp-autoinsert-pair nil))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package smartparens
   :ensure t
   :defer omegamacs-enable-lazy-loading
-  :hook (prog-mode . smartparens-mode)
+  :hook (prog-mode . (lambda ()
+                       (when (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
+                                  omegamacs-parenthesis-autocomplete-enable)
+                         (smartparens-mode 1))))
   :config
-  (require 'smartparens-config))
+  (require 'smartparens-config)
+  ;; Configure smartparens auto-insertion based on omegamacs setting
+  (setq sp-autoinsert-pair (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
+                                omegamacs-parenthesis-autocomplete-enable)))
 
 ;; Better editing with multiple cursors
 (use-package multiple-cursors
