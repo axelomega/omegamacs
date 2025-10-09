@@ -63,7 +63,12 @@
   :hook (LaTeX-mode . cdlatex-mode)
   :config
   ;; Use TAB for cdlatex in LaTeX mode
-  (setq cdlatex-use-dollar-to-ensure-math t))
+  (setq cdlatex-use-dollar-to-ensure-math t
+        ;; Disable _ and ^ from automatically entering math mode
+        cdlatex-sub-super-scripts-outside-math-mode nil
+        ;; Disable parenthesis auto matching
+        cdlatex-paired-parens ""
+        cdlatex-takeover-parenthesis nil))
 
 ;; LSP configuration for LaTeX with texlab (commented out until texlab is installed)
 ;; Uncomment the following block once you have texlab installed:
