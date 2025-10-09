@@ -48,10 +48,13 @@
 (setq c-basic-offset 4)
 
 ;;We have wide screens now
-(setq fill-column 200)
+(setq-default fill-column (if (boundp 'omegamacs-fill-column)
+                              omegamacs-fill-column
+                            120))
 
 ;;Modern line number showing
 (global-set-key (kbd "C-<f5>") 'display-line-numbers-mode)
+(column-number-mode 1)
 
 ;;Show the time
 (setq display-time-day-and-date t)
