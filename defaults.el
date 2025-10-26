@@ -107,7 +107,11 @@ Example: \"PROJ\"")
 When nil, a default path will be computed based on the current shell.")
 
 (defvar omegamacs-compile-mode-shell-history-size 100
-  "Number of shell history entries to keep in compile mode.")
+  "Controls how many lines of shell history to read for compile mode integration.
+Special values:
+  nil - never read shell history
+  0   - read the full shell history
+Any positive integer N - read the last N lines of shell history.")
 
 ;; ============================================================================
 ;; Integration Settings - Projectile
