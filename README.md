@@ -399,6 +399,59 @@ Edit `~/.emacs.d/init.el` to customize for your environment:
 ;;       "find . -type f -not -path '*/node_modules/*' -print0")
 ```
 
+## Configuration Architecture
+
+### Centralized Defaults System
+
+Omegamacs uses a centralized defaults system (`defaults.el`) that defines all configuration variables with sensible default values. This architectural choice provides several benefits:
+
+**Key Features:**
+- **Single source of truth**: All configuration variables defined in one place (`defaults.el`)
+- **Zero boilerplate**: No need for `boundp` checks or `defvar` in user config
+- **Type safety**: Variables always have defined types and documentation
+- **Clean codebase**: No scattered variable checks throughout the code
+
+**How It Works:**
+
+1. **Early Loading**: `defaults.el` is loaded very early in initialization
+2. **User Overrides**: Set variables in `~/.emacs.d/init.el` with simple `setq`
+3. **Automatic Merging**: Emacs `defvar` respects already-bound variables
+4. **Documentation**: All variables documented with docstrings in `defaults.el`
+
+**Example - Customizing Settings:**
+
+```elisp
+;; In ~/.emacs.d/init.el - just use setq, no defvar needed!
+
+;; Change fill column width
+(setq omegamacs-fill-column 200)
+
+;; Enable parenthesis auto-completion
+(setq omegamacs-parenthesis-autocomplete-enable t)
+
+;; Configure shell history integration
+(setq omegamacs-compile-mode-shell-history-size 200)
+(setq omegamacs-compile-mode-shell-history-file "~/.zsh_history")
+```
+
+**Behind the Scenes:**
+
+When you set a variable in your init.el before loading omegamacs:
+1. Your `setq` binds the variable with your custom value
+2. omegamacs loads `defaults.el`
+3. Each `defvar` checks if the variable is already bound
+4. If bound (by you), your value is preserved
+5. If unbound, the default value is used
+6. Docstrings and declarations are applied regardless
+
+**Benefits for Users:**
+- **Simple customization**: Just use `setq` in your init.el
+- **Discoverability**: Run `M-x describe-variable omegamacs-` to see all options
+- **Documentation**: Every variable has a docstring explaining its purpose
+- **No surprises**: Defaults are explicit and documented in one place
+
+**For a complete list of configuration variables, see `defaults.el` in the omegamacs directory.**
+
 ## GTD Task Management System
 
 ### Overview
