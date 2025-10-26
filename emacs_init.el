@@ -1,8 +1,17 @@
 ;;; -*- lexical-binding: t -*-
 
-(defvar omegamacs--gc-cons-threshold gc-cons-threshold)
-(defvar omegamacs--gc-cons-percentage gc-cons-percentage)
-(defvar omegamacs--file-name-handler-alist file-name-handler-alist)
+;; Set config directory early (unless already set by user)
+(unless (boundp 'omegamacs-emacs-config-dir)
+  (setq omegamacs-emacs-config-dir
+        (file-name-directory (or load-file-name buffer-file-name))))
+
+;; Define path helper function
+(defun omegamacs-get-fullpath (file-relative-path)
+  "Return the full path of FILE-RELATIVE-PATH, relative to the configuration directory."
+  (expand-file-name file-relative-path omegamacs-emacs-config-dir))
+
+;; Load defaults first - this defines all omegamacs variables with default values
+(load (omegamacs-get-fullpath "defaults"))
 
 ;; Maximize memory during startup for better performance
 (setq gc-cons-threshold most-positive-fixnum
@@ -24,12 +33,6 @@
             ;; Optional: run gc after startup
             (garbage-collect)))
 
-(defun omegamacs-get-fullpath (file-relative-path)
-  "Return the full path of FILE-RELATIVE-PATH, relative to the configuration directory."
-  (let ((config-dir (or (and (boundp 'omegamacs-emacs-config-dir) omegamacs-emacs-config-dir)
-                        (file-name-directory (or load-file-name buffer-file-name)))))
-    (expand-file-name file-relative-path config-dir)))
-
 (defun omegamacs-user-emacs-subdirectory-local (subdir)
   "Given a subdirectory name, return the path to the disk local user directory; if the path does not exist, create it."
   (let ((dir (expand-file-name subdir omegamacs-user-emacs-directory-local)))
@@ -49,21 +52,13 @@
       fn)))
 
 (defun omegamacs-user-emacs-subdirectory (subdir)
-  "Given a subdirectory name, return the path to the directorey directory; if the path does not exist, create it."
+  "Given a subdirectory name, return the path to the directory; if the path does not exist, create it."
   (let ((dir (expand-file-name subdir user-emacs-directory)))
     (unless (file-exists-p dir)
       (make-directory dir t))
     dir))
 
-;; Check for minimal config argument
-(defvar omegamacs-minimal-config (member "--minimal" command-line-args)
-  "When non-nil, load only essential configuration.")
-
-;; Check for no-defer argument
-(defvar omegamacs-enable-lazy-loading (not (member "--no-defer" command-line-args))
-  "When non-nil, enable lazy loading with :defer. Set to nil for immediate loading of all packages.")
-
-;; Remove the arguments so they don't cause issues
+;; Remove the command-line arguments so they don't cause issues
 (setq command-line-args (delete "--minimal" command-line-args))
 (setq command-line-args (delete "--no-defer" command-line-args))
 
@@ -99,13 +94,11 @@
     (load (omegamacs-get-fullpath "development"))
     (load (omegamacs-get-fullpath "org"))
     ;; Load Copilot configuration based on user preference
-    (when (boundp 'omegamacs-copilot-config)
-      (cond
-       ((eq omegamacs-copilot-config 'setup)
-        (load (omegamacs-get-fullpath "copilot/copilot-setup")))
-       ((eq omegamacs-copilot-config 'full)
-        (load (omegamacs-get-fullpath "copilot/copilot")))))
-    ))
+    (cond
+     ((eq omegamacs-copilot-config 'setup)
+      (load (omegamacs-get-fullpath "copilot/copilot-setup")))
+     ((eq omegamacs-copilot-config 'full)
+      (load (omegamacs-get-fullpath "copilot/copilot"))))))
 
 
 ;; Separate custom file for cleaner configuration

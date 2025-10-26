@@ -48,9 +48,7 @@
 (setq c-basic-offset 4)
 
 ;;We have wide screens now
-(setq-default fill-column (if (boundp 'omegamacs-fill-column)
-                              omegamacs-fill-column
-                            120))
+(setq-default fill-column omegamacs-fill-column)
 
 ;;Modern line number showing
 (global-set-key (kbd "C-<f5>") 'display-line-numbers-mode)

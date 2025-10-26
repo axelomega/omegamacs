@@ -1,6 +1,10 @@
-;; This can be good to set to a disk local location if your ${HOME} is mounted via NFS to speed up certain file operations
-;; For example:
+;; Local data directory for Emacs (packages, cache, etc.)
+;; Set this early for better performance, especially if ${HOME} is on a network filesystem
+;; Default: user-emacs-directory (set in defaults.el)
+;; Uncomment and modify to use a disk-local location:
 ;; (setq omegamacs-user-emacs-directory-local "/path/to/local/disk/.emacs.d.local")
+;;
+;; Using default:
 (setq omegamacs-user-emacs-directory-local user-emacs-directory)
 
 (when (and (fboundp 'startup-redirect-eln-cache)

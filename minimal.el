@@ -11,8 +11,7 @@
         ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")))
 
 ;; Enable electric-pair-mode based on omegamacs setting
-(when (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
-           omegamacs-parenthesis-autocomplete-enable)
+(when omegamacs-parenthesis-autocomplete-enable
   (electric-pair-mode 1))
 (show-paren-mode 1)
 (global-auto-revert-mode 1)

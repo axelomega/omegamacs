@@ -6,57 +6,64 @@
 ;;; Command line arguments:
 ;;;   --minimal   : Load minimal configuration only
 ;;;   --no-defer  : Disable lazy loading (load all packages immediately)
+;;;
+;;; NOTE: All omegamacs configuration variables are defined with defaults in defaults.el
+;;; You can override any of these defaults by setting them in this file BEFORE loading
+;;; the main configuration. Use setq to override - no need for defvar or boundp checks.
 
 ;;; Emacs configuration root directory
+;; Uncomment and modify if omegamacs is located somewhere other than ~/omegamacs
 ;; (setq omegamacs-emacs-config-dir "~/omegamacs")
 
-;;; Local data directory (set in early-init.el if needed for performance)
-;; Ensure omegamacs-user-emacs-directory-local is set to default if not configured
-(unless (boundp 'omegamacs-user-emacs-directory-local)
-  (setq omegamacs-user-emacs-directory-local user-emacs-directory))
+;;; Local data directory
+;; This is typically set in early-init.el if needed for performance
+;; Defaults to user-emacs-directory if not set
+;; (setq omegamacs-user-emacs-directory-local "/path/to/local/data")
 
 ;;; Personal settings
 ;; Suppress startup echo area message - replace "your-username" with your actual username
 ;; (setq inhibit-startup-echo-area-message "your-username")
 
-;; Fill column setting - controls line wrapping width (defaults to 120 if unset)
+;;; Display settings
+;; Fill column setting - controls line wrapping width (default: 120)
 ;; (setq omegamacs-fill-column 200)
 
-;; Parenthesis auto-completion control (defaults to disabled if unset)
+;;; Feature flags
+;; Parenthesis auto-completion control (default: nil/disabled)
 ;; Set to t to enable auto-pairing of parentheses, brackets, braces across modes
-;; Set to nil to disable automatic parenthesis completion
-;; (setq omegamacs-parenthesis-autocomplete-enable nil)
+;; (setq omegamacs-parenthesis-autocomplete-enable t)
 
-;;; helm-jira settings
-;; (setq omegamacs-settings-jira-url      "url to JIRA project")
-;; (setq omegamacs-settings-jira-username "JIRA user")
-;; (setq omegamacs-settings-jira-project  "JIRA project name")
+;; Copilot configuration (default: nil)
+;; Set to 'setup or 'full to control Copilot loading
+;; nil: No Copilot support
+;; 'setup: Minimal Copilot setup for initial server installation and authentication
+;; 'full: Complete Copilot configuration with all features
+;; (setq omegamacs-copilot-config 'full)
 
-;;; Copilot configuration
-;; Set to 'none, 'setup, or 'full to control Copilot loading
-;; none: No Copilot support
-;; setup: Minimal Copilot setup for initial server installation and authentication
-;; full: Complete Copilot configuration with all features
-;; (setq omegamacs-copilot-config 'none)
+;;; Integration settings - JIRA
+;; (setq omegamacs-settings-jira-url      "https://jira.example.com")
+;; (setq omegamacs-settings-jira-username "your-username")
+;; (setq omegamacs-settings-jira-project  "PROJ")
 
-;;; Projectile
-;; (setq omegamacs-settings-projectile-generic-command "find . -type f -not -wholename '*some_folder_to_filter/*' -not -wholename '*some_other_folder_to_filter/*' -print0")
+;;; Integration settings - Projectile
+;; Custom command for file listing (default: nil, uses git ls-files with fallback)
+;; (setq omegamacs-settings-projectile-generic-command
+;;       "find . -type f -not -wholename '*some_folder/*' -print0")
 
-;; Un-comment and set to use a specific shell history file
+;;; Integration settings - Compilation
+;; Shell history file integration (default: nil, auto-detected based on $SHELL)
 ;; (setq omegamacs-compile-mode-shell-history-file (getenv "HISTFILE"))
-;; Or set to a specific file path:
 ;; (setq omegamacs-compile-mode-shell-history-file "~/.bash_history")
-;; If left unset the history file will be guessed
 
-;; Configuration variables for shell history integration into compile mode
-(defvar omegamacs-compile-mode-shell-history-size 100
-  "Control how many lines of shell history to read into compile mode.
-nil: never read shell history
-0: read full shell history
-1-N: read this many lines of most recent history")
+;; Number of shell history lines to read (default: 100)
+;; nil: never read shell history
+;; 0: read full shell history
+;; N: read this many lines of most recent history
+;; (setq omegamacs-compile-mode-shell-history-size 200)
 
-
-;; Load main configuration from the configured directory
-(let ((config-dir (or (and (boundp 'omegamacs-emacs-config-dir) omegamacs-emacs-config-dir)
-                      "~/omegamacs")))  ; Default fallback
+;;; Load main configuration
+;; Load the main omegamacs configuration from the configured directory
+(let ((config-dir (if (boundp 'omegamacs-emacs-config-dir)
+                      omegamacs-emacs-config-dir
+                    "~/omegamacs")))  ; Default fallback
   (load-file (expand-file-name "emacs_init.el" config-dir)))
