@@ -22,8 +22,7 @@
         TeX-source-correlate-start-server t)
 
   ;; LaTeX-specific settings
-  (setq LaTeX-electric-left-right-brace (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
-                                              omegamacs-parenthesis-autocomplete-enable)
+  (setq LaTeX-electric-left-right-brace omegamacs-parenthesis-autocomplete-enable
         LaTeX-fill-break-at-separators nil)
 
   ;; Auto-fill mode for LaTeX
@@ -68,11 +67,9 @@
         ;; Disable _ and ^ from automatically entering math mode
         cdlatex-sub-super-scripts-outside-math-mode nil
         ;; Configure parenthesis auto matching based on omegamacs setting
-        cdlatex-paired-parens (if (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
-                                       omegamacs-parenthesis-autocomplete-enable)
+        cdlatex-paired-parens (if omegamacs-parenthesis-autocomplete-enable
                                   "(){}[]" "")
-        cdlatex-takeover-parenthesis (and (boundp 'omegamacs-parenthesis-autocomplete-enable)
-                                           omegamacs-parenthesis-autocomplete-enable)))
+        cdlatex-takeover-parenthesis omegamacs-parenthesis-autocomplete-enable))
 
 ;; LSP configuration for LaTeX with texlab (commented out until texlab is installed)
 ;; Uncomment the following block once you have texlab installed:

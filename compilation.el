@@ -146,21 +146,18 @@ This provides consistent symlink resolution across all file opening operations."
 ;; Helper function to determine shell history file
 (defun omegamacs--get-shell-history-file ()
   "Get the appropriate shell history file path."
-  (if (boundp 'omegamacs-compile-mode-shell-history-file)
-      omegamacs-compile-mode-shell-history-file
-    (let ((shell (file-name-nondirectory (or (getenv "SHELL") "/bin/bash"))))
-      (cond
-       ((string-match "zsh" shell) (expand-file-name ".zsh_history" "~"))
-       ((string-match "fish" shell) (expand-file-name ".local/share/fish/fish_history" "~"))
-       ((string-match "tcsh\\|csh" shell) (expand-file-name ".history" "~"))
-       (t (expand-file-name ".bash_history" "~"))))))
+  (or omegamacs-compile-mode-shell-history-file
+      (let ((shell (file-name-nondirectory (or (getenv "SHELL") "/bin/bash"))))
+        (cond
+         ((string-match "zsh" shell) (expand-file-name ".zsh_history" "~"))
+         ((string-match "fish" shell) (expand-file-name ".local/share/fish/fish_history" "~"))
+         ((string-match "tcsh\\|csh" shell) (expand-file-name ".history" "~"))
+         (t (expand-file-name ".bash_history" "~"))))))
 
 ;; Read shell history into compile command history
 (defun omegamacs--load-shell-history-to-compile ()
   "Load shell history into compilation command history."
-  (let ((history-size (if (boundp 'omegamacs-compile-mode-shell-history-size)
-                          omegamacs-compile-mode-shell-history-size
-                        nil))
+  (let ((history-size omegamacs-compile-mode-shell-history-size)
         (histfile (omegamacs--get-shell-history-file)))
     (when (and history-size histfile (file-readable-p histfile))
       (with-temp-buffer
