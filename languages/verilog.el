@@ -5,27 +5,28 @@
 (defun omegamacs-setup-verilog-indent ()
   "Configure Verilog indentation settings."
   (message "VERILOG MODE SETUP")
-  (setq verilog-indent-level              4
-        verilog-indent-level-module       4
-        verilog-indent-level-declaration  4
-        verilog-indent-level-behavioral   4
-        verilog-indent-level-directive    4
-        verilog-indent-begin-after-if     nil
-        verilog-indent-lists              nil
-        verilog-indent-declaration-macros nil
-        verilog-case-indent               4
-        verilog-cexp-indent               4
-        verilog-auto-newline              nil
-        verilog-auto-lineup               nil
-        verilog-auto-indent-on-newline    t
-        verilog-minimum-comment-distance  12
-        verilog-align-ifelse              t
-        verilog-auto-endcomments          nil
-        ;; Performance optimizations
-        verilog-scan-cache-tick           t   ; Enable caching
-        verilog-auto-save-policy          nil ; Don't auto-save during auto commands
-        verilog-auto-template-warn-unused nil ; Reduce warnings for speed
-        ))
+  (let ((indent (omegamacs-get-indent-amount 'verilog-mode)))
+    (setq verilog-indent-level              indent
+          verilog-indent-level-module       indent
+          verilog-indent-level-declaration  indent
+          verilog-indent-level-behavioral   indent
+          verilog-indent-level-directive    indent
+          verilog-indent-begin-after-if     nil
+          verilog-indent-lists              nil
+          verilog-indent-declaration-macros nil
+          verilog-case-indent               indent
+          verilog-cexp-indent               indent
+          verilog-auto-newline              nil
+          verilog-auto-lineup               nil
+          verilog-auto-indent-on-newline    t
+          verilog-minimum-comment-distance  12
+          verilog-align-ifelse              t
+          verilog-auto-endcomments          nil
+          ;; Performance optimizations
+          verilog-scan-cache-tick           t   ; Enable caching
+          verilog-auto-save-policy          nil ; Don't auto-save during auto commands
+          verilog-auto-template-warn-unused nil ; Reduce warnings for speed
+          )))
 
 (use-package verilog-ts-mode
   :ensure t

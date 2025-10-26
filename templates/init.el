@@ -28,6 +28,30 @@
 ;; Fill column setting - controls line wrapping width (default: 120)
 ;; (setq omegamacs-fill-column 200)
 
+;; Indentation style - default for modes not in alist (default: 'space)
+;; (setq omegamacs-indent-style 'space)  ; or 'tab for tabs
+
+;; Per-mode indentation style (tab vs space) - defaults to omegamacs-indent-style if not specified
+;; Useful for languages with strong conventions (e.g., Makefiles require tabs, Python uses spaces)
+;; (setq omegamacs-indent-style-alist
+;;       '((makefile-mode . tab)
+;;         (go-mode . tab)
+;;         (python-mode . space)
+;;         (c-mode . space)))
+
+;; Default indentation amount for modes not specified in alist (default: 4)
+;; (setq omegamacs-indent-amount 4)
+
+;; Per-mode indentation amounts (defaults: emacs-lisp-mode=2, lisp-mode=2, LaTeX-mode=2)
+;; Add or override modes in the alist:
+;; (setq omegamacs-indent-amount-alist
+;;       '((emacs-lisp-mode . 2)
+;;         (python-mode . 4)
+;;         (c-mode . 4)
+;;         (c++-mode . 4)
+;;         (verilog-mode . 2)
+;;         (LaTeX-mode . 2)))
+
 ;;; Feature flags
 ;; Parenthesis auto-completion control (default: nil/disabled)
 ;; Set to t to enable auto-pairing of parentheses, brackets, braces across modes

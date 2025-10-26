@@ -18,7 +18,7 @@
             (lambda ()
               (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc))))
 
-  (setq lisp-indent-offset 2)
+  (setq lisp-indent-offset (omegamacs-get-indent-amount 'emacs-lisp-mode))
 
   :bind (:map emacs-lisp-mode-map
               ("C-c C-e" . eval-last-sexp)
