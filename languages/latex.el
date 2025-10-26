@@ -33,7 +33,7 @@
   ;; Enable folding
   (add-hook 'LaTeX-mode-hook 'TeX-fold-mode)
   ;; Better indentation
-  (setq LaTeX-indent-level 2
+  (setq LaTeX-indent-level (omegamacs-get-indent-amount 'LaTeX-mode)
         LaTeX-item-indent 0))
 
 ;; RefTeX for references, citations, and labels

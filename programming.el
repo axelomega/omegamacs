@@ -5,9 +5,18 @@
   :ensure nil
   :config
 
-  (setq-default indent-tabs-mode nil
-                tab-width 4
-                standard-indent 4))
+  ;; Set default values
+  (setq-default tab-width omegamacs-indent-amount
+                standard-indent omegamacs-indent-amount
+                indent-tabs-mode (eq omegamacs-indent-style 'tab))
+
+  ;; Apply per-mode indentation style
+  (defun omegamacs--apply-indent-style ()
+    "Apply mode-specific indentation style based on current major-mode."
+    (let ((style (omegamacs-get-indent-style major-mode)))
+      (setq-local indent-tabs-mode (eq style 'tab))))
+
+  (add-hook 'prog-mode-hook #'omegamacs--apply-indent-style))
 
 (use-package lsp-mode
   :ensure t

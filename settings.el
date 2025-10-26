@@ -1,7 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
 (setq visible-bell t)
-(setq tab-width 4)
 
 ;;No menu and tool bar
 (menu-bar-mode -1)
@@ -43,9 +42,10 @@
 	(add-hook 'after-make-frame-functions #'omegamacs--set-frame-colors)
   (omegamacs--set-colors))
 
-;;Use space not tabs
-(setq-default indent-tabs-mode nil)
-(setq c-basic-offset 4)
+;; Indentation settings
+(setq-default tab-width omegamacs-indent-amount)
+(setq-default indent-tabs-mode (eq omegamacs-indent-style 'tab))
+(setq c-basic-offset (omegamacs-get-indent-amount 'c-mode))
 
 ;;We have wide screens now
 (setq-default fill-column omegamacs-fill-column)

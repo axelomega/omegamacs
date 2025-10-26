@@ -67,6 +67,66 @@ Set automatically based on the --no-defer command-line flag.")
 This variable is also defined as a defcustom in theme.el for the
 customize interface, but we provide a default here for early initialization.")
 
+(defvar omegamacs-indent-style 'space
+  "Default indentation style for code editing.
+This is used as the fallback when a mode is not specified in
+`omegamacs-indent-style-alist'.
+Valid values:
+  'space - Use spaces for indentation (default)
+  'tab   - Use tabs for indentation")
+
+(defvar omegamacs-indent-style-alist nil
+  "Alist mapping major modes to their preferred indentation style.
+Each entry is (MODE . STYLE) where MODE is a major mode symbol and
+STYLE is either 'space or 'tab.
+
+Modes not listed here will use `omegamacs-indent-style' as the default.
+
+Example:
+  ((makefile-mode . tab)
+   (python-mode . space)
+   (go-mode . tab)
+   (c-mode . space))")
+
+(defvar omegamacs-indent-amount 4
+  "Default number of spaces (or tab width) for each indentation level.
+This is used as the fallback when a mode is not specified in
+`omegamacs-indent-amount-alist'.
+Default: 4")
+
+(defvar omegamacs-indent-amount-alist
+  '((emacs-lisp-mode . 2)
+    (lisp-mode . 2)
+    (LaTeX-mode . 2))
+  "Alist mapping major modes to their preferred indentation amounts.
+Each entry is (MODE . AMOUNT) where MODE is a major mode symbol and
+AMOUNT is the number of spaces for indentation in that mode.
+
+Modes not listed here will use `omegamacs-indent-amount' as the default.
+
+Example:
+  ((emacs-lisp-mode . 2)
+   (python-mode . 4)
+   (c-mode . 4)
+   (verilog-mode . 4))")
+
+(defun omegamacs-get-indent-amount (mode)
+  "Get indentation amount for MODE from alist, falling back to default.
+MODE should be a major mode symbol (e.g., 'emacs-lisp-mode).
+Returns the indentation amount from `omegamacs-indent-amount-alist' if found,
+otherwise returns `omegamacs-indent-amount'."
+  (or (alist-get mode omegamacs-indent-amount-alist)
+      omegamacs-indent-amount))
+
+(defun omegamacs-get-indent-style (mode)
+  "Get indentation style for MODE from alist, falling back to default.
+MODE should be a major mode symbol (e.g., 'python-mode).
+Returns the indentation style from `omegamacs-indent-style-alist' if found,
+otherwise returns `omegamacs-indent-style'.
+Result is either 'space or 'tab."
+  (or (alist-get mode omegamacs-indent-style-alist)
+      omegamacs-indent-style))
+
 ;; ============================================================================
 ;; Feature Flags
 ;; ============================================================================
