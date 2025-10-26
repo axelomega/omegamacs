@@ -1,4 +1,4 @@
-personal_ws-1.1 en 138
+personal_ws-1.1 en 144
 AUCTeX
 ControlMaster
 DSLs
@@ -48,6 +48,7 @@ Windmove
 Yasnippet
 alist
 alists
+args
 async
 auth
 capf
@@ -55,13 +56,16 @@ cdlatex
 checkdoc
 clangd
 cmake
+codebase
 config
 configs
 csh
 defconst
 defun
+defvar
 dired
 dolist
+docstrings
 dwim
 eglot
 el
@@ -72,6 +76,7 @@ eval
 extensibility
 fallbacks
 ffffff
+filesystem
 flycheck
 formatter
 frontend
@@ -104,6 +109,7 @@ paren
 pcomplete
 prewarning
 prog
+PROJ
 pyright
 quickstart
 realgud
