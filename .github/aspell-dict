@@ -1,8 +1,9 @@
-personal_ws-1.1 en 144
+personal_ws-1.1 en 146
 AUCTeX
 ControlMaster
 DSLs
 DejaVu
+Discoverability
 Discoverable
 Elisp
 EmacsWiki
@@ -65,6 +66,7 @@ defun
 defvar
 dired
 dolist
+docstring
 docstrings
 dwim
 eglot
