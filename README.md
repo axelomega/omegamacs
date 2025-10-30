@@ -54,6 +54,20 @@ Omegamacs follows a **"code as config"** philosophy - I'm not afraid of actual E
 
 **⚠️ Important:** This configuration is designed for Emacs server mode. The initial startup may be slow due to comprehensive packages and LSP integrations, but subsequent connections are instant. See [Startup Performance](#startup-performance) for timing details and optimization tips.
 
+### Automated Installation (Recommended)
+
+Use the installation script for easy setup:
+
+```bash
+git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
+cd ~/omegamacs
+./install.sh
+```
+
+The script will handle existing configurations, set up paths automatically, and guide you through optional performance optimizations. See [INSTALL](INSTALL) for complete installation documentation.
+
+### Manual Installation
+
 1. **Clone and setup**:
    ```bash
    git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
@@ -74,7 +88,7 @@ Omegamacs follows a **"code as config"** philosophy - I'm not afraid of actual E
    export EDITOR="emacs -nw --minimal"
    ```
 
-**See [Installation Options](#installation-options) for detailed setup, [Emacs Server Mode](#emacs-server-mode-detailed) for advanced server configuration, and [Requirements](#requirements) for full build recommendations.**
+**See [INSTALL](INSTALL) for detailed installation instructions, [Installation Options](#installation-options) for manual setup details, [Emacs Server Mode](#emacs-server-mode-detailed) for advanced server configuration, and [Requirements](#requirements) for full build recommendations.**
 
 ## Installation Options
 
