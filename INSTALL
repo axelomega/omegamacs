@@ -16,10 +16,10 @@ Optional:
 - Node.js 18+ (for GitHub Copilot integration)
 
 PLATFORM NOTE: The automated install script is currently tested on Debian
-Linux only (including WSL with Debian). Other Linux distributions should
-work but are untested. macOS, Windows (Git Bash/MSYS2/Cygwin), and other
-Unix users should use manual installation (see below) or contribute platform
-support via pull request. Manual installation works on all platforms.
+Linux only. Other Linux distributions and WSL should work but are untested.
+macOS, Windows (Git Bash/MSYS2/Cygwin), and other Unix users should use
+manual installation (see below) or contribute platform support via pull
+request. Manual installation works on all platforms.
 
 
 QUICK INSTALLATION
