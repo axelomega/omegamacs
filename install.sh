@@ -6,17 +6,21 @@
 set -e  # Exit on error
 
 # Check for Linux
-if [[ "$(uname -s)" != "Linux" ]]; then
+OS_TYPE="$(uname -s)"
+if [[ "$OS_TYPE" != "Linux" ]]; then
     echo "╔═══════════════════════════════════════════════════════════════╗"
     echo "║                      PLATFORM NOTICE                          ║"
     echo "╚═══════════════════════════════════════════════════════════════╝"
     echo ""
     echo "This installation script is currently tested on Linux only."
-    echo "Detected platform: $(uname -s)"
+    echo "Detected platform: $OS_TYPE"
     echo ""
-    echo "The script uses 'sed -i' which has different syntax on macOS"
-    echo "and other Unix systems. We welcome contributions to make this"
-    echo "script portable!"
+    echo "The script uses 'sed -i' which has different syntax on macOS,"
+    echo "Windows (Git Bash/MSYS2/Cygwin), and other Unix systems."
+    echo "We welcome contributions to make this script portable!"
+    echo ""
+    echo "Note: Windows Subsystem for Linux (WSL) should work fine as"
+    echo "it reports as Linux."
     echo ""
     echo "To contribute:"
     echo "  1. Test and modify the script for your platform"
