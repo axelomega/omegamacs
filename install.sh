@@ -92,30 +92,26 @@ ask_input() {
 
 # Portable sed in-place editing
 # Usage: portable_sed_inplace <pattern> <file>
+#
+# Note: Non-Linux platforms are already filtered out at script start,
+# so this function currently only needs to handle Linux syntax.
+# Future contributors can add OS-specific branches here:
+#
+# if [[ "$OS_TYPE" == "Linux" ]]; then
+#     sed -i "$pattern" "$file"
+# elif [[ "$OS_TYPE" == "Darwin" ]]; then
+#     # macOS: sed -i requires a backup extension
+#     sed -i '' "$pattern" "$file"
+# elif [[ "$OS_TYPE" =~ ^(MINGW|MSYS|CYGWIN) ]]; then
+#     # Windows: test appropriate sed syntax
+#     sed -i "$pattern" "$file"
+# fi
 portable_sed_inplace() {
     local pattern=$1
     local file=$2
 
-    # Detect OS and use appropriate sed syntax
-    if [[ "$OS_TYPE" == "Linux" ]]; then
-        # Linux: sed -i works without backup extension
-        sed -i "$pattern" "$file"
-    elif [[ "$OS_TYPE" == "Darwin" ]]; then
-        # macOS: sed -i requires a backup extension (use empty string with -i '')
-        # Contributors: Uncomment and test this on macOS:
-        # sed -i '' "$pattern" "$file"
-        error "macOS support not yet implemented. Please use manual installation."
-        exit 1
-    elif [[ "$OS_TYPE" =~ ^(MINGW|MSYS|CYGWIN) ]]; then
-        # Windows (Git Bash/MSYS2/Cygwin)
-        # Contributors: Add appropriate sed syntax for your platform
-        error "Windows support not yet implemented. Please use manual installation."
-        exit 1
-    else
-        # Unknown OS
-        error "Unsupported platform: $OS_TYPE. Please use manual installation."
-        exit 1
-    fi
+    # Linux: sed -i works without backup extension
+    sed -i "$pattern" "$file"
 }
 
 main() {
