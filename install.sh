@@ -5,6 +5,30 @@
 
 set -e  # Exit on error
 
+# Check for Linux
+if [[ "$(uname -s)" != "Linux" ]]; then
+    echo "╔═══════════════════════════════════════════════════════════════╗"
+    echo "║                      PLATFORM NOTICE                          ║"
+    echo "╚═══════════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "This installation script is currently tested on Linux only."
+    echo "Detected platform: $(uname -s)"
+    echo ""
+    echo "The script uses 'sed -i' which has different syntax on macOS"
+    echo "and other Unix systems. We welcome contributions to make this"
+    echo "script portable!"
+    echo ""
+    echo "To contribute:"
+    echo "  1. Test and modify the script for your platform"
+    echo "  2. Submit a pull request at:"
+    echo "     https://github.com/axelomega/omegamacs"
+    echo ""
+    echo "For now, please use manual installation:"
+    echo "  See INSTALL file or README.md for instructions"
+    echo ""
+    exit 1
+fi
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'

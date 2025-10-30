@@ -9,10 +9,16 @@ REQUIREMENTS
 - Emacs 27.1 or later
 - Git (for cloning the repository)
 - Bash shell (for running the install script)
+- Linux (install script is currently Linux-only, see note below)
 
 Optional:
 - Language servers (clangd, pyright, etc.) for LSP support
 - Node.js 18+ (for GitHub Copilot integration)
+
+PLATFORM NOTE: The automated install script currently supports Linux only
+due to platform-specific differences in the 'sed' command. macOS and other
+Unix users should use manual installation (see below) or contribute macOS
+support via pull request. Manual installation works on all platforms.
 
 
 QUICK INSTALLATION
