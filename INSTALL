@@ -1,0 +1,193 @@
+OMEGAMACS INSTALLATION GUIDE
+============================
+
+Real Emacs for real developers - code as config
+
+REQUIREMENTS
+------------
+
+- Emacs 27.1 or later
+- Git (for cloning the repository)
+- Bash shell (for running the install script)
+- Debian Linux (install script tested on Debian only, see note below)
+
+Optional:
+- Language servers (clangd, pyright, etc.) for LSP support
+- Node.js 18+ (for GitHub Copilot integration)
+
+PLATFORM NOTE: The automated install script is currently tested on Debian
+Linux only. Other Linux distributions and WSL should work but are untested.
+macOS, Windows (Git Bash/MSYS2/Cygwin), and other Unix users should use
+manual installation (see below) or contribute platform support via pull
+request. Manual installation works on all platforms.
+
+
+QUICK INSTALLATION
+------------------
+
+1. Clone the repository:
+
+   git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
+
+2. Run the installation script:
+
+   cd ~/omegamacs
+   ./install.sh
+
+3. Follow the prompts:
+   - The script will handle any existing .emacs or .emacs.d
+   - It will ask about performance optimization for NFS home directories
+   - Configuration templates will be copied to ~/.emacs.d/
+
+4. Review and customize your configuration:
+
+   $EDITOR ~/.emacs.d/init.el
+
+   The init.el file contains all configuration options with detailed
+   comments. Uncomment and modify settings as needed - it's real
+   Emacs Lisp, no abstractions!
+
+5. Start Emacs:
+
+   emacs
+
+   Packages will be installed automatically on first startup.
+
+
+WHAT THE INSTALL SCRIPT DOES
+-----------------------------
+
+The install script follows the "code as config" philosophy and keeps
+things simple:
+
+1. Checks for Emacs installation
+2. Handles existing .emacs file (backup or delete)
+3. Handles existing .emacs.d directory (backup or delete)
+4. Copies configuration templates to ~/.emacs.d/
+5. Sets the omegamacs directory path automatically
+6. Optionally configures local storage for NFS setups
+7. Directs you to edit init.el yourself
+
+The script does NOT ask endless questions - instead it sets up the
+basics and lets you edit the real Emacs Lisp configuration files
+directly.
+
+
+CUSTOM INSTALLATION LOCATION
+-----------------------------
+
+If you cloned omegamacs to a location other than ~/omegamacs, the
+install script will automatically detect this and configure the path
+correctly.
+
+Example:
+   git clone https://github.com/axelomega/omegamacs.git ~/my-emacs
+   cd ~/my-emacs
+   ./install.sh
+
+
+PERFORMANCE OPTIMIZATION
+------------------------
+
+If your $HOME directory is on a network filesystem (NFS, etc.), the
+install script will offer to configure local storage for Emacs data
+files. This significantly improves performance by avoiding network I/O
+for:
+
+- Package installations and cache
+- Backup files
+- Undo history
+- Native compilation cache
+
+The script will ask for a local storage path (e.g., /tmp/.emacs.d.local)
+during installation.
+
+
+MANUAL INSTALLATION
+-------------------
+
+If you prefer not to use the install script, you can install manually:
+
+1. Clone the repository:
+
+   git clone https://github.com/axelomega/omegamacs.git ~/omegamacs
+
+2. Copy the templates:
+
+   cp ~/omegamacs/templates/init.el ~/.emacs.d/init.el
+   cp ~/omegamacs/templates/early-init.el ~/.emacs.d/early-init.el
+
+3. Edit ~/.emacs.d/init.el and customize as needed
+
+4. Start Emacs
+
+
+NEXT STEPS AFTER INSTALLATION
+------------------------------
+
+1. Review the configuration:
+   Open ~/.emacs.d/init.el and read through the available options.
+   Uncomment and modify settings to match your preferences.
+
+2. Start Emacs:
+   Packages will install automatically on first launch.
+
+3. For best performance, use server mode:
+
+   emacs --daemon      # Start the Emacs server
+   emacsclient -c      # Connect to the server
+
+   See README.md for details on setting up automatic daemon startup.
+
+4. For quick terminal edits, set up minimal mode:
+
+   export EDITOR="emacs -nw --minimal"
+
+5. Install optional language servers:
+
+   # C/C++
+   sudo apt install clangd    # Ubuntu/Debian
+   brew install llvm          # macOS
+
+   # Python
+   pip install pyright
+
+6. Explore the features:
+   - Press C-c T for theme switching
+   - Press C-c o for org-mode GTD commands
+   - See README.md for complete feature documentation
+
+
+TROUBLESHOOTING
+---------------
+
+Problem: Packages fail to install
+Solution: Check your internet connection and try:
+          EMACS_PACKAGE_UPDATE_ENABLE=1 emacs
+
+Problem: Slow startup
+Solution: Use server mode (emacs --daemon) for instant connections
+          after the initial startup
+
+Problem: Language servers not working
+Solution: Install the required language servers (see README.md)
+
+Problem: Configuration conflicts
+Solution: The install script should have handled existing configs.
+          Check for remaining .emacs or .emacs.d.backup.* files
+
+
+DOCUMENTATION
+-------------
+
+For complete documentation, see:
+- README.md - Full feature documentation
+- doc/ directory - Detailed implementation guides
+- https://github.com/axelomega/omegamacs - Online documentation
+
+
+GETTING HELP
+------------
+
+- GitHub Issues: https://github.com/axelomega/omegamacs/issues
+- Read the code: It's real Emacs Lisp - readable and well-commented
