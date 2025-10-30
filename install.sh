@@ -224,6 +224,16 @@ main() {
         echo ""
     fi
 
+    # Ask about suppressing startup echo message
+    echo ""
+    if ask_yes_no "Suppress Emacs startup echo area message?" "y"; then
+        local username=$(whoami)
+        info "Setting up startup message suppression for user: $username"
+        portable_sed_inplace "s|^;; (setq inhibit-startup-echo-area-message \"your-username\")|(setq inhibit-startup-echo-area-message \"$username\")|" "$emacs_d/init.el"
+        success "Startup echo message suppression enabled"
+        echo ""
+    fi
+
     # Ask about NFS/network home directory for performance optimization
     local use_local_storage=false
     local local_storage_path=""
