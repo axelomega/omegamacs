@@ -90,6 +90,34 @@ ask_input() {
     fi
 }
 
+# Portable sed in-place editing
+# Usage: portable_sed_inplace <pattern> <file>
+portable_sed_inplace() {
+    local pattern=$1
+    local file=$2
+
+    # Detect OS and use appropriate sed syntax
+    if [[ "$OS_TYPE" == "Linux" ]]; then
+        # Linux: sed -i works without backup extension
+        sed -i "$pattern" "$file"
+    elif [[ "$OS_TYPE" == "Darwin" ]]; then
+        # macOS: sed -i requires a backup extension (use empty string with -i '')
+        # Contributors: Uncomment and test this on macOS:
+        # sed -i '' "$pattern" "$file"
+        error "macOS support not yet implemented. Please use manual installation."
+        exit 1
+    elif [[ "$OS_TYPE" =~ ^(MINGW|MSYS|CYGWIN) ]]; then
+        # Windows (Git Bash/MSYS2/Cygwin)
+        # Contributors: Add appropriate sed syntax for your platform
+        error "Windows support not yet implemented. Please use manual installation."
+        exit 1
+    else
+        # Unknown OS
+        error "Unsupported platform: $OS_TYPE. Please use manual installation."
+        exit 1
+    fi
+}
+
 main() {
     echo ""
     echo "╔═════════════════════════════════════════════════════╗"
@@ -191,7 +219,7 @@ main() {
     if [ "$install_dir" != "$HOME/omegamacs" ]; then
         info "Setting custom installation directory in init.el..."
         # Uncomment and set the directory
-        sed -i "s|^;; (setq omegamacs-emacs-config-dir \"~/omegamacs\")|(setq omegamacs-emacs-config-dir \"$install_dir\")|" "$emacs_d/init.el"
+        portable_sed_inplace "s|^;; (setq omegamacs-emacs-config-dir \"~/omegamacs\")|(setq omegamacs-emacs-config-dir \"$install_dir\")|" "$emacs_d/init.el"
         success "Set omegamacs-emacs-config-dir to $install_dir"
         echo ""
     fi
@@ -210,7 +238,7 @@ main() {
         local_storage_path="${local_storage_path/#\~/$HOME}"
 
         info "Setting local storage path in early-init.el..."
-        sed -i "s|^(setq omegamacs-user-emacs-directory-local user-emacs-directory)|(setq omegamacs-user-emacs-directory-local \"$local_storage_path\")|" "$emacs_d/early-init.el"
+        portable_sed_inplace "s|^(setq omegamacs-user-emacs-directory-local user-emacs-directory)|(setq omegamacs-user-emacs-directory-local \"$local_storage_path\")|" "$emacs_d/early-init.el"
         success "Set omegamacs-user-emacs-directory-local to $local_storage_path"
         use_local_storage=true
     fi
