@@ -66,10 +66,10 @@ ask_input() {
 
 main() {
     echo ""
-    echo "╔════════════════════════════════════════════════════════════╗"
-    echo "║          Omegamacs Installation Script                    ║"
-    echo "║  Real Emacs for real developers - code as config          ║"
-    echo "╚════════════════════════════════════════════════════════════╝"
+    echo "╔═════════════════════════════════════════════════════╗"
+    echo "║           Omegamacs Installation Script             ║"
+    echo "║   Real Emacs for real developers - code as config   ║"
+    echo "╚═════════════════════════════════════════════════════╝"
     echo ""
 
     # Check if Emacs is installed
