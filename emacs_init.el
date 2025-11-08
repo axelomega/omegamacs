@@ -93,6 +93,7 @@
     (load (omegamacs-get-fullpath "tramp"))
     (load (omegamacs-get-fullpath "development"))
     (load (omegamacs-get-fullpath "org"))
+    (load (omegamacs-get-fullpath "leetcode"))
     ;; Load Copilot configuration based on user preference
     (cond
      ((eq omegamacs-copilot-config 'setup)
