@@ -4,6 +4,7 @@
 (use-package leetcode
   :ensure t
   :defer omegamacs-enable-lazy-loading
+  :bind ("C-c C-l" . leetcode)
   :config
   ;; Set preferred programming language
   (setq leetcode-prefer-language "cpp")
@@ -19,6 +20,3 @@
 
   ;; Toggle tag display in problem list
   (setq leetcode-prefer-tag-display t))
-
-;; Keybindings for LeetCode
-(global-set-key (kbd "C-c l") 'leetcode)
