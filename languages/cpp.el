@@ -10,11 +10,12 @@
   :config
   ;; Set indentation style
   (setq c-default-style "linux"
-        c-basic-offset 4)
+        c-basic-offset omegamacs-indent-amount)
 
   ;; Custom indentation rules
   (c-add-style "omegamacs-c-style"
-               '("linux"
+               `("linux"
+                 (c-basic-offset . ,omegamacs-indent-amount)
                  (c-offsets-alist
                   (innamespace . 0)           ; No indentation for namespace contents
                   (case-label . +)            ; Indent case labels
