@@ -1,0 +1,158 @@
+;;; -*- lexical-binding: t -*-
+
+(setq visible-bell t)
+
+;;No menu and tool bar
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+
+(setq-default show-trailing-whitespace t)
+
+(global-set-key (kbd "C-x C-<backspace>") 'delete-trailing-whitespace)
+(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+
+;;Font
+;(set-frame-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*")
+;(add-to-list 'default-frame-alist '(font . "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*"))
+
+;; Color settings using theme system
+(defun omegamacs--set-colors ()
+  (omegamacs-theme-with-colors omegamacs-theme-current
+    (set-background-color background)
+    (set-cursor-color cursor)
+    (set-foreground-color foreground)))
+
+(defun omegamacs--set-frame-colors (frame)
+  (select-frame frame)
+  (omegamacs-theme-with-colors omegamacs-theme-current
+    (set-background-color background)
+    (set-cursor-color cursor)
+    (set-foreground-color foreground)))
+
+;; Update colors when theme changes
+(omegamacs-theme-add-hook (lambda (theme)
+                            (if (daemonp)
+                                ;; For daemon, update all frames
+                                (dolist (frame (frame-list))
+                                  (omegamacs--set-frame-colors frame))
+                              ;; For non-daemon, update current frame
+                              (omegamacs--set-colors))))
+
+(if (daemonp)
+	(add-hook 'after-make-frame-functions #'omegamacs--set-frame-colors)
+  (omegamacs--set-colors))
+
+;; Indentation settings
+(setq-default tab-width omegamacs-indent-amount)
+(setq-default indent-tabs-mode (eq omegamacs-indent-style 'tab))
+(setq c-basic-offset (omegamacs-get-indent-amount 'c-mode))
+
+;;We have wide screens now
+(setq-default fill-column omegamacs-fill-column)
+
+;;Modern line number showing
+(global-set-key (kbd "C-<f5>") 'display-line-numbers-mode)
+(column-number-mode 1)
+
+;;Show the time
+(setq display-time-day-and-date t)
+(setq display-time-24hr-format t)
+(display-time)
+
+;; highlight the current line; set a custom face, so we can
+;; recognize from the normal marking (selection)
+(defface hl-line '((t (:background "Gray10")))
+  "Face to use for `hl-line-face'." :group 'hl-line)
+(setq hl-line-face 'hl-line)
+(global-hl-line-mode t) ; turn it on for all modes by default
+
+;; Apply all settings-related colors using theme system
+(defun omegamacs-settings--apply-colors (theme)
+  "Apply theme colors to all settings-related faces."
+  (omegamacs-theme-with-colors theme
+    (set-face-background 'trailing-whitespace trailing-whitespace)
+    (set-face-background 'hl-line highlight)))
+
+;; Register with theme system and apply current theme
+(omegamacs-theme-add-hook #'omegamacs-settings--apply-colors)
+(omegamacs-settings--apply-colors omegamacs-theme-current)
+
+;; Zoom text
+(defun omegamacs-text-zoom (n)
+  "with positive N, increase the font size, otherwise decrease it"
+  (set-face-attribute 'default (selected-frame) :height
+    (+ (face-attribute 'default :height) (* (if (> n 0) 1 -1) 10))))
+
+(global-set-key (kbd "C-+")      #'(lambda nil (interactive) (omegamacs-text-zoom 1)))
+(global-set-key [C-kp-add]       #'(lambda nil (interactive) (omegamacs-text-zoom 1)))
+(global-set-key (kbd "C--")      #'(lambda nil (interactive) (omegamacs-text-zoom -1)))
+(global-set-key [C-kp-subtract]  #'(lambda nil (interactive) (omegamacs-text-zoom -1)))
+
+(defhydra hydra-zoom (:color pink :hint nil)
+  "
+ Zoom: _+_ in   _-_ out   _0_ reset   _q_ quit
+"
+  ("+" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("0" (text-scale-set 0))
+  ("q" nil :exit t))
+
+(global-set-key (kbd "C-c z") 'hydra-zoom/body)
+
+;;Smerge
+(add-hook 'smerge-mode-hook
+   #'(lambda ()
+       (omegamacs-theme-with-colors omegamacs-theme-current
+         (set-face-background 'smerge-refined-change diff-changed))))
+
+;; Keep backups in a dedicated folder
+(let ((backup-dir (omegamacs-user-emacs-subdirectory-local "backups")))
+  (setq backup-directory-alist (list (cons "." backup-dir))
+        backup-by-copying t
+        delete-old-versions t
+        kept-new-versions 6
+        kept-old-versions 2
+        version-control t
+        ;; Security improvements
+        backup-by-copying-when-linked t
+        backup-by-copying-when-mismatch t
+        ;; Auto-save improvements
+        auto-save-file-name-transforms (list (list ".*" backup-dir t))
+        auto-save-timeout 20
+        auto-save-interval 200))
+
+;; Brows things in emacs
+(setq browse-url-browser-function 'eww-browse-url)
+
+;;; Trim white spaces
+;;(use-package ws-butler
+;;  :ensure t
+;;  :config
+;;  (ws-butler-global-mode 1))
+
+;; History
+(savehist-mode 1)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+
+;; Security settings
+(setq auth-sources '("~/.authinfo")   ; file to store passwords and tokens
+      network-security-level 'high   ; High security for network connections
+      gnutls-verify-error t          ; Verify TLS certificates
+      gnutls-min-prime-bits 3072)    ; Strong TLS
+
+;; Prevent accidental deletion of important files
+(setq delete-by-moving-to-trash t)
+
+;; Disable risky local variables
+(setq enable-local-variables :safe
+      enable-local-eval nil)
+
+(use-package tab-bar
+  :config
+  (setq tab-bar-new-tab-choice "*scratch*"
+        tab-bar-close-button-show nil
+        tab-bar-show 1)
+  :bind (("C-x t t" . tab-bar-new-tab)
+         ("C-x t k" . tab-bar-close-tab)
+         ("C-x t <right>" . tab-bar-switch-to-next-tab)
+         ("C-x t <left>" . tab-bar-switch-to-prev-tab)))

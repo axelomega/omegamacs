@@ -1,0 +1,62 @@
+;;; -*- lexical-binding: t -*-
+;;; Python Language Configuration
+
+;; Eglot for Python
+(use-package eglot
+  :ensure t
+  :config
+  (setq eglot-connect-timeout 60  ; Reduced timeout
+        eglot-format-on-save nil
+        eglot-sync-connect nil    ; Use async connection
+        eglot-events-buffer-size 0) ; Disable event logging for performance
+
+  ;; Python server configuration using symlink
+  (add-to-list 'eglot-server-programs
+               `(python-mode . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               `(python-ts-mode . ("pyright-langserver" "--stdio")))
+
+  ;; Enhanced auto-start function with better error handling
+  (defun omegamacs--python-eglot-ensure ()
+    "Start eglot for Python with error handling."
+    (when (and (executable-find "pyright-langserver")
+               (not (eglot-current-server)))
+      (condition-case err
+          (eglot-ensure)
+        (error
+         (message "Eglot failed to start: %s" (error-message-string err))))))
+
+  ;; Manual eglot commands for debugging
+  (defun omegamacs-eglot-restart ()
+    "Restart eglot server for current buffer."
+    (interactive)
+    (when (eglot-current-server)
+      (eglot-shutdown (eglot-current-server)))
+    (eglot-ensure))
+
+  :hook ((python-mode . omegamacs--python-eglot-ensure)
+         (python-ts-mode . omegamacs--python-eglot-ensure))
+  :bind (:map python-mode-map
+         ("C-c l r" . omegamacs-eglot-restart)
+         ("C-c l s" . eglot))
+  :config
+  ;; Configure eglot breadcrumb colors using theme system
+  (defun omegamacs-python--apply-eglot-colors (theme)
+    "Apply theme colors to eglot faces."
+    (omegamacs-theme-with-colors theme
+      (set-face-foreground 'header-line foreground)
+      (set-face-background 'header-line background-alt)))
+
+  ;; Register with theme system and apply current theme
+  (omegamacs-theme-add-hook #'omegamacs-python--apply-eglot-colors)
+  (omegamacs-python--apply-eglot-colors omegamacs-theme-current))
+
+;; Enable eglot breadcrumbs for managed buffers
+(add-hook 'eglot-managed-mode-hook 'eglot-inlay-hints-mode)
+
+
+;; Lark grammar files support
+(use-package lark-mode
+  :ensure t
+  :defer omegamacs-enable-lazy-loading
+  :mode "\\.lark\\'")
